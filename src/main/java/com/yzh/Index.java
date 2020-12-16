@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import java.util.*;
 
 import static com.yzh.utilts.FileTools.*;
+import static com.yzh.utilts.SDomainPagesTools.getPages;
 
 /**
  * @author Yzh
@@ -25,7 +26,7 @@ import static com.yzh.utilts.FileTools.*;
 public class Index {
     final static String JSONdata = "data";
     final static String LIST = "list";
-    private static int pages;
+    public static int pages;
     private static int pageNum=1;
     final static int pageSize = 10;
     private static final Logger logger = LoggerFactory.getLogger(Index.class);
@@ -47,16 +48,60 @@ public class Index {
         }
         System.out.println("请输入时空域名称");
         //获取输入
-        String sDomainName = input.next();
-        params.clear();
+        String sDomainName = input.nextLine();
+
         //分页设置
         List<SDomain> sDomains = new ArrayList<>();
-        SDomainPagesTools.getPages(pageNum,pageSize,sDomainName,pages,input,sDomains);
 
+        getPages(pageNum,pageSize,sDomainName,input,sDomains);
+        int page =pages;
+        while (0<pageNum&&pageNum<page){
+            //是否选择下一页
+            if (page>pageNum){
+                System.out.println("是否选择下一页？[y/n]");
+                //重新做分页请求
+                if(input.next().equals("y")){
+                    pageNum++;
+                    getPages(pageNum,pageSize,sDomainName,input,sDomains);
+                }else {
+                    break;
+                }
+            }
 
+            //是否选择上一页
+            if (pageNum>1&&pageNum<=page){
+                System.out.println("是否选择上一页？[y/n]");
+                //重新做分页请求
+                if(input.next().equals("y")){
+                    pageNum--;
+                    getPages(pageNum,pageSize,sDomainName,input,sDomains);
+                }else {
+                    break;
+                }
+            }
+        }
+
+        System.out.println("请选择时空域前的序号");
+        try {
+            Integer i = input.nextInt() - 1;
+            while (i > sDomains.size()) {
+                System.out.println("输入无效请重新输入：");
+                i = input.nextInt() - 1;
+            }
+            UserInfo.domain = sDomains.get(i).getId();
+
+        } catch (Exception e) {
+            e.getMessage();
+        }
 
         logger.debug("选择的时空域Id为=" + UserInfo.domain);
+        //导出时空域基本信息
 
+        //导出类模板
+
+        //导出对象
+
+        //导出用到的关系模板
 
         //根据时空域Id查询时空域下的对象
         params.clear();
@@ -70,6 +115,7 @@ public class Index {
 
         String objectListStr = data.getStr(LIST);
         List<JSONObject> objectList = JSONArray.parseArray(objectListStr, JSONObject.class);
+
 
         //获取当前时空域下的所有类模板Id
         Set<String> otypeIds = new HashSet<>();
@@ -116,9 +162,6 @@ public class Index {
         //退出账号
         logout();
     }
-
-
-
 }
 /*
  * 类视图和时空域无直接联系
