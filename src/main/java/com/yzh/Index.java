@@ -1,17 +1,10 @@
 package com.yzh;
 
-import cn.hutool.http.HttpUtil;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
-import com.alibaba.fastjson.JSONArray;
-import com.yzh.api.MyApi;
-import com.yzh.dao.OtypeInputModel;
 import com.yzh.dao.SDomainOutPutModel;
 import com.yzh.userInfo.UserInfo;
 import com.yzh.utilts.OtypeUtilts;
-import onegis.psde.attribute.Field;
-import onegis.psde.form.GeoBox;
-import onegis.psde.psdm.OType;
 import onegis.psde.psdm.SDomain;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,6 +13,7 @@ import java.util.*;
 
 import static com.yzh.utilts.FileTools.*;
 import static com.yzh.utilts.SDomainPagesTools.getPages;
+import static com.yzh.utilts.SDomainUtil.getSDomain;
 
 /**
  * @author Yzh
@@ -175,32 +169,6 @@ public class Index {
 //        System.out.println(output);
         //退出账号
         logout();
-    }
-    public static SDomainOutPutModel getSDomain(SDomainOutPutModel sDomainOutPutModel,SDomain sDomain){
-
-        sDomainOutPutModel.setId(sDomain.getId());
-        sDomainOutPutModel.setName(sDomain.getName());
-        sDomainOutPutModel.setDesc(sDomain.getDes());
-        sDomainOutPutModel.setSrs("epsg:4326");
-        sDomainOutPutModel.setTrs("onegis:1001");
-        if (sDomain.getsTime() != null) {
-            sDomainOutPutModel.setStime(sDomain.getsTime().getTime());
-        }
-        if (sDomain.geteTime() != null) {
-            sDomainOutPutModel.setEtime(sDomain.geteTime().getTime());
-        }
-
-//        List<OBase> parents = sDomain.getParents();
-//        if (GeneralUtils.isNotEmpty(parents)) {
-        sDomainOutPutModel.setParentId(null);
-//        }
-        GeoBox geoBox = sDomain.getGeoBox();
-        if (geoBox != null) {
-            sDomainOutPutModel.addGeobox(geoBox.getMinx(),
-                    geoBox.getMiny(), geoBox.getMinz(),
-                    geoBox.getMaxx(), geoBox.getMaxy(), geoBox.getMaxz());
-        }
-        return sDomainOutPutModel;
     }
 }
 /*
