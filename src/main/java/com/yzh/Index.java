@@ -2,7 +2,6 @@ package com.yzh;
 
 import cn.hutool.http.HttpUtil;
 import cn.hutool.json.JSONObject;
-import cn.hutool.json.JSONUtil;
 import com.alibaba.fastjson.JSONArray;
 import com.yzh.api.MyApi;
 import com.yzh.dao.OtypeInputModel;
@@ -15,6 +14,8 @@ import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
+import static com.yzh.utilts.FileTools.*;
+
 /**
  * @author Yzh
  * @create 2020-12-03 11:35
@@ -25,6 +26,7 @@ public class Index {
     final static String LIST = "list";
     private static final Logger logger = LoggerFactory.getLogger(Index.class);
     static Map<String, Object> params = new HashMap<>();
+
     public static void main(String[] args) {
         logger.debug("开始运行");
         //用户Token
@@ -40,10 +42,10 @@ public class Index {
             return;
         }
         params.clear();
-        params.put("token",UserInfo.token);
-        params.put("uids",UserInfo.userId);
+        params.put("token", UserInfo.token);
+        params.put("uids", UserInfo.userId);
         //String getRespond = HttpUtil.get(MyApi.getDomain.getValue().replace("@token", UserInfo.token).replace("@names", ""));
-        String getRespond = HttpUtil.get(MyApi.getDomain1.getValue(),params);
+        String getRespond = HttpUtil.get(MyApi.getDomain1.getValue(), params);
         logger.debug("获取时空域完毕");
         JSONObject jsonData = formatData(getRespond);
         logger.debug("获取当前用户创建的时空域");
@@ -65,10 +67,10 @@ public class Index {
         //获取时空域Id
         String domainId = "";
         try {
-            Integer i =input.nextInt() - 1;
-            while (i>userDomain.size()){
+            Integer i = input.nextInt() - 1;
+            while (i > userDomain.size()) {
                 System.out.println("输入无效请重新输入：");
-                i=input.nextInt()-1;
+                i = input.nextInt() - 1;
             }
             domainId = userDomain.get(i).getId().toString();
         } catch (Exception e) {
@@ -133,75 +135,11 @@ public class Index {
         });
         System.out.println(output);
 
-        //System.out.println(oTypeList.toArray());
-        //把字符串转换为Json
-//        JSONObject jsonObject = JSONUtil.parseObj(getRespond);
-//        //创建一个文件路径
-//        File file = new File("D:/时空域.domain");
-//        //判断文件是否存在
-//        if (!file.exists()) {
-//            try {
-//                //创建该文件
-//                file.createNewFile();
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//        //将查询内容写到文件当中
-//        FileWriter writer = new FileWriter(file, "utf-8");
-//        writer.write(jsonObject.toString());
 
-        //退出账号
+       // 退出账号
         logout();
-    }
+//    }
 
-    /**
-     * @param username
-     * @param password
-     */
-    public static void login(String username, String password) {
-        HashMap<String, Object> login = new HashMap<>();
-        //设置登录参数
-        login.put("username", username);
-        login.put("password", password);
-        //post请求
-        String post = HttpUtil.post(MyApi.login.getValue(), login);
-        //登录失败处理
-        JSONObject object = JSONUtil.parseObj(post);
-        if (object.getStr("status").equals("453")) {
-            logger.error(object.getStr("message"));
-            return;
-        }
-        //数据处理
-        JSONObject data = formatData(post);
-
-        logger.debug("存储用户信息");
-        UserInfo.token = data.get("token").toString();
-        logger.debug("用户Token信息=" + data.get("token").toString());
-
-        Map<String, Object> param = new HashMap<>();
-        param.put("token", UserInfo.token);
-        String result = HttpUtil.get(MyApi.getUserInfo.getValue(), param);
-        JSONObject userData = formatData(result);
-        UserInfo.userId = userData.get("id").toString();
-        UserInfo.email = userData.getStr("email");
-        logger.debug("用户的ID=" + UserInfo.userId + " 邮箱是=" + UserInfo.email);
-    }
-
-    public static void logout() {
-        HttpUtil.get(MyApi.logout.getValue());
-        logger.debug("运行结束");
-    }
-
-    //格式化请求结果返回的data
-
-    /**
-     * @param object
-     * @return
-     */
-    public static JSONObject formatData(String object) {
-        JSONObject sourceData = JSONUtil.parseObj(object);
-        return (JSONObject) JSONUtil.parse(sourceData.get(JSONdata));
     }
 }
 /*
