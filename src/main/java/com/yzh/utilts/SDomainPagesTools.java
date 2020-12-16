@@ -23,6 +23,16 @@ import static com.yzh.utilts.FileTools.formatData;
 public class SDomainPagesTools {
     private static final Logger logger = LoggerFactory.getLogger(SDomainPagesTools.class);
     private static Map<String,Object> params = new HashMap<>();
+
+    /**
+     * 分页请求方法
+     * @param pageNum
+     * @param pageSize
+     * @param sDomainName
+     * @param pages
+     * @param input
+     * @param sDomains
+     */
     public static void getPages(int pageNum, int pageSize, String sDomainName, int pages, Scanner input, List<SDomain> sDomains){
         params.put("pageNum", pageNum);
         params.put("pageSize", pageSize);
