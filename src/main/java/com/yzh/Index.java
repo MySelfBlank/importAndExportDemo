@@ -2,7 +2,6 @@ package com.yzh;
 
 import cn.hutool.http.HttpUtil;
 import cn.hutool.json.JSONObject;
-import cn.hutool.json.JSONUtil;
 import com.alibaba.fastjson.JSONArray;
 import com.yzh.api.MyApi;
 import com.yzh.dao.OtypeInputModel;
@@ -15,6 +14,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.*;
+
+import static com.yzh.utilts.FileTools.*;
 
 /**
  * @author Yzh
@@ -56,40 +57,6 @@ public class Index {
 
         logger.debug("选择的时空域Id为=" + UserInfo.domain);
 
-//        params.put("uids",UserInfo.userId);
-        //String getRespond = HttpUtil.get(MyApi.getDomain.getValue().replace("@token", UserInfo.token).replace("@names", ""));
-
-
-//        logger.debug("获取当前用户创建的时空域");
-//
-//        //sDomains.stream().filter(v->UserInfo.userId.equals(v.getUser().getUid())).collect(Collectors.toList());
-//
-//        //获取该用户创建的时空域
-//        List<SDomain> userDomain = new ArrayList<>();
-//        sDomains.forEach(v -> {
-//            if (v.getUser().getUid().equals(UserInfo.userId)) {
-//                userDomain.add(v);
-//            }
-//        });
-//        System.out.println("您账户下的时空域有：");
-//        for (int i = 0; i < userDomain.size(); i++) {
-//            System.out.println("[" + (i + 1) + "]" + userDomain.get(i).getName());
-//        }
-//        System.out.println("请输入要选择的时空域：");
-//        //获取时空域Id
-//        String domainId = "";
-//        try {
-//            Integer i = input.nextInt() - 1;
-//            while (i > userDomain.size()) {
-//                System.out.println("输入无效请重新输入：");
-//                i = input.nextInt() - 1;
-//            }
-//            domainId = userDomain.get(i).getId().toString();
-//        } catch (Exception e) {
-//            e.getMessage();
-//        }
-//
-//        logger.debug("选择的时空域Id为=" + domainId);
 
         //根据时空域Id查询时空域下的对象
         params.clear();
@@ -146,77 +113,10 @@ public class Index {
             output.add(otypeInputModel);
         });
         System.out.println(output);
-
-        //System.out.println(oTypeList.toArray());
-        //把字符串转换为Json
-//        JSONObject jsonObject = JSONUtil.parseObj(getRespond);
-//        //创建一个文件路径
-//        File file = new File("D:/时空域.domain");
-//        //判断文件是否存在
-//        if (!file.exists()) {
-//            try {
-//                //创建该文件
-//                file.createNewFile();
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//        //将查询内容写到文件当中
-//        FileWriter writer = new FileWriter(file, "utf-8");
-//        writer.write(jsonObject.toString());
-
         //退出账号
         logout();
     }
 
-    /**
-     * @param username
-     * @param password
-     */
-    public static void login(String username, String password) {
-        HashMap<String, Object> login = new HashMap<>();
-        //设置登录参数
-        login.put("username", username);
-        login.put("password", password);
-        //post请求
-        String post = HttpUtil.post(MyApi.login.getValue(), login);
-        //登录失败处理
-        JSONObject object = JSONUtil.parseObj(post);
-        if (object.getStr("status").equals("453")) {
-            logger.error(object.getStr("message"));
-            return;
-        }
-        //数据处理
-        JSONObject data = formatData(post);
-
-        logger.debug("存储用户信息");
-        UserInfo.token = data.get("token").toString();
-        logger.debug("用户Token信息=" + data.get("token").toString());
-
-        Map<String, Object> param = new HashMap<>();
-        param.put("token", UserInfo.token);
-        String result = HttpUtil.get(MyApi.getUserInfo.getValue(), param);
-        JSONObject userData = formatData(result);
-        UserInfo.userId = userData.get("id").toString();
-        UserInfo.email = userData.getStr("email");
-        logger.debug("用户的ID=" + UserInfo.userId + " 邮箱是=" + UserInfo.email);
-    }
-
-    public static void logout() {
-        HttpUtil.get(MyApi.logout.getValue());
-        logger.debug("运行结束");
-    }
-
-    //格式化请求结果返回的data
-
-    /**
-     * @param object
-     * @return
-     */
-    public static JSONObject formatData(String object) {
-        JSONObject sourceData = JSONUtil.parseObj(object);
-        return (JSONObject) JSONUtil.parse(sourceData.get(JSONdata));
-    }
 
 
 }

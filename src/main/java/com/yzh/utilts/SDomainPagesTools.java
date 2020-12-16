@@ -3,7 +3,6 @@ package com.yzh.utilts;
 import cn.hutool.http.HttpUtil;
 import cn.hutool.json.JSONObject;
 import com.alibaba.fastjson.JSONArray;
-import com.yzh.Index;
 import com.yzh.api.MyApi;
 import com.yzh.userInfo.UserInfo;
 import onegis.psde.psdm.SDomain;
@@ -14,6 +13,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+
+import static com.yzh.utilts.FileTools.formatData;
 
 /**
  * @author Yzh
@@ -29,7 +30,7 @@ public class SDomainPagesTools {
         params.put("token", UserInfo.token);
         String getRespond = HttpUtil.get(MyApi.getDomain1.getValue(), params);
         logger.debug("获取时空域完毕");
-        JSONObject jsonData = Index.formatData(getRespond);
+        JSONObject jsonData = formatData(getRespond);
         pages = jsonData.getInt("pages");
         sDomains.clear();
         sDomains = JSONArray.parseArray(jsonData.getStr("list"), SDomain.class);
