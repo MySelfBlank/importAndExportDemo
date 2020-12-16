@@ -17,10 +17,13 @@ public enum MyApi {
     getDomain1("getDomain","http://bt1.geosts.ac.cn/api/dae-dev/datastore/rest/v0.1.0/datastore/sdomain/query"),
 
     //获取类模板信息根据ID
-    getOtypesByIds("","http://bt1.geosts.ac.cn/api/dae-dev/datastore/rest/v0.1.0/datastore/otype/query"),
+    getOtypesByIds("getOtypesByIds","http://bt1.geosts.ac.cn/api/dae-dev/datastore/rest/v0.1.0/datastore/otype/query"),
 
     //获取时空域下的所有的空间对象
     getObject("getObject","http://bt1.geosts.ac.cn/api/dae-dev/datastore/rest/v0.1.0/datastore/object/query"),
+
+    //获取时空域下的连接关系 参数信息传入时空域 sdomian
+    getNetWork("","http://bt1.geosts.ac.cn/api/dae/rest/v0.1.0/datastore/getRelationCatalog"),
 
     //注销本次登录
     logout("logout","http://bt1.geosts.ac.cn/api/uc-dev/api/v2/account/logout");
