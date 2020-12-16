@@ -2,12 +2,14 @@ package com.yzh;
 
 import cn.hutool.http.HttpUtil;
 import cn.hutool.json.JSONObject;
+import cn.hutool.json.JSONUtil;
 import com.alibaba.fastjson.JSONArray;
 import com.yzh.api.MyApi;
 import com.yzh.dao.OtypeInputModel;
+import com.yzh.dao.SDomainOutPutModel;
 import com.yzh.userInfo.UserInfo;
-import com.yzh.utilts.SDomainPagesTools;
 import onegis.psde.attribute.Field;
+import onegis.psde.form.GeoBox;
 import onegis.psde.psdm.OType;
 import onegis.psde.psdm.SDomain;
 import org.slf4j.Logger;
@@ -29,6 +31,7 @@ public class Index {
     public static int pages;
     private static int pageNum = 1;
     final static int pageSize = 10;
+    private static SDomain sDomain;
     private static final Logger logger = LoggerFactory.getLogger(Index.class);
     static Map<String, Object> params = new HashMap<>();
 
@@ -94,7 +97,12 @@ public class Index {
                 i = input.nextInt() - 1;
             }
             UserInfo.domain = sDomains.get(i).getId();
-
+            sDomain = sDomains.get(i);
+            SDomainOutPutModel sDomainOutPutModel=new SDomainOutPutModel();
+            SDomainOutPutModel sDomain = getSDomain(sDomainOutPutModel, Index.sDomain);
+            JSONObject jsonObject=(JSONObject)JSONUtil.parse(sDomain);
+            String path = "E:/"+sDomain.getName()+"/test.sdomain";
+            exportFile(jsonObject,path);
         } catch (Exception e) {
             e.getMessage();
         }
@@ -166,6 +174,32 @@ public class Index {
         System.out.println(output);
         //退出账号
         logout();
+    }
+    public static SDomainOutPutModel getSDomain(SDomainOutPutModel sDomainOutPutModel,SDomain sDomain){
+
+        sDomainOutPutModel.setId(sDomain.getId());
+        sDomainOutPutModel.setName(sDomain.getName());
+        sDomainOutPutModel.setDesc(sDomain.getDes());
+        sDomainOutPutModel.setSrs("epsg:4326");
+        sDomainOutPutModel.setTrs("onegis:1001");
+        if (sDomain.getsTime() != null) {
+            sDomainOutPutModel.setStime(sDomain.getsTime().getTime());
+        }
+        if (sDomain.geteTime() != null) {
+            sDomainOutPutModel.setEtime(sDomain.geteTime().getTime());
+        }
+
+//        List<OBase> parents = sDomain.getParents();
+//        if (GeneralUtils.isNotEmpty(parents)) {
+        sDomainOutPutModel.setParentId(null);
+//        }
+        GeoBox geoBox = sDomain.getGeoBox();
+        if (geoBox != null) {
+            sDomainOutPutModel.addGeobox(geoBox.getMinx(),
+                    geoBox.getMiny(), geoBox.getMinz(),
+                    geoBox.getMaxx(), geoBox.getMaxy(), geoBox.getMaxz());
+        }
+        return sDomainOutPutModel;
     }
 }
 /*

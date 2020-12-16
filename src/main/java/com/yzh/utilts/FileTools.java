@@ -76,23 +76,32 @@ public class FileTools {
         //创建一个文件路径
         File file = new File(pathName);
         FileWriter writer = null;
+        //判断目录
         //判断文件是否存在
-        if (!file.exists()) {
-            try {
-                //创建该文件
-                file.createNewFile();
-
-                //将查询内容写到文件当中
-                writer = new FileWriter(file);
-                writer.write(jsonObject.toString());
-                writer.flush();
-                if (writer!=null){
-                    writer.close();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
+        try {
+            if (!file.getParentFile().exists()) {
+                file.getParentFile().mkdirs();
             }
+
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+//            try {
+//                file.mkdirs();
+//                //创建该文件
+//                file.createNewFile();
+
+            //将查询内容写到文件当中
+            writer = new FileWriter(file);
+            writer.write(jsonObject.toString());
+            writer.flush();
+            if (writer != null) {
+                writer.close();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }
+
 
