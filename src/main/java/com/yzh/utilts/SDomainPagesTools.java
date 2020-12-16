@@ -44,6 +44,7 @@ public class SDomainPagesTools {
         Index.pages = jsonData.getInt("pages");
         sDomains.clear();
         sDomains.addAll(JSONArray.parseArray(jsonData.getStr("list"), SDomain.class));
+        System.out.println("共"+Index.pages+"页"+" 当前第"+pageNum+"页");
         for (int i = 0; i < sDomains.size(); i++) {
             System.out.println("[" + (i + 1) + "]" + sDomains.get(i).getName());
         }

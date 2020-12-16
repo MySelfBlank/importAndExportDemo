@@ -27,7 +27,7 @@ public class Index {
     final static String JSONdata = "data";
     final static String LIST = "list";
     public static int pages;
-    private static int pageNum=1;
+    private static int pageNum = 1;
     final static int pageSize = 10;
     private static final Logger logger = LoggerFactory.getLogger(Index.class);
     static Map<String, Object> params = new HashMap<>();
@@ -53,32 +53,37 @@ public class Index {
         //分页设置
         List<SDomain> sDomains = new ArrayList<>();
 
-        getPages(pageNum,pageSize,sDomainName,input,sDomains);
-        int page =pages;
-        while (0<pageNum&&pageNum<page){
-            //是否选择下一页
-            if (page>pageNum){
-                System.out.println("是否选择下一页？[y/n]");
-                //重新做分页请求
-                if(input.next().equals("y")){
-                    pageNum++;
-                    getPages(pageNum,pageSize,sDomainName,input,sDomains);
-                }else {
+        getPages(pageNum, pageSize, sDomainName, input, sDomains);
+        int page = pages;
+        String stop="no";
+        while (stop.equals("no")) {
+            System.out.println("是否选择当前页的时空域[yes/no]");
+            if (input.next().equals("yes")){
+                break;
+            }
+            //采用Switch Catch 控制上下页
+            System.out.println("上一页 ：b 下一页 ：n");
+            switch (input.next()) {
+                case "n":
+                    //是否选择下一页
+                    if (page > pageNum) {
+                        //重新做分页请求
+                            pageNum++;
+                            getPages(pageNum, pageSize, sDomainName, input, sDomains);
+                    }
                     break;
-                }
+                case "b":
+                    //是否选择上一页
+                    if (pageNum > 1 && pageNum <= page) {
+                        //重新做分页请求
+                            pageNum--;
+                            getPages(pageNum, pageSize, sDomainName, input, sDomains);
+                    }else {
+                        System.out.println();
+                    }
+                    break;
             }
 
-            //是否选择上一页
-            if (pageNum>1&&pageNum<=page){
-                System.out.println("是否选择上一页？[y/n]");
-                //重新做分页请求
-                if(input.next().equals("y")){
-                    pageNum--;
-                    getPages(pageNum,pageSize,sDomainName,input,sDomains);
-                }else {
-                    break;
-                }
-            }
         }
 
         System.out.println("请选择时空域前的序号");
