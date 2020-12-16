@@ -8,5 +8,5 @@ public class UserInfo  {
     public static String token=null;
     public static String userId;
     public static String email;
-    public static long domain;
+    public static String domain;
 }
