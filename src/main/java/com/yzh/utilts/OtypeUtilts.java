@@ -21,8 +21,8 @@ import static com.yzh.utilts.FileTools.formatData;
  */
 public class OtypeUtilts {
     private static final Logger logger = LoggerFactory.getLogger(OtypeUtilts.class);
-    Map<String,Object> params = new HashMap<>();
-    public void getOtype (){
+    static Map<String,Object> params = new HashMap<>();
+    public static void getOtype (){
         params.put("sdomains", UserInfo.domain);
         String objectJsonStr = HttpUtil.get(MyApi.getObject.getValue(), params);
         JSONObject data = formatData(objectJsonStr);
@@ -52,6 +52,6 @@ public class OtypeUtilts {
             oTypeList.add(v.toBean(OType.class));
         });
 
-        exportFile(new JSONObject(),"E:/"+Index.class.getName()+"/test.classes");
+        exportFile(new JSONObject(),"E:/"+Index.sDomain.getName()+"/test.classes");
     }
 }

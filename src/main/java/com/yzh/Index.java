@@ -8,6 +8,7 @@ import com.yzh.api.MyApi;
 import com.yzh.dao.OtypeInputModel;
 import com.yzh.dao.SDomainOutPutModel;
 import com.yzh.userInfo.UserInfo;
+import com.yzh.utilts.OtypeUtilts;
 import onegis.psde.attribute.Field;
 import onegis.psde.form.GeoBox;
 import onegis.psde.psdm.OType;
@@ -31,7 +32,7 @@ public class Index {
     public static int pages;
     private static int pageNum = 1;
     final static int pageSize = 10;
-    private static SDomain sDomain;
+    public static SDomain sDomain;
     private static final Logger logger = LoggerFactory.getLogger(Index.class);
     static Map<String, Object> params = new HashMap<>();
 
@@ -111,67 +112,67 @@ public class Index {
         //导出时空域基本信息
 
         //导出类模板
-
+        OtypeUtilts.getOtype();
         //导出对象
 
         //导出用到的关系模板
 
         //根据时空域Id查询时空域下的对象
-        params.clear();
-        params.put("sdomains", UserInfo.domain);
-        String objectJsonStr = HttpUtil.get(MyApi.getObject.getValue(), params);
-        JSONObject data = formatData(objectJsonStr);
+//        params.clear();
+//        params.put("sdomains", UserInfo.domain);
+//        String objectJsonStr = HttpUtil.get(MyApi.getObject.getValue(), params);
+//        JSONObject data = formatData(objectJsonStr);
 
         /*阿里的fastjson格式化方案*/
         //com.alibaba.fastjson.JSONObject parse = (com.alibaba.fastjson.JSONObject) com.alibaba.fastjson.JSONObject.parse(objectJsonStr);
         //com.alibaba.fastjson.JSONObject data = (com.alibaba.fastjson.JSONObject) parse.get("data");
 
-        String objectListStr = data.getStr(LIST);
-        List<JSONObject> objectList = JSONArray.parseArray(objectListStr, JSONObject.class);
-
-
-        //获取当前时空域下的所有类模板Id
-        Set<String> otypeIds = new HashSet<>();
-
-        for (JSONObject o : objectList) {
-            JSONObject otype = (JSONObject) o.get("otype");
-            otypeIds.add(otype.getStr("id"));
-        }
-        logger.debug("当前时空域下所有的类模板Id=" + otypeIds);
-
-        //通过类模板Id 查询该类模板的其他相关信息
-        params.clear();
-        params.put("token", UserInfo.token);
-        params.put("ids", otypeIds.toArray());
-        String otypeInfoStr = HttpUtil.get(MyApi.getOtypesByIds.getValue(), params);
-        JSONObject otypeInfoJson = formatData(otypeInfoStr);
-        List<JSONObject> oTypesJsonList = JSONArray.parseArray(otypeInfoJson.getStr(LIST), JSONObject.class);
-
-        //类模板集合
-        List<OType> oTypeList = new ArrayList<>();
-        oTypesJsonList.forEach(v -> {
-            //System.out.println(v.toBean(OType.class).getName());
-            oTypeList.add(v.toBean(OType.class));
-        });
+//        String objectListStr = data.getStr(LIST);
+//        List<JSONObject> objectList = JSONArray.parseArray(objectListStr, JSONObject.class);
+//
+//
+//        //获取当前时空域下的所有类模板Id
+//        Set<String> otypeIds = new HashSet<>();
+//
+//        for (JSONObject o : objectList) {
+//            JSONObject otype = (JSONObject) o.get("otype");
+//            otypeIds.add(otype.getStr("id"));
+//        }
+//        logger.debug("当前时空域下所有的类模板Id=" + otypeIds);
+//
+//        //通过类模板Id 查询该类模板的其他相关信息
+//        params.clear();
+//        params.put("token", UserInfo.token);
+//        params.put("ids", otypeIds.toArray());
+//        String otypeInfoStr = HttpUtil.get(MyApi.getOtypesByIds.getValue(), params);
+//        JSONObject otypeInfoJson = formatData(otypeInfoStr);
+//        List<JSONObject> oTypesJsonList = JSONArray.parseArray(otypeInfoJson.getStr(LIST), JSONObject.class);
+//
+//        //类模板集合
+//        List<OType> oTypeList = new ArrayList<>();
+//        oTypesJsonList.forEach(v -> {
+//            //System.out.println(v.toBean(OType.class).getName());
+//            oTypeList.add(v.toBean(OType.class));
+//        });
 
         //对数据进行整合
-        List<OtypeInputModel> output = new ArrayList<>();
-        oTypeList.forEach(v -> {
-            OtypeInputModel otypeInputModel = new OtypeInputModel();
-            List<String> forms = new ArrayList<>();
-            List<Field> fields = new ArrayList<>();
-            otypeInputModel.setName(v.getName());
-            v.getFormStyles().getStyles().forEach(x -> {
-                forms.add(x.getType().getName());
-            });
-            v.getFields().getFields().forEach(y -> {
-                fields.add(y);
-            });
-            otypeInputModel.setForms(forms);
-            otypeInputModel.setFides(fields);
-            output.add(otypeInputModel);
-        });
-        System.out.println(output);
+//        List<OtypeInputModel> output = new ArrayList<>();
+//        oTypeList.forEach(v -> {
+//            OtypeInputModel otypeInputModel = new OtypeInputModel();
+//            List<String> forms = new ArrayList<>();
+//            List<Field> fields = new ArrayList<>();
+//            otypeInputModel.setName(v.getName());
+//            v.getFormStyles().getStyles().forEach(x -> {
+//                forms.add(x.getType().getName());
+//            });
+//            v.getFields().getFields().forEach(y -> {
+//                fields.add(y);
+//            });
+//            otypeInputModel.setForms(forms);
+//            otypeInputModel.setFides(fields);
+//            output.add(otypeInputModel);
+//        });
+//        System.out.println(output);
         //退出账号
         logout();
     }
