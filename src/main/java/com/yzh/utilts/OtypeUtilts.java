@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import java.util.*;
 
 import static com.yzh.utilts.ConnectorUtils.dsConnectors2EConnectors;
+import static com.yzh.utilts.FieldUtils.dsField2Field;
 import static com.yzh.utilts.FileTools.exportFile;
 import static com.yzh.utilts.FileTools.formatData;
 
@@ -68,7 +69,7 @@ public class OtypeUtilts {
         //处理关系
         model.setConnectors(dsConnectors2EConnectors(oType.getConnectors(),classIDs));
         //处理字段
-
+        model.setFields(dsField2Field(oType.getFields()));
         //处理形态
 
         //处理行为

@@ -11,6 +11,7 @@ import java.util.*;
 /**
  * @author Yzh
  * @create 2020-12-17 10:01
+ * @details 连接器处理
  */
 public class ConnectorUtils {
     public static List<EConnector> dsConnectors2EConnectors(Connectors connectors, Set<Long> classIDs) throws Exception{
