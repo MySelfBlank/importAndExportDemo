@@ -30,7 +30,7 @@ public class Index {
     private static final Logger logger = LoggerFactory.getLogger(Index.class);
     static Map<String, Object> params = new HashMap<>();
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         logger.debug("开始运行");
         //用户Token
         Scanner input = new Scanner(System.in);
