@@ -42,4 +42,60 @@ public class EClassesOutPutModel extends AbstractObject {
      * 行为
      */
     private List<EModel> models = new ArrayList<>();
+
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
+    }
+
+    public String getSrs() {
+        return srs;
+    }
+
+    public void setSrs(String srs) {
+        this.srs = srs;
+    }
+
+    public String getTrs() {
+        return trs;
+    }
+
+    public void setTrs(String trs) {
+        this.trs = trs;
+    }
+
+    public List<EField> getFields() {
+        return fields;
+    }
+
+    public void setFields(List<EField> fields) {
+        this.fields = fields;
+    }
+
+    public List<EForm> getForms() {
+        return forms;
+    }
+
+    public void setForms(List<EForm> forms) {
+        this.forms = forms;
+    }
+
+    public List<EConnector> getConnectors() {
+        return connectors;
+    }
+
+    public void setConnectors(List<EConnector> connectors) {
+        this.connectors = connectors;
+    }
+
+    public List<EModel> getModels() {
+        return models;
+    }
+
+    public void setModels(List<EModel> models) {
+        this.models = models;
+    }
 }

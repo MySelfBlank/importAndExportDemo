@@ -5,6 +5,7 @@ import cn.hutool.json.JSONObject;
 import com.alibaba.fastjson.JSONArray;
 import com.yzh.Index;
 import com.yzh.api.MyApi;
+import com.yzh.dao.EClassesOutPutModel;
 import com.yzh.userInfo.UserInfo;
 import onegis.psde.psdm.OType;
 import org.slf4j.Logger;
@@ -51,7 +52,26 @@ public class OtypeUtilts {
             //System.out.println(v.toBean(OType.class).getName());
             oTypeList.add(v.toBean(OType.class));
         });
+    }
+    public void filterOtype(List <OType> oTypeList){
+        List<EClassesOutPutModel> eClassesOutPutModelList = new ArrayList<>();
+        for (OType oType : oTypeList) {
+            eClassesOutPutModelList.add(otype2Class(oType));
+        }
+    }
+    public EClassesOutPutModel otype2Class(OType oType){
+        EClassesOutPutModel model = new EClassesOutPutModel();
+        model.setId(oType.getId());
+        model.setName(oType.getName());
+        //处理关系
 
-        exportFile(new JSONObject(),"E:/"+Index.sDomain.getName()+"/test.classes");
+        //处理字段
+
+        //
+
+        model.setDesc(oType.getDes());
+        model.setSrs("epsg:4326");
+        model.setTrs("onegis:1001");
+        return model;
     }
 }
