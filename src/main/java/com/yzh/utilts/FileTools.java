@@ -3,13 +3,19 @@ package com.yzh.utilts;
 import cn.hutool.http.HttpUtil;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
+import com.alibaba.fastjson.JSONArray;
 import com.yzh.api.MyApi;
 import com.yzh.userInfo.UserInfo;
+import onegis.psde.relation.Relation;
+import onegis.psde.util.JsonUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -54,12 +60,19 @@ public class FileTools {
     }
 
     /**
+     * 获取JSON对象中的list
      * @param object
      * @return
      */
     public static JSONObject formatData(String object) {
         JSONObject sourceData = JSONUtil.parseObj(object);
         return (JSONObject) JSONUtil.parse(sourceData.get("data"));
+    }
+    public static JSONObject forJsonList(String object) throws Exception {
+        JSONObject sourceData = JSONUtil.parseObj(object);
+        JSONObject clearData = (JSONObject) JSONUtil.parse(sourceData.get("data"));
+        List<Relation> relations = JsonUtils.jsonToList(clearData.toString(), Relation.class);
+
     }
 
     public static void logout() {

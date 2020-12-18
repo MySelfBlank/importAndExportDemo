@@ -15,6 +15,7 @@ import java.util.*;
 
 import static com.yzh.Index.sObjectsList;
 import static com.yzh.utilts.ConnectorUtils.dsConnectors2EConnectors;
+import static com.yzh.utilts.ERelationUtil.getNetWork;
 import static com.yzh.utilts.FieldUtils.dsField2Field;
 import static com.yzh.utilts.FileTools.formatData;
 import static com.yzh.utilts.FormStyleUtils.forms2EForms;
@@ -41,6 +42,8 @@ public class OtypeUtilts {
         objectList.forEach(v->{
             sObjectsList.add(v.toBean(SObject.class));
         });
+
+        getNetWork(sObjectsList);
         //获取当前时空域下的所有类模板Id
 
         for (JSONObject o : objectList) {
