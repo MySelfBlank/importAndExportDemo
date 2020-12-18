@@ -3,7 +3,6 @@ package com.yzh.utilts;
 import cn.hutool.http.HttpUtil;
 import cn.hutool.json.JSONObject;
 import com.alibaba.fastjson.JSONArray;
-import com.yzh.Index;
 import com.yzh.api.MyApi;
 import com.yzh.dao.EClassesOutPutModel;
 import com.yzh.userInfo.UserInfo;
@@ -13,7 +12,6 @@ import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
-import static com.yzh.utilts.FileTools.exportFile;
 import static com.yzh.utilts.FileTools.formatData;
 
 /**
@@ -30,6 +28,9 @@ public class OtypeUtilts {
 
         String objectListStr = data.getStr("list");
         List<JSONObject> objectList = JSONArray.parseArray(objectListStr, JSONObject.class);
+        for (JSONObject object : objectList) {
+            System.out.println(object);
+        }
         //获取当前时空域下的所有类模板Id
         Set<String> otypeIds = new HashSet<>();
 
