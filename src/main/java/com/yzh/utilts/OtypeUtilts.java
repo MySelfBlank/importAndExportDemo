@@ -3,7 +3,6 @@ package com.yzh.utilts;
 import cn.hutool.http.HttpUtil;
 import cn.hutool.json.JSONObject;
 import com.alibaba.fastjson.JSONArray;
-import com.yzh.Index;
 import com.yzh.api.MyApi;
 import com.yzh.dao.EClassesOutPutModel;
 import com.yzh.userInfo.UserInfo;
@@ -17,7 +16,6 @@ import java.util.*;
 import static com.yzh.Index.sObjectsList;
 import static com.yzh.utilts.ConnectorUtils.dsConnectors2EConnectors;
 import static com.yzh.utilts.FieldUtils.dsField2Field;
-import static com.yzh.utilts.FileTools.exportFile;
 import static com.yzh.utilts.FileTools.formatData;
 import static com.yzh.utilts.FormStyleUtils.forms2EForms;
 
