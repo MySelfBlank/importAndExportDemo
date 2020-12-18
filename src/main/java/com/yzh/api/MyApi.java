@@ -28,6 +28,10 @@ public enum MyApi {
     //获取时空域下的连接关系
     getRelation("getRelation","http://bt1.geosts.ac.cn/api/dae-dev/datastore/rest/v0.1.0/datastore/orelation/query"),
 
+    getFieldByFid("getFieldByFid","http://bt1.geosts.ac.cn/api/dae-dev/datastore/rest/v0.1.0/datastore/ofield/query"),
+
+    getStyleById("","http://bt1.geosts.ac.cn/api/dae-dev/datastore/rest/v0.1.0/datastore/oformstyle/query"),
+
     //注销本次登录
     logout("logout","http://bt1.geosts.ac.cn/api/uc-dev/api/v2/account/logout");
 
