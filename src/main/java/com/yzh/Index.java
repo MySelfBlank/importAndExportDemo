@@ -4,7 +4,10 @@ import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import com.yzh.dao.SDomainOutPutModel;
 import com.yzh.userInfo.UserInfo;
+import com.yzh.utilts.FieldUtils;
+import com.yzh.utilts.FileTools;
 import com.yzh.utilts.OtypeUtilts;
+import onegis.psde.attribute.Field;
 import onegis.psde.psdm.SDomain;
 import onegis.psde.psdm.SObject;
 import org.slf4j.Logger;
@@ -107,7 +110,8 @@ public class Index {
         //导出时空域下类模板
         OtypeUtilts.getOtype();
         //导出时空域下所有使用的属性
-
+        List<Field> fieldList = FieldUtils.objectFieldsHandle(sObjectsList);
+        FileTools.exportFile(JSONUtil.parse(fieldList),"E:/test/"+sDomain.getName()+"/test.fields");
         //导出时空域下所有使用的样式
 
         //导出时空域下所有使用的形态

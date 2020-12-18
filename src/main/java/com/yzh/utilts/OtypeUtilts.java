@@ -42,12 +42,10 @@ public class OtypeUtilts {
         JSONObject data = formatData(objectJsonStr);
 
         String objectListStr = data.getStr("list");
+        sObjectsList.addAll(JsonUtils.jsonToList(objectListStr, SObject.class));
         List<JSONObject> objectList = JSONArray.parseArray(objectListStr, JSONObject.class);
-        objectList.forEach(v->{
-            sObjectsList.add(v.toBean(SObject.class));
-        });
-        //获取当前时空域下的所有类模板Id
 
+        //获取当前时空域下的所有类模板Id
         for (JSONObject o : objectList) {
             JSONObject otype = (JSONObject) o.get("otype");
             classIDs.add(otype.getLong("id"));
@@ -60,27 +58,29 @@ public class OtypeUtilts {
         String otypeInfoStr = HttpUtil.get(MyApi.getOtypesByIds.getValue(), params);
         JSONObject otypeInfoJson = formatData(otypeInfoStr);
         List<JSONObject> oTypesJsonList = JSONArray.parseArray(otypeInfoJson.getStr("list"), JSONObject.class);
+
         //类模板集合
         List<OType> oTypeList = new ArrayList<>();
         oTypesJsonList.forEach(value -> {
             //System.out.println(v.toBean(OType.class).getName());
             oTypeList.add(value.toBean(OType.class));
         });
-        //处理类模板
+        //处理类模板(暂不处理，直接导出)
 
         //打印类模板
         JSON parse = JSONUtil.parse(oTypeList);
         System.out.println(oTypeList);
         System.out.println(parse);
         exportFile(parse,"E:\\test\\"+sDomain.getName()+"\\test.otype");
-        //filterOtype(oTypeList);
     }
+
     public static void filterOtype(List <OType> oTypeList) throws Exception {
         List<EClassesOutPutModel> eClassesOutPutModelList = new ArrayList<>();
         for (OType oType : oTypeList) {
             eClassesOutPutModelList.add(otype2Class(oType));
         }
     }
+
     public static EClassesOutPutModel otype2Class(OType oType) throws Exception {
         EClassesOutPutModel model = new EClassesOutPutModel();
         model.setId(oType.getId());
