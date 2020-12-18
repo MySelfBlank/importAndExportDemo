@@ -6,6 +6,7 @@ import com.yzh.dao.SDomainOutPutModel;
 import com.yzh.userInfo.UserInfo;
 import com.yzh.utilts.OtypeUtilts;
 import onegis.psde.psdm.SDomain;
+import onegis.psde.psdm.SObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,8 +28,10 @@ public class Index {
     private static int pageNum = 1;
     final static int pageSize = 10;
     public static SDomain sDomain;
+    public static List<SObject> sObjectsList = new ArrayList<>();
     private static final Logger logger = LoggerFactory.getLogger(Index.class);
     static Map<String, Object> params = new HashMap<>();
+
 
     public static void main(String[] args) throws Exception {
         logger.debug("开始运行");

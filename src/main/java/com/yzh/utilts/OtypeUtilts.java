@@ -8,11 +8,13 @@ import com.yzh.api.MyApi;
 import com.yzh.dao.EClassesOutPutModel;
 import com.yzh.userInfo.UserInfo;
 import onegis.psde.psdm.OType;
+import onegis.psde.psdm.SObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
+import static com.yzh.Index.sObjectsList;
 import static com.yzh.utilts.ConnectorUtils.dsConnectors2EConnectors;
 import static com.yzh.utilts.FieldUtils.dsField2Field;
 import static com.yzh.utilts.FileTools.exportFile;
@@ -29,11 +31,18 @@ public class OtypeUtilts {
     static Map<String,Object> params = new HashMap<>();
     public static void getOtype () throws Exception {
         params.put("sdomains", UserInfo.domain);
+        params.put("loadNetwork",true);
+        params.put("loadCompose",true);
+        params.put("loadAction",true);
+        params.put("loadModel",true);
         String objectJsonStr = HttpUtil.get(MyApi.getObject.getValue(), params);
         JSONObject data = formatData(objectJsonStr);
 
         String objectListStr = data.getStr("list");
         List<JSONObject> objectList = JSONArray.parseArray(objectListStr, JSONObject.class);
+        objectList.forEach(v->{
+            sObjectsList.add(v.toBean(SObject.class));
+        });
         //获取当前时空域下的所有类模板Id
 
         for (JSONObject o : objectList) {
@@ -48,7 +57,6 @@ public class OtypeUtilts {
         String otypeInfoStr = HttpUtil.get(MyApi.getOtypesByIds.getValue(), params);
         JSONObject otypeInfoJson = formatData(otypeInfoStr);
         List<JSONObject> oTypesJsonList = JSONArray.parseArray(otypeInfoJson.getStr("list"), JSONObject.class);
-
         //类模板集合
         List<OType> oTypeList = new ArrayList<>();
         oTypesJsonList.forEach(v -> {
