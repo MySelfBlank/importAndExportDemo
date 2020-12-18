@@ -1,17 +1,19 @@
 package com.yzh.utilts;
 
 import cn.hutool.http.HttpUtil;
-import cn.hutool.json.JSONObject;
+import cn.hutool.json.JSONUtil;
 import com.yzh.api.MyApi;
 import onegis.psde.psdm.SObject;
 import onegis.psde.relation.Network;
 import onegis.psde.relation.REdge;
 import onegis.psde.relation.RNode;
+import onegis.psde.relation.Relation;
 
 import java.util.*;
 
 import static com.yzh.Index.sDomain;
-import static com.yzh.utilts.FileTools.*;
+import static com.yzh.utilts.FileTools.exportFile;
+import static com.yzh.utilts.FileTools.forJsonList;
 
 /**
  * @ Author        :  yuyazhou
@@ -55,9 +57,10 @@ public class ERelationUtil {
 
         String relationStr = HttpUtil.get(MyApi.getRelation.getValue(),param);
 
-        JSONObject jsonObject = forJsonList(relationStr);
+        List<Relation> list = forJsonList(relationStr);
+
         String path = "E:/"+sDomain.getName()+"/test.relation";
-        exportFile(jsonObject,path);
+        exportFile(JSONUtil.parse(list),path);
     }
 
 
