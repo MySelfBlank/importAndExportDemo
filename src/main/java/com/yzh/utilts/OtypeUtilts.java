@@ -1,21 +1,26 @@
 package com.yzh.utilts;
 
 import cn.hutool.http.HttpUtil;
+import cn.hutool.json.JSON;
 import cn.hutool.json.JSONObject;
+import cn.hutool.json.JSONUtil;
 import com.alibaba.fastjson.JSONArray;
 import com.yzh.api.MyApi;
 import com.yzh.dao.EClassesOutPutModel;
 import com.yzh.userInfo.UserInfo;
 import onegis.psde.psdm.OType;
 import onegis.psde.psdm.SObject;
+import onegis.psde.util.JsonUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
+import static com.yzh.Index.sDomain;
 import static com.yzh.Index.sObjectsList;
 import static com.yzh.utilts.ConnectorUtils.dsConnectors2EConnectors;
 import static com.yzh.utilts.FieldUtils.dsField2Field;
+import static com.yzh.utilts.FileTools.exportFile;
 import static com.yzh.utilts.FileTools.formatData;
 import static com.yzh.utilts.FormStyleUtils.forms2EForms;
 
@@ -57,11 +62,18 @@ public class OtypeUtilts {
         List<JSONObject> oTypesJsonList = JSONArray.parseArray(otypeInfoJson.getStr("list"), JSONObject.class);
         //类模板集合
         List<OType> oTypeList = new ArrayList<>();
-        oTypesJsonList.forEach(v -> {
+        oTypesJsonList.forEach(value -> {
             //System.out.println(v.toBean(OType.class).getName());
-            oTypeList.add(v.toBean(OType.class));
+            oTypeList.add(value.toBean(OType.class));
         });
-        filterOtype(oTypeList);
+        //处理类模板
+
+        //打印类模板
+        JSON parse = JSONUtil.parse(oTypeList);
+        System.out.println(oTypeList);
+        System.out.println(parse);
+        exportFile(parse,"E:\\test\\"+sDomain.getName()+"\\test.otype");
+        //filterOtype(oTypeList);
     }
     public static void filterOtype(List <OType> oTypeList) throws Exception {
         List<EClassesOutPutModel> eClassesOutPutModelList = new ArrayList<>();

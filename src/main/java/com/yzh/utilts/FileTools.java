@@ -1,6 +1,7 @@
 package com.yzh.utilts;
 
 import cn.hutool.http.HttpUtil;
+import cn.hutool.json.JSON;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import com.yzh.api.MyApi;
@@ -94,6 +95,37 @@ public class FileTools {
             //将查询内容写到文件当中
             writer = new FileWriter(file);
             writer.write(jsonObject.toString());
+            writer.flush();
+            if (writer != null) {
+                writer.close();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    public static void exportFile(JSON json, String pathName) {
+        logger.debug("将数据打印到本地");
+        //创建一个文件路径
+        File file = new File(pathName);
+        FileWriter writer = null;
+        //判断目录
+        //判断文件是否存在
+        try {
+            if (!file.getParentFile().exists()) {
+                file.getParentFile().mkdirs();
+            }
+
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+//            try {
+//                file.mkdirs();
+//                //创建该文件
+//                file.createNewFile();
+
+            //将查询内容写到文件当中
+            writer = new FileWriter(file);
+            writer.write(json.toString());
             writer.flush();
             if (writer != null) {
                 writer.close();
