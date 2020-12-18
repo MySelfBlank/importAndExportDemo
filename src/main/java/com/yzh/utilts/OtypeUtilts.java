@@ -17,6 +17,7 @@ import static com.yzh.utilts.ConnectorUtils.dsConnectors2EConnectors;
 import static com.yzh.utilts.FieldUtils.dsField2Field;
 import static com.yzh.utilts.FileTools.exportFile;
 import static com.yzh.utilts.FileTools.formatData;
+import static com.yzh.utilts.FormStyleUtils.forms2EForms;
 
 /**
  * @author Yzh
@@ -71,7 +72,7 @@ public class OtypeUtilts {
         //处理字段
         model.setFields(dsField2Field(oType.getFields()));
         //处理形态
-
+        model.setForms(forms2EForms(oType.getFormStyles()));
         //处理行为
 
         model.setDesc(oType.getDes());
