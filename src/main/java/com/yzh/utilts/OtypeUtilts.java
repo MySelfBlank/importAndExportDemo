@@ -74,8 +74,8 @@ public class OtypeUtilts {
 
         //打印类模板
         JSON parse = JSONUtil.parse(oTypeList);
-        System.out.println(oTypeList);
-        System.out.println(parse);
+//        System.out.println(oTypeList);
+//        System.out.println(parse);
         exportFile(parse,"E:\\test\\"+sDomain.getName()+"\\test.otype");
     }
 
