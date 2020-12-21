@@ -19,7 +19,6 @@ import java.util.*;
 import static com.yzh.Index.sDomain;
 import static com.yzh.Index.sObjectsList;
 import static com.yzh.utilts.ConnectorUtils.dsConnectors2EConnectors;
-import static com.yzh.utilts.ERelationUtil.getNetWork;
 import static com.yzh.utilts.FieldUtils.dsField2Field;
 import static com.yzh.utilts.FileTools.exportFile;
 import static com.yzh.utilts.FileTools.formatData;
@@ -49,7 +48,6 @@ public class OtypeUtilts {
         List<JSONObject> objectList = JSONArray.parseArray(objectListStr, JSONObject.class);
 
 
-        getNetWork(sObjectsList);
         //获取当前时空域下的所有类模板Id
 
         //获取当前时空域下的所有类模板Id

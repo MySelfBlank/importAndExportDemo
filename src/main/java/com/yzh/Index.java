@@ -5,24 +5,23 @@ import cn.hutool.json.JSONUtil;
 import com.yzh.dao.EForm;
 import com.yzh.dao.SDomainOutPutModel;
 import com.yzh.userInfo.UserInfo;
-import com.yzh.utilts.FieldUtils;
-import com.yzh.utilts.FileTools;
-import com.yzh.utilts.FormUtils;
-import com.yzh.utilts.OtypeUtilts;
+import com.yzh.utilts.*;
 import onegis.psde.attribute.Attribute;
 import onegis.psde.attribute.Field;
 import onegis.psde.form.Form;
 import onegis.psde.form.FormStyle;
 import onegis.psde.psdm.SDomain;
 import onegis.psde.psdm.SObject;
-import onegis.psde.util.JsonUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 import java.util.stream.Collectors;
 
-import static cn.hutool.core.util.ObjectUtil.*;
+import static cn.hutool.core.util.ObjectUtil.isEmpty;
+import static cn.hutool.core.util.ObjectUtil.isNull;
 import static com.yzh.utilts.FileTools.*;
 import static com.yzh.utilts.SDomainPagesTools.getPages;
 import static com.yzh.utilts.SDomainUtil.getSDomain;
@@ -132,6 +131,8 @@ public class Index {
 
         //导出时空域下类模板
         OtypeUtilts.getOtype();
+        //导出时空域下的关系
+        ERelationUtil.getNetWork(sObjectsList);
         //字段集合
         List<Field> fieldList = new ArrayList<>();
         //属性集合
