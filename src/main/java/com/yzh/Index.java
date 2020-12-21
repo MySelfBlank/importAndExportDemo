@@ -14,6 +14,9 @@ import onegis.psde.psdm.SObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.util.*;
+
+import static cn.hutool.core.util.ObjectUtil.isEmpty;
+import static cn.hutool.core.util.ObjectUtil.isNull;
 import static com.yzh.utilts.FileTools.*;
 import static com.yzh.utilts.SDomainPagesTools.getPages;
 import static com.yzh.utilts.SDomainUtil.getSDomain;
@@ -110,8 +113,17 @@ public class Index {
 
         //导出时空域下类模板
         OtypeUtilts.getOtype();
+        //字段集合
+        List<Field> fieldList = new ArrayList<>();
+        for (SObject sObject : sObjectsList) {
+            if (isEmpty(sObject)||isNull(sObject)){
+                return;
+            }
+            //字段处理
+            fieldList.addAll(FieldUtils.objectFieldsHandle2(sObject));
+        }
         //导出时空域下所有使用的属性
-        List<Field> fieldList = FieldUtils.objectFieldsHandle(sObjectsList);
+        //List<Field> fieldList = FieldUtils.objectFieldsHandle(sObjectsList);
         FileTools.exportFile(JSONUtil.parse(fieldList),"E:/test/"+sDomain.getName()+"/test.fields");
         //导出时空域下所有使用的样式
         FormUtils.objectFromsHandle(sObjectsList);

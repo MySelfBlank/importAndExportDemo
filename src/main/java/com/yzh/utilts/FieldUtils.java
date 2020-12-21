@@ -15,8 +15,9 @@ import onegis.psde.attribute.Fields;
 import onegis.psde.psdm.SObject;
 import onegis.psde.util.JsonUtils;
 import org.springframework.util.StringUtils;
-
 import java.util.*;
+import static cn.hutool.core.util.ObjectUtil.*;
+
 
 /**
  * @author Yzh
@@ -28,21 +29,21 @@ public class FieldUtils {
     public static List<Field> objectFieldsHandle(List<SObject> sObjects) throws Exception {
         List<Field> eFieldList = new ArrayList<>();
         //如果对象列表是空的则直接返回
-        if (ObjectUtil.isNull(sObjects) || ObjectUtil.isEmpty(sObjects)) {
+        if (isNull(sObjects) || isEmpty(sObjects)) {
             return eFieldList;
         }
         List<Attribute> attributeList = new ArrayList<>();
         //属性FIdSet
         Set<Long> fIdSet = new HashSet<>();
         for (SObject sObject : sObjects) {
-            if (ObjectUtil.isNull(sObject.getAttributes().getAttributeList()) || ObjectUtil.isEmpty(sObject.getAttributes().getAttributeList())) {
+            if (isNull(sObject.getAttributes().getAttributeList()) || isEmpty(sObject.getAttributes().getAttributeList())) {
                 continue;
             } else {
                 attributeList.addAll(sObject.getAttributes().getAttributeList());
             }
         }
         //所有对象均未拿到属性信息，返回空的List
-        if (ObjectUtil.isNull(attributeList) || ObjectUtil.isEmpty(attributeList)) {
+        if (isNull(attributeList) || isEmpty(attributeList)) {
             return eFieldList;
         }
         for (Attribute attribute : attributeList) {
@@ -58,7 +59,44 @@ public class FieldUtils {
         String fieldJsonStr = HttpUtil.get(MyApi.getFieldByFid.getValue(), params);
         JSONObject fieldJsonObj = FileTools.formatData(fieldJsonStr);
         List<JSONObject> fieldJsonObjList = JSONArray.parseArray(fieldJsonObj.get("list").toString(), JSONObject.class);
-        eFieldList.addAll( JsonUtils.jsonToList(fieldJsonObj.get("list").toString(), Field.class));
+        eFieldList.addAll(JsonUtils.jsonToList(fieldJsonObj.get("list").toString(), Field.class));
+        return eFieldList;
+    }
+
+    public static List<Field> objectFieldsHandle2(SObject sObject) throws Exception {
+        List<Field> eFieldList = new ArrayList<>();
+        //如果对象列表是空的则直接返回
+        if (isNull(sObject) || isEmpty(sObject)) {
+            return eFieldList;
+        }
+        List<Attribute> attributeList = new ArrayList<>();
+        //属性FIdSet
+        Set<Long> fIdSet = new HashSet<>();
+
+        if (isNull(sObject.getAttributes().getAttributeList()) || isEmpty(sObject.getAttributes().getAttributeList())) {
+            return eFieldList;
+        } else {
+            attributeList.addAll(sObject.getAttributes().getAttributeList());
+        }
+
+        //所有对象均未拿到属性信息，返回空的List
+        if (isNull(attributeList) || isEmpty(attributeList)) {
+            return eFieldList;
+        }
+        for (Attribute attribute : attributeList) {
+            fIdSet.add(attribute.getFid());
+        }
+        //通过fId查询字段信息
+        Map<String, Object> params = MapUtil.builder(new HashMap<String, Object>())
+                .put("token", UserInfo.token)
+                .put("orderType", "ID")
+                .put("descOrAsc", true)
+                .put("ids", fIdSet.toArray())
+                .build();
+        String fieldJsonStr = HttpUtil.get(MyApi.getFieldByFid.getValue(), params);
+        JSONObject fieldJsonObj = FileTools.formatData(fieldJsonStr);
+        List<JSONObject> fieldJsonObjList = JSONArray.parseArray(fieldJsonObj.get("list").toString(), JSONObject.class);
+        eFieldList.addAll(JsonUtils.jsonToList(fieldJsonObj.get("list").toString(), Field.class));
         return eFieldList;
     }
 
@@ -69,11 +107,11 @@ public class FieldUtils {
     public static List<EField> dsField2Field(Fields fields) {
         List<EField> eFields = new ArrayList<>();
         //判断字段是否为空 为空直接返回
-        if (ObjectUtil.isNull(fields) && ObjectUtil.isEmpty(fields)) {
+        if (isNull(fields) && isEmpty(fields)) {
             return eFields;
         }
         List<Field> fieldList = new ArrayList<>();
-        if (!ObjectUtil.isNull(fields.getFields()) && !ObjectUtil.isEmpty(fields.getFields())) {
+        if (!isNull(fields.getFields()) && !isEmpty(fields.getFields())) {
             fieldList.addAll(fields.getFields());
             //处理每一个字段信息
             for (Field field : fieldList) {
@@ -104,7 +142,7 @@ public class FieldUtils {
                     List value = (List) v;
                     //移除空的集合
                     ((List<?>) v).removeAll(Collections.singleton(null));
-                    if (ObjectUtil.isEmpty(v) && ((List<?>) v).size() == 0) {
+                    if (isEmpty(v) && ((List<?>) v).size() == 0) {
                         domain.remove("type");
                         //结束本次循环
                         return;
