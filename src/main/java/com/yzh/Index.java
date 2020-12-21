@@ -10,6 +10,7 @@ import com.yzh.utilts.FormUtils;
 import com.yzh.utilts.OtypeUtilts;
 import onegis.psde.attribute.Attribute;
 import onegis.psde.attribute.Field;
+import onegis.psde.form.Form;
 import onegis.psde.psdm.SDomain;
 import onegis.psde.psdm.SObject;
 import org.slf4j.Logger;
@@ -117,6 +118,8 @@ public class Index {
         List<Field> fieldList = new ArrayList<>();
         //属性集合
         List<Attribute> attributeList = new ArrayList<>();
+        //形态集合
+        List<Form> formList = new ArrayList<>();
         for (SObject sObject : sObjectsList) {
             if (isEmpty(sObject)||isNull(sObject)){
                 continue;
@@ -128,14 +131,19 @@ public class Index {
                 attributeList.addAll(sObject.getAttributes().getAttributeList());
             }
             //形态处理
-
+            if (isEmpty(sObject.getForms().getForms())||isNull(sObject.getForms().getForms())){
+                continue;
+            }else {
+                formList.addAll(sObject.getForms().getForms());
+            }
         }
+
         fieldList.addAll(FieldUtils.objectFieldsHandle2(attributeList));
         //导出时空域下所有使用的属性
         //List<Field> fieldList = FieldUtils.objectFieldsHandle(sObjectsList);
         FileTools.exportFile(JSONUtil.parse(fieldList),"E:/test/"+sDomain.getName()+"/test.fields");
         //导出时空域下所有使用的样式
-        FormUtils.objectFromsHandle(sObjectsList);
+        FormUtils.objectFromsHandle2(formList);
         //导出时空域下所有使用的形态
 
         //退出账号
