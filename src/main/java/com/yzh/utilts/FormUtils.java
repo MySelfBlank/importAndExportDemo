@@ -19,8 +19,7 @@ import org.springframework.util.StringUtils;
 
 import java.util.*;
 
-import static cn.hutool.core.util.ObjectUtil.isEmpty;
-import static cn.hutool.core.util.ObjectUtil.isNull;
+import static cn.hutool.core.util.ObjectUtil.*;
 
 /**
  * @author Yzh
@@ -74,9 +73,12 @@ public class FormUtils {
             if(!form.getType().getName().equalsIgnoreCase("model")){
                 //取形态中的样式Id
                 JSONArray jsonArray = JSONArray.parseArray(form.getStyle());
-                for (Object o : jsonArray) {
-                    buffer.append("," + o);
+                if(isNotNull(jsonArray)&&isNotEmpty(jsonArray)){
+                    for (Object o : jsonArray) {
+                        buffer.append("," + o);
+                    }
                 }
+
             }
         }
         //去除第一位多余的，
