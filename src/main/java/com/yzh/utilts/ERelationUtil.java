@@ -46,6 +46,7 @@ public class ERelationUtil {
             }
         }
 
+        //取出关系的id获取关系打印到本地
         Set<Long> ids = new HashSet<>();
         for (REdge edge : edges) {
             if (edge.getRelation().getId()!=null){
