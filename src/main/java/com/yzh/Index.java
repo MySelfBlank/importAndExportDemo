@@ -99,23 +99,33 @@ public class Index {
 
         }
 
-        System.out.println("请选择时空域前的序号");
-        try {
-            Integer i = input.nextInt() - 1;
-            while (i > sDomains.size()) {
-                System.out.println("输入无效请重新输入：");
-                i = input.nextInt() - 1;
+
+        boolean flag = false;
+        Integer i;
+        do{
+            try {
+                System.out.println("请选择时空域前的序号");
+                 i= input.nextInt() - 1;
+                while (i > sDomains.size()) {
+                    System.out.println("输入无效请重新输入：");
+                    i = input.nextInt() - 1;
+                }
+                UserInfo.domain = sDomains.get(i).getId();
+                sDomain = sDomains.get(i);
+                SDomainOutPutModel sDomainOutPutModel = new SDomainOutPutModel();
+                SDomainOutPutModel sDomain = getSDomain(sDomainOutPutModel, Index.sDomain);
+                JSONObject jsonObject = (JSONObject) JSONUtil.parse(sDomain);
+                String path = "E:/test/" + sDomain.getName() + "/test.sdomain";
+                exportFile(jsonObject, path);
+                flag=false;
+            } catch (Exception e) {
+                System.out.println("输入格式错误");
+                e.getMessage();
+                flag =true;
+                input = new Scanner(System.in);
             }
-            UserInfo.domain = sDomains.get(i).getId();
-            sDomain = sDomains.get(i);
-            SDomainOutPutModel sDomainOutPutModel = new SDomainOutPutModel();
-            SDomainOutPutModel sDomain = getSDomain(sDomainOutPutModel, Index.sDomain);
-            JSONObject jsonObject = (JSONObject) JSONUtil.parse(sDomain);
-            String path = "E:/test/" + sDomain.getName() + "/test.sdomain";
-            exportFile(jsonObject, path);
-        } catch (Exception e) {
-            e.getMessage();
-        }
+        }while (flag);
+
 
         logger.debug("选择的时空域Id为=" + UserInfo.domain);
         //导出时空域基本信息
