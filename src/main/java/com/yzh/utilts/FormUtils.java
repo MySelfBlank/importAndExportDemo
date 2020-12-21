@@ -70,10 +70,10 @@ public class FormUtils {
         StringBuffer buffer = new StringBuffer();
         for (Form form : fromList) {
             //形态不是模型的时候取样式id
-            if(!form.getType().getName().equalsIgnoreCase("model")){
+            if (!form.getType().getName().equalsIgnoreCase("model")) {
                 //取形态中的样式Id
                 JSONArray jsonArray = JSONArray.parseArray(form.getStyle());
-                if(isNotNull(jsonArray)&&isNotEmpty(jsonArray)){
+                if (isNotNull(jsonArray) && isNotEmpty(jsonArray)) {
                     for (Object o : jsonArray) {
                         buffer.append("," + o);
                     }
@@ -97,7 +97,7 @@ public class FormUtils {
         String styleJsonStr = HttpUtil.get(MyApi.getStyleById.getValue(), params);
         JSONObject stylejsonObj = FileTools.formatData(styleJsonStr);
         String styleListStr = stylejsonObj.getStr("list");
-        if(StringUtils.isEmpty(styleListStr)){
+        if (StringUtils.isEmpty(styleListStr)) {
             return new ArrayList<>();
         }
         List<FormStyle> formStyles = JsonUtils.jsonToList(styleListStr, FormStyle.class);
