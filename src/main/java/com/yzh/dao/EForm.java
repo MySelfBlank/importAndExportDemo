@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
  * @author Yzh
  * @create 2020-12-16 18:10
  */
-public class EForm extends AbstractObject{
+public class EForm extends AbstractObject {
     private Long id;
 
     private Long fid;

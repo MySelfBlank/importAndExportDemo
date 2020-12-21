@@ -32,14 +32,15 @@ import static com.yzh.utilts.FormStyleUtils.forms2EForms;
 public class OtypeUtilts {
     private static Set<Long> classIDs = new HashSet<>();
     private static final Logger logger = LoggerFactory.getLogger(OtypeUtilts.class);
-    static Map<String,Object> params = new HashMap<>();
-    public static void getOtype () throws Exception {
+    static Map<String, Object> params = new HashMap<>();
+
+    public static void getOtype() throws Exception {
         params.put("sdomains", UserInfo.domain);
-        params.put("loadNetwork",true);
-        params.put("loadCompose",true);
-        params.put("loadAction",true);
-        params.put("loadModel",true);
-        params.put("loadForm",true);
+        params.put("loadNetwork", true);
+        params.put("loadCompose", true);
+        params.put("loadAction", true);
+        params.put("loadModel", true);
+        params.put("loadForm", true);
         String objectJsonStr = HttpUtil.get(MyApi.getObject.getValue(), params);
         JSONObject data = formatData(objectJsonStr);
 
@@ -77,10 +78,10 @@ public class OtypeUtilts {
         JSON parse = JSONUtil.parse(oTypeList);
 //        System.out.println(oTypeList);
 //        System.out.println(parse);
-        exportFile(parse,"E:\\test\\"+sDomain.getName()+"\\test.otype");
+        exportFile(parse, "E:\\test\\" + sDomain.getName() + "\\test.otype");
     }
 
-    public static void filterOtype(List <OType> oTypeList) throws Exception {
+    public static void filterOtype(List<OType> oTypeList) throws Exception {
         List<EClassesOutPutModel> eClassesOutPutModelList = new ArrayList<>();
         for (OType oType : oTypeList) {
             eClassesOutPutModelList.add(otype2Class(oType));
@@ -92,7 +93,7 @@ public class OtypeUtilts {
         model.setId(oType.getId());
         model.setName(oType.getName());
         //处理关系
-        model.setConnectors(dsConnectors2EConnectors(oType.getConnectors(),classIDs));
+        model.setConnectors(dsConnectors2EConnectors(oType.getConnectors(), classIDs));
         //处理字段
         model.setFields(dsField2Field(oType.getFields()));
         //处理形态

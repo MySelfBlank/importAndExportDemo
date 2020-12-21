@@ -23,17 +23,18 @@ import static com.yzh.utilts.FileTools.formatData;
  */
 public class SDomainPagesTools {
     private static final Logger logger = LoggerFactory.getLogger(SDomainPagesTools.class);
-    private static Map<String,Object> params = new HashMap<>();
+    private static Map<String, Object> params = new HashMap<>();
 
     /**
      * 分页请求方法
+     *
      * @param pageNum
      * @param pageSize
      * @param sDomainName
      * @param input
      * @param sDomains
      */
-    public static void getPages(int pageNum, int pageSize, String sDomainName, Scanner input, List<SDomain> sDomains){
+    public static void getPages(int pageNum, int pageSize, String sDomainName, Scanner input, List<SDomain> sDomains) {
         params.put("pageNum", pageNum);
         params.put("pageSize", pageSize);
         params.put("names", sDomainName);
@@ -44,7 +45,7 @@ public class SDomainPagesTools {
         Index.pages = jsonData.getInt("pages");
         sDomains.clear();
         sDomains.addAll(JSONArray.parseArray(jsonData.getStr("list"), SDomain.class));
-        System.out.println("共"+Index.pages+"页"+" 当前第"+pageNum+"页");
+        System.out.println("共" + Index.pages + "页" + " 当前第" + pageNum + "页");
         for (int i = 0; i < sDomains.size(); i++) {
             System.out.println("[" + (i + 1) + "]" + sDomains.get(i).getName());
         }

@@ -102,8 +102,8 @@ public class FormUtils {
         return formStyles;
     }
 
-    public static List<EForm> dsForms2EForm(List<Form> forms) throws Exception{
-        if (isEmpty(forms)||isNull(forms)){
+    public static List<EForm> dsForms2EForm(List<Form> forms) throws Exception {
+        if (isEmpty(forms) || isNull(forms)) {
             return new ArrayList<>();
         }
         List<EForm> eForms = new ArrayList<>();
@@ -126,12 +126,12 @@ public class FormUtils {
         return eForm;
     }
 
-    private static EFormRef dsFormRef2FormRef(AForm aForm){
-        if (aForm == null){
+    private static EFormRef dsFormRef2FormRef(AForm aForm) {
+        if (aForm == null) {
             return null;
         }
         EFormRef eFormRef = new EFormRef();
-        if (aForm instanceof ModelBlock){
+        if (aForm instanceof ModelBlock) {
             ModelBlock block = (ModelBlock) aForm;
             eFormRef.setName(block.getName());
             eFormRef.setDesc(block.getDes());

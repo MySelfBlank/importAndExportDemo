@@ -6,7 +6,7 @@ import java.util.Map;
  * @author Yzh
  * @create 2020-12-16 18:10
  */
-public class EField extends AbstractObject{
+public class EField extends AbstractObject {
     /**
      * 字段中文名
      */
