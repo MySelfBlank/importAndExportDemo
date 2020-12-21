@@ -121,6 +121,7 @@ public class Index {
                 System.out.println("输入格式错误");
                 e.getMessage();
                 flag =true;
+                //需要重新建立一个 Scanner 不然会陷入死循环
                 input = new Scanner(System.in);
             }
         }while (flag);
