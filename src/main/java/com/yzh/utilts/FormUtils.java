@@ -73,6 +73,7 @@ public class FormUtils {
                 buffer.append(","+o);
             }
         }
+        //去除第一位多余的，
         buffer.deleteCharAt(0);
         System.out.println(buffer);
         String[] split = buffer.toString().split(",");
