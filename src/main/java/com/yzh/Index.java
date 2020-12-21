@@ -60,12 +60,12 @@ public class Index {
         List<SDomain> sDomains = new ArrayList<>();
         String sDomainName;
 
-        do{
+        do {
             System.out.println("请输入时空域名称");
             //获取输入
-            sDomainName= input.nextLine();
+            sDomainName = input.nextLine();
             getPages(pageNum, pageSize, sDomainName, input, sDomains);
-        }while (sDomains.size()==0);
+        } while (sDomains.size() == 0);
 
         int page = pages;
         String stop = "no";
@@ -102,10 +102,10 @@ public class Index {
 
         boolean flag = false;
         Integer i;
-        do{
+        do {
             try {
                 System.out.println("请选择时空域前的序号");
-                 i= input.nextInt() - 1;
+                i = input.nextInt() - 1;
                 while (i > sDomains.size()) {
                     System.out.println("输入无效请重新输入：");
                     i = input.nextInt() - 1;
@@ -117,15 +117,15 @@ public class Index {
                 JSONObject jsonObject = (JSONObject) JSONUtil.parse(sDomain);
                 String path = "E:/test/" + sDomain.getName() + "/test.sdomain";
                 exportFile(jsonObject, path);
-                flag=false;
+                flag = false;
             } catch (Exception e) {
                 System.out.println("输入格式错误");
                 e.getMessage();
-                flag =true;
+                flag = true;
                 //需要重新建立一个 Scanner 不然会陷入死循环
                 input = new Scanner(System.in);
             }
-        }while (flag);
+        } while (flag);
 
 
         logger.debug("选择的时空域Id为=" + UserInfo.domain);
@@ -153,7 +153,7 @@ public class Index {
             if (isEmpty(sObject.getForms().getForms()) || isNull(sObject.getForms().getForms())) {
                 continue;
             } else {
-                sObject.getForms().getForms().stream().sequential().collect(Collectors.toCollection(()->formList));
+                sObject.getForms().getForms().stream().sequential().collect(Collectors.toCollection(() -> formList));
             }
         }
         fieldList.addAll(FieldUtils.objectFieldsHandle2(attributeList));
