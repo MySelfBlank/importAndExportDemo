@@ -120,7 +120,7 @@ public class FileTools {
         }
     }
 
-    public static void exportFile(JSON json, String pathName) {
+    public static void exportFile(Object json, String pathName) {
         logger.debug("将数据打印到本地");
         //创建一个文件路径
         File file = new File(pathName);
