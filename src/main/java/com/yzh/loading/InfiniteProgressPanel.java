@@ -12,7 +12,7 @@ import java.awt.geom.*;
  * @author Yzh
  * @create 2020-12-11 15:10
  */
-public class InfiniteProgressPanel extends JComponent implements MouseListener{
+public class InfiniteProgressPanel extends JComponent implements MouseListener {
     private static final long serialVersionUID = 1L;
     protected Area[] ticker = null;
     protected Thread animation = null;
@@ -106,7 +106,7 @@ public class InfiniteProgressPanel extends JComponent implements MouseListener{
             g2.setRenderingHints(hints);
 
             g2.setColor(new Color(255, 255, 255, (int) (alphaLevel * shield)));
-            g2.fillRect(getWidth()/4, getHeight()/4, getWidth()/2, getHeight()/2);
+            g2.fillRect(getWidth() / 4, getHeight() / 4, getWidth() / 2, getHeight() / 2);
 
             for (int i = 0; i < ticker.length; i++) {
                 int channel = 224 - 128 / (i + 1);

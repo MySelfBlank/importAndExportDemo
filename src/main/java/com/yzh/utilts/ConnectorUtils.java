@@ -14,29 +14,30 @@ import java.util.*;
  * @details 连接器处理
  */
 public class ConnectorUtils {
-    public static List<EConnector> dsConnectors2EConnectors(Connectors connectors, Set<Long> classIDs) throws Exception{
+    public static List<EConnector> dsConnectors2EConnectors(Connectors connectors, Set<Long> classIDs) throws Exception {
 
         //判断该Otype中是否存在连接器
-        if (connectors == null || connectors.getConnectors() ==null){
+        if (connectors == null || connectors.getConnectors() == null) {
             return new ArrayList<>();
         }
         List<Connector> connectorList = connectors.getConnectors();
         List<EConnector> eConnectors = new ArrayList<>();
-        if (connectorList.size() == 0){
+        if (connectorList.size() == 0) {
             return eConnectors;
         }
         for (Connector connector : connectorList) {
             EConnector eConnector = dsConnector2EConnector(connector, classIDs);
-            if (eConnector != null){
+            if (eConnector != null) {
                 eConnectors.add(eConnector);
             }
         }
         return eConnectors;
     }
-    public static EConnector dsConnector2EConnector (Connector Connector, Set<Long> classIDs){
+
+    public static EConnector dsConnector2EConnector(Connector Connector, Set<Long> classIDs) {
         EConnector eConnector = new EConnector();
         eConnector.setType(Connector.getType().getName().toLowerCase());
-        if (Connector.getRelation() != null){
+        if (Connector.getRelation() != null) {
             Map<String, Object> eRelation = new HashMap<>();
             Relation relation = Connector.getRelation();
 //            container.addERelation(RelationUtils.dsRelations2ERelation(relation));
@@ -45,16 +46,16 @@ public class ConnectorUtils {
             eRelation.put("name", relation.getName());
             eConnector.setRelation(eRelation);
         }
-        if (Connector.getdType() != null){
+        if (Connector.getdType() != null) {
             Map<String, Object> targetEClasses = new HashMap<>();
             OType target = Connector.getdType();
-            if (classIDs.contains(target.getId())){
+            if (classIDs.contains(target.getId())) {
                 targetEClasses.put("id", target.getId());
                 targetEClasses.put("name", target.getName());
                 eConnector.setTarget(targetEClasses);
             }
         }
-        if (eConnector.getTarget() == null){
+        if (eConnector.getTarget() == null) {
             return null;
         }
 //        eConnector.setTarget(ClassesUtils.dsClasses2EClass(connector.getdType()));

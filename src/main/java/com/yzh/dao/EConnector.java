@@ -6,7 +6,7 @@ import java.util.Map;
  * @author Yzh
  * @create 2020-12-16 18:10
  */
-public class EConnector extends AbstractObject{
+public class EConnector extends AbstractObject {
     private Long id;
     /**
      * 连接关系类型

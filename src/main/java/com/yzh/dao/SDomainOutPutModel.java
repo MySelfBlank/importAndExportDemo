@@ -7,7 +7,7 @@ import java.util.List;
  * @ Author        :  yuyazhou
  * @ CreateDate    :  2020/12/16 16:35
  */
-public class SDomainOutPutModel extends AbstractObject{
+public class SDomainOutPutModel extends AbstractObject {
 
     private String desc;
     private Long parentId;
@@ -17,9 +17,9 @@ public class SDomainOutPutModel extends AbstractObject{
     private Long stime;
     private Long etime;
 
-    public void addGeobox( double minx, double miny, double minz,
-                          double maxx, double maxy, double maxz){
-        this.addGeobox( this.geoBox,minx ,miny ,minz ,maxx ,maxy ,maxz );
+    public void addGeobox(double minx, double miny, double minz,
+                          double maxx, double maxy, double maxz) {
+        this.addGeobox(this.geoBox, minx, miny, minz, maxx, maxy, maxz);
     }
 
     public String getDesc() {

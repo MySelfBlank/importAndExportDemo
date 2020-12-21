@@ -9,7 +9,7 @@ import onegis.psde.psdm.SDomain;
  * @ CreateDate    :  2020/12/16 18:16
  */
 public class SDomainUtil {
-    public static SDomainOutPutModel getSDomain(SDomainOutPutModel sDomainOutPutModel, SDomain sDomain){
+    public static SDomainOutPutModel getSDomain(SDomainOutPutModel sDomainOutPutModel, SDomain sDomain) {
 
         sDomainOutPutModel.setId(sDomain.getId());
         sDomainOutPutModel.setName(sDomain.getName());
