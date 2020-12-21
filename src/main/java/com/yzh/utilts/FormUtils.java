@@ -4,16 +4,18 @@ import cn.hutool.core.map.MapUtil;
 import cn.hutool.http.HttpUtil;
 import cn.hutool.json.JSONObject;
 import com.alibaba.fastjson.JSONArray;
-import com.thoughtworks.xstream.core.BaseException;
 import com.yzh.api.MyApi;
 import com.yzh.dao.EForm;
 import com.yzh.dao.EFormRef;
 import com.yzh.userInfo.UserInfo;
-import onegis.psde.attribute.Field;
 import onegis.psde.dictionary.FormEnum;
-import onegis.psde.form.*;
+import onegis.psde.form.AForm;
+import onegis.psde.form.Form;
+import onegis.psde.form.FormStyle;
+import onegis.psde.form.ModelBlock;
 import onegis.psde.psdm.SObject;
 import onegis.psde.util.JsonUtils;
+import org.springframework.util.StringUtils;
 
 import java.util.*;
 
@@ -68,10 +70,13 @@ public class FormUtils {
         Set<String> formList = new HashSet<>();
         StringBuffer buffer = new StringBuffer();
         for (Form form : fromList) {
-            //取形态中的样式Id
-            JSONArray jsonArray = JSONArray.parseArray(form.getStyle());
-            for (Object o : jsonArray) {
-                buffer.append("," + o);
+            //形态不是模型的时候取样式id
+            if(!form.getType().getName().equalsIgnoreCase("model")){
+                //取形态中的样式Id
+                JSONArray jsonArray = JSONArray.parseArray(form.getStyle());
+                for (Object o : jsonArray) {
+                    buffer.append("," + o);
+                }
             }
         }
         //去除第一位多余的，
@@ -90,6 +95,9 @@ public class FormUtils {
         String styleJsonStr = HttpUtil.get(MyApi.getStyleById.getValue(), params);
         JSONObject stylejsonObj = FileTools.formatData(styleJsonStr);
         String styleListStr = stylejsonObj.getStr("list");
+        if(StringUtils.isEmpty(styleListStr)){
+            return new ArrayList<>();
+        }
         List<FormStyle> formStyles = JsonUtils.jsonToList(styleListStr, FormStyle.class);
         return formStyles;
     }
