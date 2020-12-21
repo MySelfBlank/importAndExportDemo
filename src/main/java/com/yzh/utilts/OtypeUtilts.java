@@ -38,6 +38,7 @@ public class OtypeUtilts {
         params.put("loadCompose",true);
         params.put("loadAction",true);
         params.put("loadModel",true);
+        params.put("loadForm",true);
         String objectJsonStr = HttpUtil.get(MyApi.getObject.getValue(), params);
         JSONObject data = formatData(objectJsonStr);
 

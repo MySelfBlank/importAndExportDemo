@@ -25,6 +25,7 @@ public enum MyApi {
     //获取时空域下的连接关系 参数信息传入时空域 sdomian
     getNetWork("","http://bt1.geosts.ac.cn/api/dae/rest/v0.1.0/datastore/getRelationCatalog"),
 
+    //获取字段
     getFieldByFid("getFieldByFid","http://bt1.geosts.ac.cn/api/dae-dev/datastore/rest/v0.1.0/datastore/ofield/query"),
 
     getStyleById("","http://bt1.geosts.ac.cn/api/dae-dev/datastore/rest/v0.1.0/datastore/oformstyle/query"),
