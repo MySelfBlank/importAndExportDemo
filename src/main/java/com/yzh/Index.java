@@ -1,7 +1,10 @@
 package com.yzh;
 
+import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
+import com.alibaba.fastjson.JSON;
+import com.yzh.dao.EForm;
 import com.yzh.dao.SDomainOutPutModel;
 import com.yzh.userInfo.UserInfo;
 import com.yzh.utilts.FieldUtils;
@@ -11,11 +14,15 @@ import com.yzh.utilts.OtypeUtilts;
 import onegis.psde.attribute.Attribute;
 import onegis.psde.attribute.Field;
 import onegis.psde.form.Form;
+import onegis.psde.form.FormStyle;
 import onegis.psde.psdm.SDomain;
 import onegis.psde.psdm.SObject;
+import onegis.psde.util.JsonUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static cn.hutool.core.util.ObjectUtil.*;
 import static com.yzh.utilts.FileTools.*;
@@ -60,10 +67,10 @@ public class Index {
 
         getPages(pageNum, pageSize, sDomainName, input, sDomains);
         int page = pages;
-        String stop="no";
+        String stop = "no";
         while (stop.equals("no")) {
             System.out.println("是否选择当前页的时空域[yes/no]");
-            if (input.next().equals("yes")){
+            if (input.next().equals("yes")) {
                 break;
             }
             //采用Switch Catch 控制上下页
@@ -73,17 +80,17 @@ public class Index {
                     //是否选择下一页
                     if (page > pageNum) {
                         //重新做分页请求
-                            pageNum++;
-                            getPages(pageNum, pageSize, sDomainName, input, sDomains);
+                        pageNum++;
+                        getPages(pageNum, pageSize, sDomainName, input, sDomains);
                     }
                     break;
                 case "b":
                     //是否选择上一页
                     if (pageNum > 1 && pageNum <= page) {
                         //重新做分页请求
-                            pageNum--;
-                            getPages(pageNum, pageSize, sDomainName, input, sDomains);
-                    }else {
+                        pageNum--;
+                        getPages(pageNum, pageSize, sDomainName, input, sDomains);
+                    } else {
                         System.out.println();
                     }
                     break;
@@ -100,11 +107,11 @@ public class Index {
             }
             UserInfo.domain = sDomains.get(i).getId();
             sDomain = sDomains.get(i);
-            SDomainOutPutModel sDomainOutPutModel=new SDomainOutPutModel();
+            SDomainOutPutModel sDomainOutPutModel = new SDomainOutPutModel();
             SDomainOutPutModel sDomain = getSDomain(sDomainOutPutModel, Index.sDomain);
-            JSONObject jsonObject=(JSONObject)JSONUtil.parse(sDomain);
-            String path = "E:/test/"+sDomain.getName()+"/test.sdomain";
-            exportFile(jsonObject,path);
+            JSONObject jsonObject = (JSONObject) JSONUtil.parse(sDomain);
+            String path = "E:/test/" + sDomain.getName() + "/test.sdomain";
+            exportFile(jsonObject, path);
         } catch (Exception e) {
             e.getMessage();
         }
@@ -121,29 +128,31 @@ public class Index {
         //形态集合
         List<Form> formList = new ArrayList<>();
         for (SObject sObject : sObjectsList) {
-            if (isEmpty(sObject)||isNull(sObject)){
+            if (isEmpty(sObject) || isNull(sObject)) {
                 continue;
             }
             //字段处理
-            if (isEmpty(sObject.getAttributes().getAttributeList())||isEmpty(sObject.getAttributes().getAttributeList())){
+            if (isEmpty(sObject.getAttributes().getAttributeList()) || isEmpty(sObject.getAttributes().getAttributeList())) {
                 continue;
-            }else {
+            } else {
                 attributeList.addAll(sObject.getAttributes().getAttributeList());
             }
             //形态处理
-            if (isEmpty(sObject.getForms().getForms())||isNull(sObject.getForms().getForms())){
+            if (isEmpty(sObject.getForms().getForms()) || isNull(sObject.getForms().getForms())) {
                 continue;
-            }else {
-                formList.addAll(sObject.getForms().getForms());
+            } else {
+                sObject.getForms().getForms().stream().sequential().collect(Collectors.toCollection(()->formList));
             }
         }
-
         fieldList.addAll(FieldUtils.objectFieldsHandle2(attributeList));
         //导出时空域下所有使用的属性
         //List<Field> fieldList = FieldUtils.objectFieldsHandle(sObjectsList);
-        FileTools.exportFile(JSONUtil.parse(fieldList),"E:/test/"+sDomain.getName()+"/test.fields");
+        FileTools.exportFile(JSONUtil.parse(fieldList), "E:/test/" + sDomain.getName() + "/test.fields");
         //导出时空域下所有使用的样式
-        FormUtils.objectFromsHandle2(formList);
+        List<EForm> eFormList = FormUtils.dsForms2EForm(formList);
+        List<FormStyle> formStyles = FormUtils.objectFromsHandle2(formList);
+        FileTools.exportFile(JSONUtil.parse(eFormList), "E:/test/" + sDomain.getName() + "/test.forms");
+        FileTools.exportFile(JSONUtil.parse(formStyles), "E:/test/" + sDomain.getName() + "/test.formStyles");
         //导出时空域下所有使用的形态
 
         //退出账号
