@@ -1,9 +1,7 @@
 package com.yzh;
 
-import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
-import com.alibaba.fastjson.JSON;
 import com.yzh.dao.EForm;
 import com.yzh.dao.SDomainOutPutModel;
 import com.yzh.userInfo.UserInfo;
@@ -58,14 +56,17 @@ public class Index {
             logger.error("用户登录失败，程序结束");
             return;
         }
-        System.out.println("请输入时空域名称");
-        //获取输入
-        String sDomainName = input.nextLine();
-
         //分页设置
         List<SDomain> sDomains = new ArrayList<>();
+        String sDomainName;
 
-        getPages(pageNum, pageSize, sDomainName, input, sDomains);
+        do{
+            System.out.println("请输入时空域名称");
+            //获取输入
+            sDomainName= input.nextLine();
+            getPages(pageNum, pageSize, sDomainName, input, sDomains);
+        }while (sDomains.size()==0);
+
         int page = pages;
         String stop = "no";
         while (stop.equals("no")) {
@@ -154,7 +155,6 @@ public class Index {
         FileTools.exportFile(JSONUtil.parse(eFormList), "E:/test/" + sDomain.getName() + "/test.forms");
         FileTools.exportFile(JSONUtil.parse(formStyles), "E:/test/" + sDomain.getName() + "/test.formStyles");
         //导出时空域下所有使用的形态
-
         //退出账号
         logout();
     }

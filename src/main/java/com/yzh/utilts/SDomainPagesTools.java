@@ -7,6 +7,7 @@ import com.yzh.Index;
 import com.yzh.api.MyApi;
 import com.yzh.userInfo.UserInfo;
 import onegis.psde.psdm.SDomain;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -44,6 +45,10 @@ public class SDomainPagesTools {
         JSONObject jsonData = formatData(getRespond);
         Index.pages = jsonData.getInt("pages");
         sDomains.clear();
+        if((jsonData.getStr("list").equalsIgnoreCase("[]"))){
+            System.out.println("未找到相关时空域");
+            return;
+        }
         sDomains.addAll(JSONArray.parseArray(jsonData.getStr("list"), SDomain.class));
         System.out.println("共" + Index.pages + "页" + " 当前第" + pageNum + "页");
         for (int i = 0; i < sDomains.size(); i++) {
