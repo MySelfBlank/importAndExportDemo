@@ -71,7 +71,8 @@ public class FileTools {
     public static <T> List forJsonList(String object) throws Exception {
         JSONObject sourceData = JSONUtil.parseObj(object);
         JSONObject clearData = (JSONObject) JSONUtil.parse(sourceData.get("data"));
-        List<Relation> relations = JsonUtils.jsonToList(clearData.toString(), Relation.class);
+
+        List<Relation> relations = JsonUtils.jsonToList(clearData.get("list").toString(), Relation.class);
         return relations;
     }
 
