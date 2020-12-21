@@ -8,6 +8,7 @@ import com.yzh.utilts.FieldUtils;
 import com.yzh.utilts.FileTools;
 import com.yzh.utilts.FormUtils;
 import com.yzh.utilts.OtypeUtilts;
+import onegis.psde.attribute.Attribute;
 import onegis.psde.attribute.Field;
 import onegis.psde.psdm.SDomain;
 import onegis.psde.psdm.SObject;
@@ -15,8 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.util.*;
 
-import static cn.hutool.core.util.ObjectUtil.isEmpty;
-import static cn.hutool.core.util.ObjectUtil.isNull;
+import static cn.hutool.core.util.ObjectUtil.*;
 import static com.yzh.utilts.FileTools.*;
 import static com.yzh.utilts.SDomainPagesTools.getPages;
 import static com.yzh.utilts.SDomainUtil.getSDomain;
@@ -115,13 +115,22 @@ public class Index {
         OtypeUtilts.getOtype();
         //字段集合
         List<Field> fieldList = new ArrayList<>();
+        //属性集合
+        List<Attribute> attributeList = new ArrayList<>();
         for (SObject sObject : sObjectsList) {
             if (isEmpty(sObject)||isNull(sObject)){
-                return;
+                continue;
             }
             //字段处理
-            fieldList.addAll(FieldUtils.objectFieldsHandle2(sObject));
+            if (isEmpty(sObject.getAttributes().getAttributeList())||isEmpty(sObject.getAttributes().getAttributeList())){
+                continue;
+            }else {
+                attributeList.addAll(sObject.getAttributes().getAttributeList());
+            }
+            //形态处理
+
         }
+        fieldList.addAll(FieldUtils.objectFieldsHandle2(attributeList));
         //导出时空域下所有使用的属性
         //List<Field> fieldList = FieldUtils.objectFieldsHandle(sObjectsList);
         FileTools.exportFile(JSONUtil.parse(fieldList),"E:/test/"+sDomain.getName()+"/test.fields");

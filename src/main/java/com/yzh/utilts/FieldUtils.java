@@ -63,27 +63,16 @@ public class FieldUtils {
         return eFieldList;
     }
 
-    public static List<Field> objectFieldsHandle2(SObject sObject) throws Exception {
+    public static List<Field> objectFieldsHandle2(List<Attribute> attributes) throws Exception {
         List<Field> eFieldList = new ArrayList<>();
-        //如果对象列表是空的则直接返回
-        if (isNull(sObject) || isEmpty(sObject)) {
-            return eFieldList;
-        }
-        List<Attribute> attributeList = new ArrayList<>();
+
         //属性FIdSet
         Set<Long> fIdSet = new HashSet<>();
-
-        if (isNull(sObject.getAttributes().getAttributeList()) || isEmpty(sObject.getAttributes().getAttributeList())) {
-            return eFieldList;
-        } else {
-            attributeList.addAll(sObject.getAttributes().getAttributeList());
-        }
-
         //所有对象均未拿到属性信息，返回空的List
-        if (isNull(attributeList) || isEmpty(attributeList)) {
+        if (isNull(attributes) || isEmpty(attributes)) {
             return eFieldList;
         }
-        for (Attribute attribute : attributeList) {
+        for (Attribute attribute : attributes) {
             fIdSet.add(attribute.getFid());
         }
         //通过fId查询字段信息
@@ -93,6 +82,7 @@ public class FieldUtils {
                 .put("descOrAsc", true)
                 .put("ids", fIdSet.toArray())
                 .build();
+
         String fieldJsonStr = HttpUtil.get(MyApi.getFieldByFid.getValue(), params);
         JSONObject fieldJsonObj = FileTools.formatData(fieldJsonStr);
         List<JSONObject> fieldJsonObjList = JSONArray.parseArray(fieldJsonObj.get("list").toString(), JSONObject.class);
