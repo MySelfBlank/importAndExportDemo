@@ -14,6 +14,7 @@ import onegis.psde.psdm.SObject;
 import onegis.psde.util.JsonUtils;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static cn.hutool.core.util.ObjectUtil.isEmpty;
 import static cn.hutool.core.util.ObjectUtil.isNull;
@@ -56,6 +57,29 @@ public class FormUtils {
         List<JSONObject> fieldJsonObjList = JSONArray.parseArray(formJsonObj.get("list").toString(), JSONObject.class);
         fromList.addAll( JsonUtils.jsonToList(formJsonObj.get("list").toString(), Form.class));
 
+        return  fromList;
+    }
+
+    public static List<Form> objectFromsHandle2(List<Form> fromList) throws Exception {
+        if (isNull(fromList)||isEmpty(fromList)) {
+            return fromList;
+        }
+        Set<String> formList = new HashSet<>();
+        StringBuffer buffer = new StringBuffer();
+        for (Form form : fromList) {
+            //取形态中的样式Id
+            JSONArray jsonArray = JSONArray.parseArray(form.getStyle());
+            for (Object o : jsonArray) {
+                buffer.append(","+o);
+            }
+        }
+        //去除第一位多余的，
+        buffer.deleteCharAt(0);
+        System.out.println(buffer);
+        String[] split = buffer.toString().split(",");
+        formList.addAll(Arrays.asList(split));
+        System.out.println(formList);
+        //请求样式数据
         return  fromList;
     }
 }

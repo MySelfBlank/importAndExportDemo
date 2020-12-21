@@ -6,17 +6,18 @@ import com.yzh.dao.SDomainOutPutModel;
 import com.yzh.userInfo.UserInfo;
 import com.yzh.utilts.FieldUtils;
 import com.yzh.utilts.FileTools;
+import com.yzh.utilts.FormUtils;
 import com.yzh.utilts.OtypeUtilts;
+import onegis.psde.attribute.Attribute;
 import onegis.psde.attribute.Field;
+import onegis.psde.form.Form;
 import onegis.psde.psdm.SDomain;
 import onegis.psde.psdm.SObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import java.util.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
-
+import static cn.hutool.core.util.ObjectUtil.*;
 import static com.yzh.utilts.FileTools.*;
 import static com.yzh.utilts.SDomainPagesTools.getPages;
 import static com.yzh.utilts.SDomainUtil.getSDomain;
@@ -113,11 +114,36 @@ public class Index {
 
         //导出时空域下类模板
         OtypeUtilts.getOtype();
+        //字段集合
+        List<Field> fieldList = new ArrayList<>();
+        //属性集合
+        List<Attribute> attributeList = new ArrayList<>();
+        //形态集合
+        List<Form> formList = new ArrayList<>();
+        for (SObject sObject : sObjectsList) {
+            if (isEmpty(sObject)||isNull(sObject)){
+                continue;
+            }
+            //字段处理
+            if (isEmpty(sObject.getAttributes().getAttributeList())||isEmpty(sObject.getAttributes().getAttributeList())){
+                continue;
+            }else {
+                attributeList.addAll(sObject.getAttributes().getAttributeList());
+            }
+            //形态处理
+            if (isEmpty(sObject.getForms().getForms())||isNull(sObject.getForms().getForms())){
+                continue;
+            }else {
+                formList.addAll(sObject.getForms().getForms());
+            }
+        }
+
+        fieldList.addAll(FieldUtils.objectFieldsHandle2(attributeList));
         //导出时空域下所有使用的属性
-        List<Field> fieldList = FieldUtils.objectFieldsHandle(sObjectsList);
+        //List<Field> fieldList = FieldUtils.objectFieldsHandle(sObjectsList);
         FileTools.exportFile(JSONUtil.parse(fieldList),"E:/test/"+sDomain.getName()+"/test.fields");
         //导出时空域下所有使用的样式
-//        FormUtils.objectFromsHandle(sObjectsList);
+        FormUtils.objectFromsHandle2(formList);
         //导出时空域下所有使用的形态
 
         //退出账号

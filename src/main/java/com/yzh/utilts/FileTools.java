@@ -86,8 +86,6 @@ public class FileTools {
      * @desc 将JSON对象导出到本地文件
      */
     public static void exportFile(JSONObject jsonObject,JSON json,String str, String pathName) {
-
-        
         logger.debug("将数据打印到本地");
         //创建一个文件路径
         File file = new File(pathName);
