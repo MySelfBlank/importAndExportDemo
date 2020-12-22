@@ -6,39 +6,41 @@ package com.yzh.api;
  */
 public enum MyApi {
     //登录 api
-    login("login", "http://bt1.geosts.ac.cn/api/uc-dev/api/v2/account/login"),
+    login("login", "http://bt1.geosts.ac.cn/api/uc/api/v2/account/login"),
 
     //userInfo
-    getUserInfo("getUserInfo", "http://bt1.geosts.ac.cn/api/uc-dev/api/v2/account/authorize"),
+    getUserInfo("getUserInfo", "http://bt1.geosts.ac.cn/api/uc/api/v2/account/authorize"),
 
     //获取时空域 api
-    getDomain("getDomain", "http://bt1.geosts.ac.cn/api/dae-dev/datastore/rest/v0.1.0/datastore/sdomain/query?token=@token&names=@names"),
+    getDomain("getDomain", "http://bt1.geosts.ac.cn/api/dae/datastore/rest/v0.1.0/datastore/sdomain/query?token=@token&names=@names"),
 
-    getDomain1("getDomain", "http://bt1.geosts.ac.cn/api/dae-dev/datastore/rest/v0.1.0/datastore/sdomain/query"),
+    getDomain1("getDomain", "http://bt1.geosts.ac.cn/api/dae/datastore/rest/v0.1.0/datastore/sdomain/query"),
 
     //获取类模板信息根据ID
-    getOtypesByIds("getOtypesByIds", "http://bt1.geosts.ac.cn/api/dae-dev/datastore/rest/v0.1.0/datastore/otype/query"),
+    getOtypesByIds("getOtypesByIds", "http://bt1.geosts.ac.cn/api/dae/datastore/rest/v0.1.0/datastore/otype/query"),
 
     //获取时空域下的所有的空间对象
-    getObject("getObject", "http://bt1.geosts.ac.cn/api/dae-dev/datastore/rest/v0.1.0/datastore/object/query"),
+    getObject("getObject", "http://bt1.geosts.ac.cn/api/dae/datastore/rest/v0.1.0/datastore/object/query"),
 
     //获取时空域下的连接关系 参数信息传入时空域 sdomian
     getNetWork("", "http://bt1.geosts.ac.cn/api/dae/rest/v0.1.0/datastore/getRelationCatalog"),
 
 
     //获取时空域下的连接关系
-    getRelationById("getRelation", "http://bt1.geosts.ac.cn/api/dae-dev/datastore/rest/v0.1.0/datastore/orelation/query"),
+    getRelationById("getRelation", "http://bt1.geosts.ac.cn/api/dae/datastore/rest/v0.1.0/datastore/orelation/query"),
 
     //获取字段
-    getFieldByFid("getFieldByFid", "http://bt1.geosts.ac.cn/api/dae-dev/datastore/rest/v0.1.0/datastore/ofield/query"),
+    getFieldByFid("getFieldByFid", "http://bt1.geosts.ac.cn/api/dae/datastore/rest/v0.1.0/datastore/ofield/query"),
 
-    getStyleById("", "http://bt1.geosts.ac.cn/api/dae-dev/datastore/rest/v0.1.0/datastore/oformstyle/query"),
+    getStyleById("", "http://bt1.geosts.ac.cn/api/dae/datastore/rest/v0.1.0/datastore/oformstyle/query"),
 
     //获取行为属性传入id
-    getModelById("getModelById", "http://bt1.geosts.ac.cn/api/dae-dev/datastore/rest/v0.1.0/datastore/model/query"),
+    getModelById("getModelById", "http://bt1.geosts.ac.cn/api/dae/datastore/rest/v0.1.0/datastore/model/query"),
 
+    //获取行为类别传入id
+    getModelDefById("getModelDefById","http://bt1.geosts.ac.cn/api/dae/datastore/rest/v0.1.0/datastore/modeldef/query"),
     //注销本次登录
-    logout("logout", "http://bt1.geosts.ac.cn/api/uc-dev/api/v2/account/logout");
+    logout("logout", "http://bt1.geosts.ac.cn/api/uc/api/v2/account/logout");
 
 
     private final String name;
