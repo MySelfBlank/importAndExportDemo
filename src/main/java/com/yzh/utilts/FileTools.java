@@ -1,5 +1,6 @@
 package com.yzh.utilts;
 
+import cn.hutool.core.io.file.FileReader;
 import cn.hutool.http.HttpUtil;
 import cn.hutool.json.JSON;
 import cn.hutool.json.JSONArray;
@@ -178,6 +179,28 @@ public class FileTools {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * 文件读取方法
+     * @param fileUrl 文件的路径
+     * @return
+     */
+    public static String readFile (String fileUrl){
+        FileReader fileReader = new FileReader(fileUrl);
+        return fileReader.readString();
+    }
+
+    /**
+     * 将Json数组转换为List
+     * @param JsonArrayStr Json数组字符串
+     * @param tClass 需要转换的List 类型
+     * @param <T>
+     * @return
+     */
+    public static <T> List<T> jsonArray2List(String JsonArrayStr, Class<T> tClass){
+        JSONArray jsonArray = JSONUtil.parseArray(JsonArrayStr);
+        return jsonArray.toList(tClass);
     }
 }
 
