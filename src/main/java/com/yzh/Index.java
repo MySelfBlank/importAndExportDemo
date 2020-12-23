@@ -33,7 +33,6 @@ import static com.yzh.utilts.SDomainUtil.getSDomain;
  */
 
 public class Index {
-
     public static int pages;
     private static int pageNum = 1;
     private final static int pageSize = 10;
@@ -47,6 +46,8 @@ public class Index {
         logger.debug("开始运行");
         //用户Token
         Scanner input = new Scanner(System.in);
+        System.out.println("请选择开发环境：[1]：prod  [2]：dev");
+        EnvironmentSelectTool.selectEnv();
         System.out.println("请输入您的账号和密码");
         login("asiayu01@163.com", "yu1306730458");
 //        login(input.nextLine().trim(), input.nextLine().trim());
@@ -135,7 +136,7 @@ public class Index {
         //导出时空域下类模板
         OtypeUtilts.getOtype();
         //导出时空域下的关系
-        ERelationUtil.getNetWork(sObjectsList);
+        ERelationUtil.getRelation(sObjectsList);
         //导出时空域下的行为
         EModelUtil.getModelsFile(oTypeList);
         //导出时空域下的行为类别

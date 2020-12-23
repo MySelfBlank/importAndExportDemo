@@ -19,13 +19,13 @@ import static com.yzh.utilts.FileTools.exportFile;
 import static com.yzh.utilts.FileTools.formatData;
 
 /**
+ * 行为类的导出
  * @ Author        :  yuyazhou
  * @ CreateDate    :  2020/12/22 15:31
  */
 public class EModelDefUtil {
     /**
      * 获取行为类别的id
-     *
      * @param oTypeList
      * @return
      */

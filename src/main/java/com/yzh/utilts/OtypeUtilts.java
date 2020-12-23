@@ -43,11 +43,10 @@ public class OtypeUtilts {
         JSONObject data = formatData(objectJsonStr);
 
         List<JSONObject> objectList =null;
-        if (!data.isEmpty()&&!data.isNull("list")) {
-            String objectListStr = data.getStr("list");
-            sObjectsList.addAll(JsonUtils.jsonToList(objectListStr, SObject.class));
-            objectList = JSONArray.parseArray(objectListStr, JSONObject.class);
-        }
+        String objectListStr = data.getStr("list");
+        sObjectsList.addAll(JsonUtils.jsonToList(objectListStr, SObject.class));
+        objectList = JSONArray.parseArray(objectListStr, JSONObject.class);
+
 
 
         //获取当前时空域下的所有类模板Id

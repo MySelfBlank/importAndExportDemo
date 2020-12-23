@@ -29,7 +29,7 @@ public class ERelationUtil {
      * 获取连接网格
      * @param sObjects
      */
-    public static void getNetWork(List<SObject> sObjects) throws Exception {
+    public static void getRelation(List<SObject> sObjects) throws Exception {
 
         Set<Long> ids = new HashSet<>();
         if (sObjects == null || sObjects.size() == 0) {
