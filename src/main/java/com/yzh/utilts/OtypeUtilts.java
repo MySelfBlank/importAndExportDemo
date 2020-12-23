@@ -44,7 +44,8 @@ public class OtypeUtilts {
 
         List<JSONObject> objectList =null;
         String objectListStr = data.getStr("list");
-        sObjectsList.addAll(JsonUtils.jsonToList(objectListStr, SObject.class));
+        List<SObject> sObjects = JsonUtils.jsonToList(objectListStr, SObject.class);
+        sObjectsList.addAll(sObjects);
         objectList = JSONArray.parseArray(objectListStr, JSONObject.class);
 
 
