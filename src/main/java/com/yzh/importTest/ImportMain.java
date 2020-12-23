@@ -1,13 +1,11 @@
 package com.yzh.importTest;
 
-import cn.hutool.json.JSONArray;
-import cn.hutool.json.JSONObject;
-import cn.hutool.json.JSONUtil;
 import com.yzh.utilts.FileTools;
 import onegis.psde.attribute.Field;
 
-import java.lang.reflect.Type;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -20,6 +18,7 @@ public class ImportMain {
         //读取导出的字段信息
         String fieldsStr = FileTools.readFile("E:\\test\\中原工_yzh\\test.fields");
         List<Field> fieldList = FileTools.jsonArray2List(fieldsStr,Field.class);
+        Map<Long,Long> fieldOldIdAndNewId = new HashMap<>();
         System.out.println(fieldsStr);
     }
 
