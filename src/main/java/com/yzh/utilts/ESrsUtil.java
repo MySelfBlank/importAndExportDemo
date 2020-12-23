@@ -42,18 +42,6 @@ public class ESrsUtil {
                 }
             }
         }
-//        srsList.forEach(value->{
-//            if(collect.size()==0){
-//                collect.add(value);
-//            }
-//            collect.forEach(collectValue->{
-//                if(value.getId()!=collectValue.getId()){
-//                    collect.add(value);
-//                }
-//            });
-//        });
-
-
         JSON json = JSONUtil.parse(collect);
         String path ="E:\\test\\" + sDomain.getName() + "\\test.srs";
         FileTools.exportFile(json,path);
