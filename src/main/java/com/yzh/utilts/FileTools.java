@@ -88,8 +88,8 @@ public class FileTools {
      * @param jsonObject
      * @desc 将JSON对象导出到本地文件
      */
-    public static void exportFile(JSONObject jsonObject, String pathName) {
-        logger.debug("将数据输出到本地");
+    public static void exportFile(JSONObject jsonObject, String pathName,String fileName) {
+        logger.debug("将"+fileName+"数据输出到本地");
         //创建一个文件路径
         File file = new File(pathName);
         FileWriter writer = null;
@@ -120,8 +120,8 @@ public class FileTools {
         }
     }
 
-    public static void exportFile(JSON json, String pathName) {
-        logger.debug("将数据输出到本地");
+    public static void exportFile(JSON json, String pathName,String fileName) {
+        logger.debug("将"+fileName+"数据输出到本地");
         //创建一个文件路径
         File file = new File(pathName);
         FileWriter writer = null;

@@ -118,7 +118,7 @@ public class Index {
                 SDomainOutPutModel sDomain = getSDomain(sDomainOutPutModel, Index.sDomain);
                 JSONObject jsonObject = (JSONObject) JSONUtil.parse(sDomain);
                 String path = "E:/test/" + sDomain.getName() + "/test.sdomain";
-                exportFile(jsonObject, path);
+                exportFile(jsonObject, path,sDomain.getName());
                 flag = false;
             } catch (Exception e) {
                 System.out.println("输入格式错误");
@@ -171,12 +171,12 @@ public class Index {
         fieldList.addAll(FieldUtils.objectFieldsHandle2(attributeList));
         //导出时空域下所有使用的属性
         //List<Field> fieldList = FieldUtils.objectFieldsHandle(sObjectsList);
-        FileTools.exportFile(JSONUtil.parse(fieldList), "E:/test/" + sDomain.getName() + "/test.fields");
+        FileTools.exportFile(JSONUtil.parse(fieldList), "E:/test/" + sDomain.getName() + "/test.fields","field");
         //导出时空域下所有使用的样式
         List<EForm> eFormList = FormUtils.dsForms2EForm(formList);
         List<FormStyle> formStyles = FormUtils.objectFromsHandle2(formList);
-        FileTools.exportFile(JSONUtil.parse(eFormList), "E:/test/" + sDomain.getName() + "/test.forms");
-        FileTools.exportFile(JSONUtil.parse(formStyles), "E:/test/" + sDomain.getName() + "/test.formStyles");
+        FileTools.exportFile(JSONUtil.parse(eFormList), "E:/test/" + sDomain.getName() + "/test.forms","form");
+        FileTools.exportFile(JSONUtil.parse(formStyles), "E:/test/" + sDomain.getName() + "/test.formStyles","formStyle");
         //导出时空域下所有使用的形态
         //退出账号
         logout();

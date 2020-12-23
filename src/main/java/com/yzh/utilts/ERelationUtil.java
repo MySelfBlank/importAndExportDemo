@@ -88,7 +88,7 @@ public class ERelationUtil {
         List<Relation> list = forJsonList(relationStr,Relation.class);
 
         String path = "E:\\test\\" + sDomain.getName() + "\\test.relation";
-        exportFile(JSONUtil.parse(list), path);
+        exportFile(JSONUtil.parse(list), path,"relation");
     }
 
     /**

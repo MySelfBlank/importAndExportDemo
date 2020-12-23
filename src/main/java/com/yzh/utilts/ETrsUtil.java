@@ -41,6 +41,6 @@ public class ETrsUtil {
 
         JSON parse = JSONUtil.parse(collect);
         String path="E:\\test\\" + sDomain.getName() + "\\test.trs";
-        FileTools.exportFile(parse,path);
+        FileTools.exportFile(parse,path,"Trs");
     }
 }

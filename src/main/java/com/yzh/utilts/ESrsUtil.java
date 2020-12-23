@@ -43,6 +43,6 @@ public class ESrsUtil {
         List<ESpatialReferenceSystem> collect = eSpatialReferenceSystems.stream().distinct().collect(Collectors.toList());
         JSON json = JSONUtil.parse(collect);
         String path = "E:\\test\\" + sDomain.getName() + "\\test.srs";
-        FileTools.exportFile(json, path);
+        FileTools.exportFile(json, path,"Srs");
     }
 }

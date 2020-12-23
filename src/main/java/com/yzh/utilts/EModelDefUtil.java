@@ -83,7 +83,7 @@ public class EModelDefUtil {
         List<JSONObject> list = forJsonList(relationStr,ModelDef.class);
 
         String path = "E:\\test\\" + sDomain.getName() + "\\test.modelDef";
-        exportFile(JSONUtil.parse(list), path);
+        exportFile(JSONUtil.parse(list), path,"modelDef");
     }
 
 }

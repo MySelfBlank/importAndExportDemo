@@ -78,7 +78,7 @@ public class OtypeUtilts {
         JSON parse = JSONUtil.parse(oTypeList);
 //        System.out.println(oTypeList);
 //        System.out.println(parse);
-        exportFile(parse, "E:\\test\\" + sDomain.getName() + "\\test.otype");
+        exportFile(parse, "E:\\test\\" + sDomain.getName() + "\\test.otype","Otype");
     }
 
     public static void filterOtype(List<OType> oTypeList) throws Exception {

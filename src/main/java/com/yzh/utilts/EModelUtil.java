@@ -62,6 +62,6 @@ public class EModelUtil {
         List<JSONObject> list = forJsonList(relationStr, Model.class);
 
         String path = "E:\\test\\" + sDomain.getName() + "\\test.models";
-        exportFile(JSONUtil.parse(list), path);
+        exportFile(JSONUtil.parse(list), path,"Models");
     }
 }
