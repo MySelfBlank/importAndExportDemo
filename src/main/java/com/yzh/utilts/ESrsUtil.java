@@ -21,29 +21,29 @@ import static com.yzh.Index.sDomain;
 public class ESrsUtil {
 
     public static void getSrs(List<OType> oTypeList) throws ConcurrentModificationException {
-        if (oTypeList==null||oTypeList.size()==0){
-            return ;
+        if (oTypeList == null || oTypeList.size() == 0) {
+            return;
         }
-        List<SpatialReferenceSystem> srsList =new ArrayList<>();
+        List<SpatialReferenceSystem> srsList = new ArrayList<>();
         for (OType oType : oTypeList) {
-            if (!isNull(oType)&&!isEmpty(oType)){
-                 srsList.add(oType.getSrs());
+            if (!isNull(oType) && !isEmpty(oType)) {
+                srsList.add(oType.getSrs());
             }
         }
         List<SpatialReferenceSystem> collect = new ArrayList<>();
         for (SpatialReferenceSystem spatialReferenceSystem : srsList) {
-            if(collect.size()==0){
+            if (collect.size() == 0) {
                 collect.add(spatialReferenceSystem);
                 continue;
             }
-            for (int i=0;i< collect.size(); i++) {
-                if(!spatialReferenceSystem.getId().equals(collect.get(i).getId())){
+            for (int i = 0; i < collect.size(); i++) {
+                if (!spatialReferenceSystem.getId().equals(collect.get(i).getId())) {
                     collect.add(spatialReferenceSystem);
                 }
             }
         }
         JSON json = JSONUtil.parse(collect);
-        String path ="E:\\test\\" + sDomain.getName() + "\\test.srs";
-        FileTools.exportFile(json,path);
+        String path = "E:\\test\\" + sDomain.getName() + "\\test.srs";
+        FileTools.exportFile(json, path);
     }
 }
