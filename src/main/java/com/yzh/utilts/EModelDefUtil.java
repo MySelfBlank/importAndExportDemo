@@ -15,8 +15,7 @@ import java.util.*;
 import static cn.hutool.core.util.ObjectUtil.isEmpty;
 import static cn.hutool.core.util.ObjectUtil.isNull;
 import static com.yzh.Index.sDomain;
-import static com.yzh.utilts.FileTools.exportFile;
-import static com.yzh.utilts.FileTools.formatData;
+import static com.yzh.utilts.FileTools.*;
 
 /**
  * 行为类的导出
@@ -73,7 +72,7 @@ public class EModelDefUtil {
      * 行为类别文件下载
      * @param oTypeList
      */
-    public static void loadModelDefFile( List<OType> oTypeList){
+    public static void loadModelDefFile( List<OType> oTypeList) throws Exception {
         Set<Long> ids = getModelDefId(oTypeList);
         Map<String, Object> param = new HashMap<>();
         param.put("token", UserInfo.token);
@@ -81,7 +80,7 @@ public class EModelDefUtil {
         param.put("DESCOrAsc","true");
         String relationStr = HttpUtil.get(MyApi.getModelDefById.getValue(), param);
 
-        JSONObject list = formatData(relationStr);
+        List<JSONObject> list = forJsonList(relationStr,ModelDef.class);
 
         String path = "E:\\test\\" + sDomain.getName() + "\\test.modelDef";
         exportFile(JSONUtil.parse(list), path);

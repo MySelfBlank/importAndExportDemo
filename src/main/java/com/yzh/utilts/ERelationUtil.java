@@ -85,7 +85,7 @@ public class ERelationUtil {
 
         String relationStr = HttpUtil.get(MyApi.getRelationById.getValue(), param);
 
-        List<Relation> list = forJsonList(relationStr);
+        List<Relation> list = forJsonList(relationStr,Relation.class);
 
         String path = "E:\\test\\" + sDomain.getName() + "\\test.relation";
         exportFile(JSONUtil.parse(list), path);

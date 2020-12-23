@@ -141,6 +141,8 @@ public class Index {
         EModelUtil.getModelsFile(oTypeList);
         //导出时空域下的行为类别
         EModelDefUtil.loadModelDefFile(oTypeList);
+        //导出时空域下的空间参照
+        ESrsUtil.getSrs(oTypeList);
         //字段集合
         List<Field> fieldList = new ArrayList<>();
         //属性集合
