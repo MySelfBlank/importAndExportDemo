@@ -143,6 +143,8 @@ public class Index {
         EModelDefUtil.loadModelDefFile(oTypeList);
         //导出时空域下的空间参照
         ESrsUtil.getSrs(oTypeList);
+        //导出时空域下的时间参照
+        ETrsUtil.getTrs(oTypeList);
         //字段集合
         List<Field> fieldList = new ArrayList<>();
         //属性集合

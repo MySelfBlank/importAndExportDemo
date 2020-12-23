@@ -20,6 +20,11 @@ import static com.yzh.Index.sDomain;
  */
 public class ESrsUtil {
 
+    /**
+     * 获取空间参照的对象
+     * @param oTypeList
+     * @throws ConcurrentModificationException
+     */
     public static void getSrs(List<OType> oTypeList) throws ConcurrentModificationException {
         if (oTypeList==null||oTypeList.size()==0){
             return ;
