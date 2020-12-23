@@ -13,7 +13,7 @@ import java.util.*;
 
 import static com.yzh.Index.sDomain;
 import static com.yzh.utilts.FileTools.exportFile;
-import static com.yzh.utilts.FileTools.formatData;
+import static com.yzh.utilts.FileTools.forJsonList;
 
 /**
  * 行为的导出
@@ -59,7 +59,7 @@ public class EModelUtil {
         param.put("DESCOrAsc","true");
         String relationStr = HttpUtil.get(MyApi.getModelById.getValue(), param);
 
-        JSONObject list = formatData(relationStr);
+        List<JSONObject> list = forJsonList(relationStr, Model.class);
 
         String path = "E:\\test\\" + sDomain.getName() + "\\test.models";
         exportFile(JSONUtil.parse(list), path);
