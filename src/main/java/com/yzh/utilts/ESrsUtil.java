@@ -1,13 +1,16 @@
 package com.yzh.utilts;
 
 import cn.hutool.json.JSON;
+import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONUtil;
+import com.yzh.dao.ESpatialReferenceSystem;
 import onegis.psde.psdm.OType;
 import onegis.psde.reference.SpatialReferenceSystem;
 
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static cn.hutool.core.util.ObjectUtil.isEmpty;
 import static cn.hutool.core.util.ObjectUtil.isNull;
@@ -30,18 +33,9 @@ public class ESrsUtil {
                 srsList.add(oType.getSrs());
             }
         }
-        List<SpatialReferenceSystem> collect = new ArrayList<>();
-        for (SpatialReferenceSystem spatialReferenceSystem : srsList) {
-            if (collect.size() == 0) {
-                collect.add(spatialReferenceSystem);
-                continue;
-            }
-            for (int i = 0; i < collect.size(); i++) {
-                if (!spatialReferenceSystem.getId().equals(collect.get(i).getId())) {
-                    collect.add(spatialReferenceSystem);
-                }
-            }
-        }
+        JSONArray jsonArray = JSONUtil.parseArray(srsList);
+        List<ESpatialReferenceSystem> eSpatialReferenceSystems = jsonArray.toList(ESpatialReferenceSystem.class);
+        List<ESpatialReferenceSystem> collect = eSpatialReferenceSystems.stream().distinct().collect(Collectors.toList());
         JSON json = JSONUtil.parse(collect);
         String path = "E:\\test\\" + sDomain.getName() + "\\test.srs";
         FileTools.exportFile(json, path);
