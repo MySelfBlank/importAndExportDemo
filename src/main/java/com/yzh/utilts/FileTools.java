@@ -74,8 +74,12 @@ public class FileTools {
         JSONObject sourceData = JSONUtil.parseObj(object);
         JSONObject clearData = (JSONObject) JSONUtil.parse(sourceData.get("data"));
         JSONArray clearDatalist = (JSONArray) clearData.get("list");
+//        List<JSON> relations =new ArrayList<>();
         List<T> relations = clearDatalist.toList(tClass);
 //        List<Relation> relations = JsonUtils.jsonToList(clearData.get("list").toString(), Relation.class);
+//        for (Object o : clearDatalist) {
+//            relations.add(JSONUtil.parse(o));
+//        }
         return relations;
     }
 
