@@ -27,7 +27,6 @@ public enum MyApi {
     //获取时空域下的连接关系 参数信息传入时空域 sdomian
     getNetWork("", "http://bt1.geosts.ac.cn/api/dae"+dev+"/rest/v0.1.0/datastore/getRelationCatalog"),
 
-
     //获取时空域下的连接关系
     getRelationById("getRelation", "http://bt1.geosts.ac.cn/api/dae"+dev+"/datastore/rest/v0.1.0/datastore/orelation/query"),
 
@@ -39,8 +38,12 @@ public enum MyApi {
     //获取行为属性传入id
     getModelById("getModelById", "http://bt1.geosts.ac.cn/api/dae"+dev+"/datastore/rest/v0.1.0/datastore/model/query"),
 
+    //导入字段 Post (允许批量插入)
+    insertField("","http://bt1.geosts.ac.cn/api/dae"+dev+"/datastore/rest/v0.1.0/datastore/ofield/insert?token=@token"),
+
     //获取行为类别传入id
     getModelDefById("getModelDefById","http://bt1.geosts.ac.cn/api/dae"+dev+"/datastore/rest/v0.1.0/datastore/modeldef/query"),
+
     //注销本次登录
     logout("logout", "http://bt1.geosts.ac.cn/api/uc"+dev+"/api/v2/account/logout");
 
