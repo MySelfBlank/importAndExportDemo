@@ -63,21 +63,11 @@ public class OtypeUtilts {
         params.put("ids", classIDs.toArray());
         String otypeInfoStr = HttpUtil.get(MyApi.getOtypesByIds.getValue(), params);
         JSONObject otypeInfoJson = formatData(otypeInfoStr);
-        List<JSONObject> oTypesJsonList = JSONArray.parseArray(otypeInfoJson.getStr("list"), JSONObject.class);
-
-        //类模板集合
-
-
-        oTypesJsonList.forEach(value -> {
-            //System.out.println(v.toBean(OType.class).getName());
-            oTypeList.add(value.toBean(OType.class));
-        });
+        oTypeList.addAll(JsonUtils.jsonToList(otypeInfoJson.getStr("list"),OType.class));
         //处理类模板(暂不处理，直接导出)
 
         //打印类模板
         JSON parse = JSONUtil.parse(oTypeList);
-//        System.out.println(oTypeList);
-//        System.out.println(parse);
         exportFile(parse, "E:\\test\\" + sDomain.getName() + "\\test.otype","Otype");
     }
 
