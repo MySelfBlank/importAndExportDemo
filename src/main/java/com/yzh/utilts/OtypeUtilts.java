@@ -16,8 +16,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
-import static com.yzh.Index.sDomain;
-import static com.yzh.Index.sObjectsList;
+import static com.yzh.Index.*;
 import static com.yzh.utilts.ConnectorUtils.dsConnectors2EConnectors;
 import static com.yzh.utilts.FieldUtils.dsField2Field;
 import static com.yzh.utilts.FileTools.exportFile;
@@ -43,9 +42,11 @@ public class OtypeUtilts {
         String objectJsonStr = HttpUtil.get(MyApi.getObject.getValue(), params);
         JSONObject data = formatData(objectJsonStr);
 
+        List<JSONObject> objectList =null;
         String objectListStr = data.getStr("list");
         sObjectsList.addAll(JsonUtils.jsonToList(objectListStr, SObject.class));
-        List<JSONObject> objectList = JSONArray.parseArray(objectListStr, JSONObject.class);
+        objectList = JSONArray.parseArray(objectListStr, JSONObject.class);
+
 
 
         //获取当前时空域下的所有类模板Id
@@ -65,7 +66,8 @@ public class OtypeUtilts {
         List<JSONObject> oTypesJsonList = JSONArray.parseArray(otypeInfoJson.getStr("list"), JSONObject.class);
 
         //类模板集合
-        List<OType> oTypeList = new ArrayList<>();
+
+
         oTypesJsonList.forEach(value -> {
             //System.out.println(v.toBean(OType.class).getName());
             oTypeList.add(value.toBean(OType.class));

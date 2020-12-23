@@ -10,6 +10,7 @@ import onegis.psde.attribute.Attribute;
 import onegis.psde.attribute.Field;
 import onegis.psde.form.Form;
 import onegis.psde.form.FormStyle;
+import onegis.psde.psdm.OType;
 import onegis.psde.psdm.SDomain;
 import onegis.psde.psdm.SObject;
 import org.slf4j.Logger;
@@ -32,12 +33,12 @@ import static com.yzh.utilts.SDomainUtil.getSDomain;
  */
 
 public class Index {
-
     public static int pages;
     private static int pageNum = 1;
     private final static int pageSize = 10;
     public static SDomain sDomain;
     public static List<SObject> sObjectsList = new ArrayList<>();
+    public static List<OType> oTypeList = new ArrayList<>();
 
     private static final Logger logger = LoggerFactory.getLogger(Index.class);
 
@@ -45,8 +46,10 @@ public class Index {
         logger.debug("开始运行");
         //用户Token
         Scanner input = new Scanner(System.in);
+        System.out.println("请选择开发环境：[1]：prod  [2]：dev");
+        EnvironmentSelectTool.selectEnv();
         System.out.println("请输入您的账号和密码");
-        login("yzhyaoxiaozhi@foxmail.com", "yzh1997");
+        login("asiayu01@163.com", "yu1306730458");
 //        login(input.nextLine().trim(), input.nextLine().trim());
 
         //get请求 并返回请求结果（时空域信息）
@@ -133,7 +136,11 @@ public class Index {
         //导出时空域下类模板
         OtypeUtilts.getOtype();
         //导出时空域下的关系
-        ERelationUtil.getNetWork(sObjectsList);
+        ERelationUtil.getRelation(sObjectsList);
+        //导出时空域下的行为
+        EModelUtil.getModelsFile(oTypeList);
+        //导出时空域下的行为类别
+        EModelDefUtil.loadModelDefFile(oTypeList);
         //字段集合
         List<Field> fieldList = new ArrayList<>();
         //属性集合
