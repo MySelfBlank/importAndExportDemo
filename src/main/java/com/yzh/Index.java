@@ -39,7 +39,7 @@ public class Index {
     public static SDomain sDomain;
     public static List<SObject> sObjectsList = new ArrayList<>();
     public static List<OType> oTypeList = new ArrayList<>();
-
+    //
     private static final Logger logger = LoggerFactory.getLogger(Index.class);
 
     public static void main(String[] args) throws Exception {
