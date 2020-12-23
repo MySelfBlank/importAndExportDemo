@@ -6,6 +6,7 @@ import onegis.psde.psdm.OType;
 import onegis.psde.reference.SpatialReferenceSystem;
 
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
 import java.util.List;
 
 import static cn.hutool.core.util.ObjectUtil.isEmpty;
@@ -19,7 +20,7 @@ import static com.yzh.Index.sDomain;
  */
 public class ESrsUtil {
 
-    public static void getSrs(List<OType> oTypeList){
+    public static void getSrs(List<OType> oTypeList) throws ConcurrentModificationException {
         if (oTypeList==null||oTypeList.size()==0){
             return ;
         }
@@ -35,8 +36,8 @@ public class ESrsUtil {
                 collect.add(spatialReferenceSystem);
                 continue;
             }
-            for (SpatialReferenceSystem referenceSystem : collect) {
-                if(!spatialReferenceSystem.getId().equals(referenceSystem.getId())){
+            for (int i=0;i< collect.size(); i++) {
+                if(!spatialReferenceSystem.getId().equals(collect.get(i).getId())){
                     collect.add(spatialReferenceSystem);
                 }
             }
