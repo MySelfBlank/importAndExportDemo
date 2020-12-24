@@ -31,6 +31,7 @@ public class OtypeUtilts {
     private static Set<Long> classIDs = new HashSet<>();
     private static final Logger logger = LoggerFactory.getLogger(OtypeUtilts.class);
     static Map<String, Object> params = new HashMap<>();
+    static List<JSONObject> jsonObjects = new ArrayList<>();
 
     public static void getOtype() throws Exception {
         params.put("sdomains", UserInfo.domain);
@@ -64,6 +65,10 @@ public class OtypeUtilts {
         params.put("ids", classIDs.toArray());
         String otypeInfoStr = HttpUtil.get(MyApi.getOtypesByIds.getValue(), params);
         JSONObject otypeInfoJson = formatData(otypeInfoStr);
+        //传递过去对象集合对行为类进行处理
+        jsonObjects.addAll(JsonUtils.jsonToList(otypeInfoJson.getStr("list"),JSONObject.class));
+//        EModelUtil.getEModel(jsonObjects);
+
         oTypeList.addAll(JsonUtils.jsonToList(otypeInfoJson.getStr("list"),OType.class));
         //处理类模板(暂不处理，直接导出)
 

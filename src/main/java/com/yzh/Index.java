@@ -139,6 +139,7 @@ public class Index {
         ERelationUtil.getRelation(sObjectsList);
         //导出时空域下的行为
         EModelUtil.getModelsFile(oTypeList);
+        EModelUtil.getEModelScriptFile();
         //导出时空域下的行为类别
         EModelDefUtil.loadModelDefFile(oTypeList);
         //导出时空域下的空间参照
