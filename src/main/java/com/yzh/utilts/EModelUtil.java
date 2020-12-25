@@ -96,6 +96,9 @@ public class EModelUtil {
     //下载行为下的脚本文件
     public static void getEModelScriptFile() throws IOException {
         Set<String> eModelFile = getEModelScript();
+        if (eModelFile.size()==0){
+            return;
+        }
         int i=1;
         for (String script : eModelFile) {
             //获取文件后缀
@@ -140,7 +143,7 @@ public class EModelUtil {
         for (EModel eModel : list) {
             Mobj mobj = eModel.getMobj();
             if (!isNull(mobj)){
-                if (mobj.getScript()!=null) {
+                if (mobj.getScript()!=null&&!mobj.getScript().equals("")) {
                     scriptSet.add(mobj.getScript());
                 }
             }
