@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -204,6 +205,30 @@ public class FileTools {
     public static <T> List<T> jsonArray2List(String JsonArrayStr, Class<T> tClass){
         JSONArray jsonArray = JSONUtil.parseArray(JsonArrayStr);
         return jsonArray.toList(tClass);
+    }
+
+    /**
+     * 获取文件夹下所有文件
+     * @param fileUrl
+     * @return
+     */
+    public static List<File> getFiles(String fileUrl){
+        //目标集合fileList
+        List<File> fileList = new ArrayList<>();
+        File file  = new File(fileUrl);
+        if (file.isDirectory()){
+            File[] files = file.listFiles();
+            for (File fileIndex : files) {
+                //如果文件为目录则进行递归搜索
+                if (fileIndex.isDirectory()){
+                    getFiles(fileIndex.getPath());
+                }else {
+                    //如果文件为普通文件，则将文件加入集合
+                    fileList.add(fileIndex);
+                }
+            }
+        }
+        return fileList;
     }
 }
 

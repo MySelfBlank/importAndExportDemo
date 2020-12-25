@@ -73,10 +73,13 @@ public class EModelDefUtil {
      * @param oTypeList
      */
     public static void loadModelDefFile( List<OType> oTypeList) throws Exception {
-        Set<Long> ids = getModelDefId(oTypeList);
+        Set<Long> ModelDefIds = getModelDefId(oTypeList);
+        if (ModelDefIds.size()==0){
+            return;
+        }
         Map<String, Object> param = new HashMap<>();
         param.put("token", UserInfo.token);
-        param.put("ids", ids.toArray());
+        param.put("ids", ModelDefIds.toArray());
         param.put("DESCOrAsc","true");
         String relationStr = HttpUtil.get(MyApi.getModelDefById.getValue(), param);
 

@@ -12,13 +12,15 @@ public class EnvironmentSelectTool {
     public static void selectEnv(){
         Scanner scanner = new Scanner(System.in);
         int select = scanner.nextInt();
-        switch (select){
-            case 1:
-                dev="";
-                break;
-            case 2:
-                dev="-dev";
-                break;
-        }
+            switch (select) {
+                case 1:
+                    dev = "";
+                    break;
+                case 2:
+                    dev = "-dev";
+                    break;
+                default:
+                    break;
+            }
     }
 }

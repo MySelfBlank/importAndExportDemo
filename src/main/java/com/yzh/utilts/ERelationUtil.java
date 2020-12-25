@@ -32,7 +32,7 @@ public class ERelationUtil {
      */
     public static void getRelation(List<SObject> sObjects) throws Exception {
 
-        Set<Long> ids = new HashSet<>();
+        Set<Long> RelationIds = new HashSet<>();
         if (sObjects == null || sObjects.size() == 0) {
             return;
         }
@@ -43,9 +43,9 @@ public class ERelationUtil {
                 continue;
             }
             List<RNode> nodes = network.getNodes();
-            ids.addAll(getRelationId(nodes));
+            RelationIds.addAll(getRelationId(nodes));
         }
-        getRelationFile(ids);
+        getRelationFile(RelationIds);
     }
 
     /**
@@ -54,7 +54,7 @@ public class ERelationUtil {
      * @return
      */
     public static Set<Long> getRelationId(List<RNode> nodes){
-        Set<Long> ids = new HashSet<>();
+        Set<Long> RelationIds = new HashSet<>();
         if (isNull(nodes)||isEmpty(nodes)){
             return new HashSet<>();
         }
@@ -67,9 +67,9 @@ public class ERelationUtil {
             if (relation == null) {
                 continue;
             }
-            ids.add(relation.getId());
+            RelationIds.add(relation.getId());
         }
-        return ids;
+        return RelationIds;
     }
 
     /**

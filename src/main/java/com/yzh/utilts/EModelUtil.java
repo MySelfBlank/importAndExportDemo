@@ -77,14 +77,17 @@ public class EModelUtil {
      * @param modelsList
      */
     public static void getModelsFile(List<OType> modelsList) throws Exception {
-        Set<Long> ids = getModel(modelsList);
+        Set<Long> modelIds = getModel(modelsList);
+        if(modelIds.size()==0){
+            return;
+        }
         Map<String, Object> param = new HashMap<>();
         param.put("token", UserInfo.token);
-        param.put("ids", ids.toArray());
-        param.put("DESCOrAsc", "true");
+        param.put("ids", modelIds.toArray());
+        param.put("DESCOrAsc", true);
         String relationStr = HttpUtil.get(MyApi.getModelById.getValue(), param);
 
-        list = forJsonList(relationStr, EModel.class);
+        list.addAll(forJsonList(relationStr, EModel.class));
 
         String path = "E:\\test\\" + sDomain.getName() + "\\test.models";
         exportFile(JSONUtil.parse(list), path, "Models");
@@ -138,9 +141,10 @@ public class EModelUtil {
         for (EModel eModel : list) {
             Mobj mobj = eModel.getMobj();
             if (!isNull(mobj)&&!isEmpty(mobj)){
-                if (!mobj.getScript().equals("")) {
-                    scriptSet.add(mobj.getScript());
-                }
+//                if (mobj.getScript().equals("")&&mobj.getScript()==null) {
+//                    continue;
+//                }
+                scriptSet.add(mobj.getScript());
             }
         }
         return scriptSet;
