@@ -8,6 +8,7 @@ import com.yzh.api.MyApi;
 import com.yzh.importTest.requestEntity.FormStyleEntity;
 import com.yzh.userInfo.UserInfo;
 import com.yzh.utilts.FileTools;
+import onegis.psde.form.Form;
 import onegis.psde.form.FormStyle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,6 +28,33 @@ public class FormImportUtil {
     //日志工厂
     private static final Logger logger = LoggerFactory.getLogger(FormImportUtil.class);
     public static Map<Long,Long> formStylesOidAndNewId = new HashMap<>();
+
+
+    public static void formImportHandle(){
+        //读取文件
+        logger.debug("形态开始导入===========》读取形态文件");
+        String formStylesStr = FileTools.readFile("E:\\test\\中原工_yzh\\test.forms");
+        List<Form> forms = FileTools.jsonArray2List(formStylesStr, Form.class);
+        //处理形态中的style 信息
+        for (Form form : forms) {
+            JSONArray jsonArray = JSONUtil.parseArray(form.getStyle());
+            handleJsonArray(jsonArray);
+            form.setStyle(jsonArray.toString());
+        }
+    }
+
+    public static void handleJsonArray(JSONArray jsonArray){
+        for (int i = 0; i < jsonArray.toArray().length; i++) {
+            Long aLong = formStylesOidAndNewId.get(Long.parseLong(jsonArray.get(i).toString()));
+            if(aLong!=null){
+                //先移除之前的ID
+                jsonArray.remove(i);
+                //添加新的ID
+                jsonArray.add(i,aLong.toString());
+            }
+        }
+    }
+
     public static void formStyleImportHandle(){
         //读取文件
         logger.debug("形态样式开始导入===========》读取形态样式文件");
