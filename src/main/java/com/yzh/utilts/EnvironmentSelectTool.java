@@ -7,7 +7,7 @@ import java.util.Scanner;
  * @ CreateDate    :  2020/12/23 9:51
  */
 public class EnvironmentSelectTool {
-    public static String dev= "";
+    public static String dev= "-dev";
 
     public static void selectEnv(){
         Scanner scanner = new Scanner(System.in);
