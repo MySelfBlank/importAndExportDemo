@@ -147,7 +147,7 @@ public class FieldUtils {
 
         }
         if (domain.size() > 0) {
-            eField.setDomain(domain);
+            eField.setDomainMap(domain);
         }
         //类型处理
         if (field.getType().getName().equalsIgnoreCase("date")) {
