@@ -39,7 +39,10 @@ public enum MyApi {
     getModelById("getModelById", "http://bt1.geosts.ac.cn/api/dae"+dev+"/datastore/rest/v0.1.0/datastore/model/query"),
 
     //导入字段 Post (允许批量插入)
-    insertField("","http://bt1.geosts.ac.cn/api/dae"+dev+"/datastore/rest/v0.1.0/datastore/ofield/insert?token=@token"),
+    insertField("insertField","http://bt1.geosts.ac.cn/api/dae"+dev+"/datastore/rest/v0.1.0/datastore/ofield/insert?token=@token"),
+
+    //导入形态样式 Post (允许批量插入)
+    insertFormStyle("insertFormStyle","http://bt1.geosts.ac.cn/api/dae"+dev+"/datastore/rest/v0.1.0/datastore/oformstyle/insert?token=@token"),
 
     //获取行为类别传入id
     getModelDefById("getModelDefById","http://bt1.geosts.ac.cn/api/dae"+dev+"/datastore/rest/v0.1.0/datastore/modeldef/query"),

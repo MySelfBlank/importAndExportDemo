@@ -63,6 +63,7 @@ public class FieldImportUtil {
             JSONArray array = FileTools.formatData2JSONArray(response);
             //上传完成将新老Id记录到Map当中
             fieldOldIdAndNewIdCache.put(field.getId(), array.get(0,JSONObject.class).getLong("id"));
+            logger.debug("id" +field.getId() + "导入完毕新Id为："+array.get(0,JSONObject.class).getLong("id"));
         }
 
         System.out.println(fieldsStr);
