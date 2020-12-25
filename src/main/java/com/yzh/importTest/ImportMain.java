@@ -1,11 +1,8 @@
 package com.yzh.importTest;
 
-import com.yzh.utilts.FileTools;
-import onegis.psde.attribute.Field;
+import com.yzh.importTest.importUtils.FormImportUtil;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import static com.yzh.utilts.FileTools.login;
 
 
 /**
@@ -15,11 +12,14 @@ import java.util.Map;
  */
 public class ImportMain {
     public static void main(String[] args) throws Exception {
-        //读取导出的字段信息
-        String fieldsStr = FileTools.readFile("E:\\test\\中原工_yzh\\test.fields");
-        List<Field> fieldList = FileTools.jsonArray2List(fieldsStr,Field.class);
-        Map<Long,Long> fieldOldIdAndNewId = new HashMap<>();
-        System.out.println(fieldsStr);
+        //用户需要先登录
+        System.out.println("请输入您的账号和密码");
+        login("asiayu01@163.com", "yu1306730458");
+        //字段导入
+//        FieldImportUtil.fieldImport();
+        //形态样式导入
+        FormImportUtil.formStyleImportHandle();
+        //形态导入
     }
 
 
@@ -29,4 +29,6 @@ public class ImportMain {
     如遇到Id重复需要重置Id
     重置前后的Id可用Map保存，方便修改Otype中的引用关系
     */
+
+    /*不采用批量导入，一个一个导入  防止个边数据导入报错*/
 }

@@ -71,6 +71,19 @@ public class FileTools {
         return (JSONObject) JSONUtil.parse(sourceData.get("data"));
     }
 
+    public static JSONArray formatData2JSONArray(String object) {
+        JSONObject sourceData = JSONUtil.parseObj(object);
+        return (JSONArray) JSONUtil.parse(sourceData.get("data"));
+    }
+
+    public static Boolean judgeImportState(String response){
+        JSONObject sourceData = JSONUtil.parseObj(response);
+        if(sourceData.getInt("status").equals(400)){
+            return true;
+        }
+        return false;
+    }
+
     public static <T> List forJsonList(String object,Class<T> tClass) throws Exception {
         JSONObject sourceData = JSONUtil.parseObj(object);
         JSONObject clearData = (JSONObject) JSONUtil.parse(sourceData.get("data"));

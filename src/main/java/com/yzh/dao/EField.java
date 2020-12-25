@@ -1,5 +1,7 @@
 package com.yzh.dao;
 
+import org.apache.commons.lang.StringUtils;
+
 import java.util.Map;
 
 /**
@@ -25,7 +27,12 @@ public class EField extends AbstractObject {
     /**
      * 字段值域
      */
-    private Map<String, Object> domain;
+    private Map<String, Object> domainMap;
+
+    /**
+     * 字段值域
+     */
+    private String domain;
 
     /**
      * 字段默认值
@@ -56,11 +63,19 @@ public class EField extends AbstractObject {
         this.type = type;
     }
 
-    public Map<String, Object> getDomain() {
+    public Map<String, Object> getDomainMap() {
+        return domainMap;
+    }
+
+    public void setDomainMap(Map<String, Object> domainMap) {
+        this.domainMap = domainMap;
+    }
+
+    public String getDomain() {
         return domain;
     }
 
-    public void setDomain(Map<String, Object> domain) {
+    public void setDomain(String domain) {
         this.domain = domain;
     }
 
