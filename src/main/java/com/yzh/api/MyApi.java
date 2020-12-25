@@ -44,6 +44,9 @@ public enum MyApi {
     //导入形态样式 Post (允许批量插入)
     insertFormStyle("insertFormStyle","http://bt1.geosts.ac.cn/api/dae"+dev+"/datastore/rest/v0.1.0/datastore/oformstyle/insert?token=@token"),
 
+    //导入关系Post
+    insertRelation("insertRelation","http://bt1.geosts.ac.cn/api/dae"+dev+"/datastore/rest/v0.1.0/datastore/orelation/insert?token=@token"),
+
     //获取行为类别传入id
     getModelDefById("getModelDefById","http://bt1.geosts.ac.cn/api/dae"+dev+"/datastore/rest/v0.1.0/datastore/modeldef/query"),
 
