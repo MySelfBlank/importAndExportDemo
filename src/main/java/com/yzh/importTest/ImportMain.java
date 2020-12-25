@@ -1,12 +1,6 @@
 package com.yzh.importTest;
 
-import com.yzh.importTest.importUtils.FieldImpotrUtil;
-import com.yzh.utilts.FileTools;
-import onegis.psde.attribute.Field;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import com.yzh.importTest.importUtils.FormImportUtil;
 
 import static com.yzh.utilts.FileTools.login;
 
@@ -22,9 +16,9 @@ public class ImportMain {
         System.out.println("请输入您的账号和密码");
         login("asiayu01@163.com", "yu1306730458");
         //字段导入
-        FieldImpotrUtil.fieldImport();
+//        FieldImportUtil.fieldImport();
         //形态样式导入
-
+        FormImportUtil.formStyleImportHandle();
         //形态导入
     }
 

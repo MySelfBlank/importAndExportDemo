@@ -25,9 +25,9 @@ import static cn.hutool.core.util.ObjectUtil.*;
  * @create 2020-12-24 14:16
  * @details
  */
-public class FieldImpotrUtil {
+public class FieldImportUtil {
     //日志工厂
-    private static final Logger logger = LoggerFactory.getLogger(FieldImpotrUtil.class);
+    private static final Logger logger = LoggerFactory.getLogger(FieldImportUtil.class);
     //缓存全局可用
     public static Map<Long,Long> fieldOldIdAndNewIdCache = new HashMap<>();
     public static void fieldImport() throws IOException {
