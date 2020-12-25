@@ -19,7 +19,6 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.*;
 
-import static cn.hutool.core.util.ObjectUtil.isEmpty;
 import static com.yzh.Index.sDomain;
 import static com.yzh.utilts.FileTools.exportFile;
 import static com.yzh.utilts.FileTools.forJsonList;
@@ -140,11 +139,10 @@ public class EModelUtil {
         Set<String> scriptSet = new HashSet<>();
         for (EModel eModel : list) {
             Mobj mobj = eModel.getMobj();
-            if (!isNull(mobj)&&!isEmpty(mobj)){
-//                if (mobj.getScript().equals("")&&mobj.getScript()==null) {
-//                    continue;
-//                }
-                scriptSet.add(mobj.getScript());
+            if (!isNull(mobj)){
+                if (mobj.getScript()!=null) {
+                    scriptSet.add(mobj.getScript());
+                }
             }
         }
         return scriptSet;
