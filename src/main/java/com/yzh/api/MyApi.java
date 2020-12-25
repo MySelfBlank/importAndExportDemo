@@ -44,6 +44,8 @@ public enum MyApi {
     //获取行为类别传入id
     getModelDefById("getModelDefById","http://bt1.geosts.ac.cn/api/dae"+dev+"/datastore/rest/v0.1.0/datastore/modeldef/query"),
 
+    //行为脚本的下载
+    getModelScript("getModelScript","http://bt1.geosts.ac.cn/api/dae"+dev+"/hdfs-service/hdfs/rest/v0.1.0/datastore/slave/hdfs/download"),
     //注销本次登录
     logout("logout", "http://bt1.geosts.ac.cn/api/uc"+dev+"/api/v2/account/logout");
 

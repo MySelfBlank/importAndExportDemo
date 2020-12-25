@@ -1,5 +1,10 @@
 package com.yzh.dao;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import onegis.psde.psdm.User;
+
+import java.util.Date;
+
 /**
  * @author Yzh
  * @create 2020-12-16 18:10
@@ -15,6 +20,7 @@ public class EModel extends AbstractObject {
      */
     private EModelDef mdef;
 
+    private User user;
     /**
      * 行为引用
      */
@@ -29,6 +35,11 @@ public class EModel extends AbstractObject {
      * 执行器
      */
     private String executor = "";
+    @JsonFormat(
+            pattern = "yyyy-MM-dd HH:mm:ss",
+            timezone = "GMT+8"
+    )
+    private Date mtime;
 
     public String getInitData() {
         return initData;
@@ -68,5 +79,21 @@ public class EModel extends AbstractObject {
 
     public void setExecutor(String executor) {
         this.executor = executor;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Date getMtime() {
+        return mtime;
+    }
+
+    public void setMtime(Date mtime) {
+        this.mtime = mtime;
     }
 }
