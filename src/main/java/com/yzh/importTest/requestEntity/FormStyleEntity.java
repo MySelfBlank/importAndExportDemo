@@ -1,8 +1,6 @@
 package com.yzh.importTest.requestEntity;
 
-import onegis.psde.dictionary.FormEnum;
 import onegis.psde.psdm.AObject;
-import org.springframework.beans.factory.annotation.Value;
 
 /**
  * @author Yzh
