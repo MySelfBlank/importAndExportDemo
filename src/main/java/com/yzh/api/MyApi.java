@@ -52,6 +52,10 @@ public enum MyApi {
 
     //行为脚本的下载
     getModelScript("getModelScript","http://bt1.geosts.ac.cn/api/dae"+dev+"/hdfs-service/hdfs/rest/v0.1.0/datastore/slave/hdfs/download"),
+
+    //获取Dobject根据Id
+    getDObject("getDObject","http://bt1.geosts.ac.cn/api/dae"+dev+"/datastore/rest/v0.1.0/datastore/dobject/queryByFrom"),
+
     //注销本次登录
     logout("logout", "http://bt1.geosts.ac.cn/api/uc"+dev+"/api/v2/account/logout");
 

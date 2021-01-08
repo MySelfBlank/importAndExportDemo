@@ -1,13 +1,19 @@
 package com.yzh.utilts;
 
+import cn.hutool.core.map.MapUtil;
+import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.http.HttpUtil;
 import cn.hutool.json.JSON;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import com.alibaba.fastjson.JSONArray;
+import com.google.common.collect.Lists;
 import com.yzh.api.MyApi;
 import com.yzh.dao.EClassesOutPutModel;
+import com.yzh.dao.exportModel.EDObject;
+import com.yzh.dao.exportModel.ESObject;
 import com.yzh.userInfo.UserInfo;
+import onegis.psde.psdm.DObject;
 import onegis.psde.psdm.OType;
 import onegis.psde.psdm.SObject;
 import onegis.psde.util.JsonUtils;
@@ -16,6 +22,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
+import static cn.hutool.core.util.ObjectUtil.*;
 import static com.yzh.Index.*;
 import static com.yzh.utilts.ConnectorUtils.dsConnectors2EConnectors;
 import static com.yzh.utilts.FieldUtils.dsField2Field;
@@ -35,11 +42,17 @@ public class OtypeUtilts {
 
     public static void getOtype() throws Exception {
         params.put("sdomains", UserInfo.domain);
-        params.put("loadNetwork", true);
-        params.put("loadCompose", true);
-        params.put("loadAction", true);
-        params.put("loadModel", true);
         params.put("loadForm", true);
+        params.put("loadDynamicData", false);
+        params.put("loadModel", true);
+        params.put("loadNetwork", true);
+        params.put("loadObjType", true);
+        params.put("loadDes",true);
+        params.put("loadAction", true);
+        params.put("loadChildren", true);
+        params.put("loadVersion",true);
+        params.put("orderType","VID");
+        params.put("descOrAsc", false);
         String objectJsonStr = HttpUtil.get(MyApi.getObject.getValue(), params);
         JSONObject data = formatData(objectJsonStr);
 
@@ -48,7 +61,9 @@ public class OtypeUtilts {
         List<SObject> sObjects = JsonUtils.jsonToList(objectListStr, SObject.class);
         sObjectsList.addAll(sObjects);
         objectList = JSONArray.parseArray(objectListStr, JSONObject.class);
+        //处理SObject
 
+        getDObjectList(sObjects);
 
 
         //获取当前时空域下的所有类模板Id
@@ -100,5 +115,53 @@ public class OtypeUtilts {
         model.setSrs("epsg:4326");
         model.setTrs("onegis:1001");
         return model;
+    }
+
+    public static List<ESObject> sobject2ESObject (List<SObject> sObjectList){
+        List<ESObject> esobject = new ArrayList<>();
+        if(isEmpty(sObjectList)||isNull(sObjectList)){
+            return esobject;
+        }
+
+
+        return esobject;
+    }
+
+    //获取DObject信息
+    public static void getDObjectList (List<SObject> sObjectList){
+        if(isEmpty(sObjectList)||isNull(sObjectList)){
+            return;
+        }
+        Set<Long> dobjectFromIds = new HashSet<>();
+        sObjectList.forEach(sObject -> {
+            Long from = sObject.getId();
+            if (from != null && from != 0) {
+                dobjectFromIds.add(from);
+            }
+        });
+
+        if(dobjectFromIds.size()>0){
+            List<Long> dobjectIds = new ArrayList<>(dobjectFromIds);
+            List<EDObject> edObjects = new ArrayList<>();
+            List<List<Long>> partition = Lists.partition(dobjectIds, 10); //将List进行切分，每个大小为10
+            try{
+                List<DObject> dObjects = new ArrayList<>();
+                for (List<Long> list : partition) {
+                    dObjects.addAll(queryDObject(list));
+                }
+                edObjects = dsDobjectsToEDObjects(dObjects);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+//            ExecuteContainer.addDObject(edObjects);
+        }
+    }
+    public static List<DObject> queryDObject (List<Long> dobjectIds){
+        Map<String,Object> params = new HashMap<>();
+        params.put("fromIds",dobjectIds.toArray());
+        String respondStr = HttpUtil.get(MyApi.getDObject.getValue(), params);
+        JSONObject object = formatData(respondStr);
+        List<DObject> dObjects=JSONUtil.toList(object.getStr("list"),DObject.class);
+        return dObjects;
     }
 }
