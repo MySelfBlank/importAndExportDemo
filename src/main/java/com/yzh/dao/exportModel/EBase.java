@@ -1,4 +1,4 @@
-package model;
+package com.yzh.dao.exportModel;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import onegis.psde.psdm.OBase;

@@ -1,4 +1,4 @@
-package model;
+package com.yzh.dao.exportModel;
 
 import java.util.ArrayList;
 import java.util.List;

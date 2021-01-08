@@ -1,6 +1,7 @@
-package model;
+package com.yzh.dao.exportModel;
 
-import enums.EActionEnum;
+
+import com.yzh.dao.enums.EActionEnum;
 
 /**
  * 具体行为事件

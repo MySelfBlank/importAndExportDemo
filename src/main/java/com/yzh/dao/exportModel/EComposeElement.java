@@ -1,4 +1,4 @@
-package model;
+package com.yzh.dao.exportModel;
 
 /**
  * 组成元素

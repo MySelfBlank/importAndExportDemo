@@ -1,4 +1,6 @@
-package model;
+package com.yzh.dao.exportModel;
+
+import com.yzh.dao.EField;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,8 +1,6 @@
-package model;
+package com.yzh.dao.exportModel;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import onegis.psde.util.JsonUtils;
 
 import java.util.ArrayList;
 import java.util.List;

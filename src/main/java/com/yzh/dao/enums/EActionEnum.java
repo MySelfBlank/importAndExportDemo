@@ -1,4 +1,4 @@
-package enums;
+package com.yzh.dao.enums;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 
