@@ -63,11 +63,19 @@ public class EField extends AbstractObject {
     }
 
     public Map<String, Object> getDomainMap() {
-        return domain;
+        return domainMap;
     }
 
     public void setDomainMap(Map<String, Object> domainMap) {
-        this.domain = domainMap;
+        this.domainMap = domainMap;
+    }
+
+    public String getDomain() {
+        return domain;
+    }
+
+    public void setDomain(String domain) {
+        this.domain = domain;
     }
 
     public String getDefaultValue() {
