@@ -25,6 +25,7 @@ import java.util.*;
 import static cn.hutool.core.util.ObjectUtil.*;
 import static com.yzh.Index.*;
 import static com.yzh.utilts.ConnectorUtils.dsConnectors2EConnectors;
+import static com.yzh.utilts.EDObjectUTil.getDObjectList;
 import static com.yzh.utilts.FieldUtils.dsField2Field;
 import static com.yzh.utilts.FileTools.exportFile;
 import static com.yzh.utilts.FileTools.formatData;
@@ -61,10 +62,10 @@ public class OtypeUtilts {
         List<SObject> sObjects = JsonUtils.jsonToList(objectListStr, SObject.class);
         sObjectsList.addAll(sObjects);
         objectList = JSONArray.parseArray(objectListStr, JSONObject.class);
-        //处理SObject
 
+        //获取数据对象
         getDObjectList(sObjects);
-
+        //处理SObject
 
         //获取当前时空域下的所有类模板Id
 
@@ -125,43 +126,5 @@ public class OtypeUtilts {
 
 
         return esobject;
-    }
-
-    //获取DObject信息
-    public static void getDObjectList (List<SObject> sObjectList){
-        if(isEmpty(sObjectList)||isNull(sObjectList)){
-            return;
-        }
-        Set<Long> dobjectFromIds = new HashSet<>();
-        sObjectList.forEach(sObject -> {
-            Long from = sObject.getId();
-            if (from != null && from != 0) {
-                dobjectFromIds.add(from);
-            }
-        });
-
-        if(dobjectFromIds.size()>0){
-            List<Long> dobjectIds = new ArrayList<>(dobjectFromIds);
-            List<EDObject> edObjects = new ArrayList<>();
-            List<List<Long>> partition = Lists.partition(dobjectIds, 10); //将List进行切分，每个大小为10
-            try{
-                List<DObject> dObjects = new ArrayList<>();
-                for (List<Long> list : partition) {
-                    dObjects.addAll(queryDObject(list));
-                }
-                edObjects = dsDobjectsToEDObjects(dObjects);
-            }catch (Exception e){
-                e.printStackTrace();
-            }
-//            ExecuteContainer.addDObject(edObjects);
-        }
-    }
-    public static List<DObject> queryDObject (List<Long> dobjectIds){
-        Map<String,Object> params = new HashMap<>();
-        params.put("fromIds",dobjectIds.toArray());
-        String respondStr = HttpUtil.get(MyApi.getDObject.getValue(), params);
-        JSONObject object = formatData(respondStr);
-        List<DObject> dObjects=JSONUtil.toList(object.getStr("list"),DObject.class);
-        return dObjects;
     }
 }

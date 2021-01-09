@@ -25,12 +25,13 @@ public class EField extends AbstractObject {
     /**
      * 字段值域
      */
+    private Map<String, Object> domainMap;
 
-    private Map<String, Object> domain;
 
     /**
      * 字段值域
      */
+    private String domain;
 //    private String domain;
 
     /**
