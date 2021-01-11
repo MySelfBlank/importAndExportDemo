@@ -1,5 +1,7 @@
 package com.yzh.dao;
 
+import com.yzh.dao.exportModel.AbstractObject;
+
 import java.util.Map;
 
 /**

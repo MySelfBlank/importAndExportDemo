@@ -1,12 +1,14 @@
 package com.yzh.dao;
 
+import com.yzh.dao.exportModel.AbstractObject;
+
 import java.util.List;
 
 /**
  * @ Author        :  yuyazhou
  * @ CreateDate    :  2020/12/22 15:58
  */
-public class ERelation extends AbstractObject{
+public class ERelation extends AbstractObject {
     /**
      * 描述关系的字段
      */
