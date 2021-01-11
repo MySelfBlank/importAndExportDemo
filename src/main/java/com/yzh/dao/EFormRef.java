@@ -22,6 +22,8 @@ public class EFormRef {
      */
     private String fname;
 
+    private Long fid;
+
     /**
      * 文件扩展名
      */
@@ -60,6 +62,14 @@ public class EFormRef {
 
     public void setExtension(String extension) {
         this.extension = extension;
+    }
+
+    public Long getFid() {
+        return fid;
+    }
+
+    public void setFid(Long fid) {
+        this.fid = fid;
     }
 
     public static void main(String[] args) throws Exception {

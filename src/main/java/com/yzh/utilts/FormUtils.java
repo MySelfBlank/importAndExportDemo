@@ -18,6 +18,7 @@ import onegis.psde.util.JsonUtils;
 import org.springframework.util.StringUtils;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static cn.hutool.core.util.ObjectUtil.*;
 
@@ -113,7 +114,8 @@ public class FormUtils {
             EForm eForm = dsForm2EForm(form);
             eForms.add(eForm);
         }
-        return eForms;
+
+        return eForms.stream().distinct().collect(Collectors.toList());
     }
 
     public static EForm dsForm2EForm(Form form) {
@@ -139,6 +141,7 @@ public class FormUtils {
             eFormRef.setDesc(block.getDes());
             eFormRef.setExtension(block.getExtension());
             eFormRef.setFname(block.getFname());
+            eFormRef.setFid(block.getRefid());
         }
         return eFormRef;
     }

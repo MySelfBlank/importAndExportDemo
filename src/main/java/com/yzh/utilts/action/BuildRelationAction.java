@@ -5,7 +5,7 @@ import com.yzh.dao.exportModel.*;
 import onegis.psde.psdm.SObject;
 import onegis.psde.relation.Network;
 import onegis.psde.relation.RNode;
-import utils.ENetWorkUtils;
+//import utils.ENetWorkUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -71,14 +71,14 @@ public class BuildRelationAction {
             return;
         }
         Long id = rNode.getId();
-        ERNode erNode = ENetWorkUtils.buildERNode(rNode);
+//        ERNode erNode = ENetWorkUtils.buildERNode(rNode);
 
         EAction eAction = new EAction();
         eAction.setId(id);
         eAction.setOperation(new EActionEvent(eActionEnum, EActionEnum.RELATION));
 
         eVersion.addAction(eAction);
-        eNetWork.addRNode(erNode);
+//        eNetWork.addRNode(erNode);
     }
 
 }

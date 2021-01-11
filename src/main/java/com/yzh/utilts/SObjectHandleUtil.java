@@ -82,33 +82,33 @@ public class SObjectHandleUtil {
      * @return ESObject
      */
     public static ESObject buildESObject(List<SObject> resList, Map<Long, List<Long>> dobjectMap) {
-        if (!GeneralUtils.isNotEmpty(resList)) {
-            return null;
-        }
-        // 找出对象版本最小的那个，也就是当前列表中对象的起始版本
-        SObject startSObject = getOriginal(resList);
-        if (startSObject == null) {
-            return null;
-        }
-        SpatialReferenceSystem spatialReferenceSystem = startSObject.getSrs();
-        TimeReferenceSystem timeReferenceSystem = startSObject.getTrs();
-        if (spatialReferenceSystem != null) {
-            ExecuteContainer.addSrsSystem(startSObject.getSrs());
-            ExecuteContainer.addSrsSystemId(spatialReferenceSystem.getId());
-        }
-
-        if (timeReferenceSystem != null) {
-            ExecuteContainer.addTrsSystem(startSObject.getTrs());
-            ExecuteContainer.addTrsSystemId(timeReferenceSystem.getId());
-        }
-
-        OType oType = startSObject.getOtype();
-        if (oType != null && oType.getId() != null) {
-            ExecuteContainer.addOType(oType);
-            ExecuteContainer.addOTypeId(oType.getId());
-        }
-
-        return buildESObject(startSObject, dobjectMap);
+//        if (!GeneralUtils.isNotEmpty(resList)) {
+//            return null;
+//        }
+//        // 找出对象版本最小的那个，也就是当前列表中对象的起始版本
+//        SObject startSObject = getOriginal(resList);
+//        if (startSObject == null) {
+//            return null;
+//        }
+//        SpatialReferenceSystem spatialReferenceSystem = startSObject.getSrs();
+//        TimeReferenceSystem timeReferenceSystem = startSObject.getTrs();
+//        if (spatialReferenceSystem != null) {
+//            ExecuteContainer.addSrsSystem(startSObject.getSrs());
+//            ExecuteContainer.addSrsSystemId(spatialReferenceSystem.getId());
+//        }
+//
+//        if (timeReferenceSystem != null) {
+//            ExecuteContainer.addTrsSystem(startSObject.getTrs());
+//            ExecuteContainer.addTrsSystemId(timeReferenceSystem.getId());
+//        }
+//
+//        OType oType = startSObject.getOtype();
+//        if (oType != null && oType.getId() != null) {
+//            ExecuteContainer.addOType(oType);
+//            ExecuteContainer.addOTypeId(oType.getId());
+//        }
+//
+        return buildESObject(resList, dobjectMap);
     }
 
 

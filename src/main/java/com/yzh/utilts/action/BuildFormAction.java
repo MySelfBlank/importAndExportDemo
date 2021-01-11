@@ -18,9 +18,9 @@ import onegis.psde.form.Forms;
 import onegis.psde.form.ModelBlock;
 import onegis.psde.io.OsmReader;
 import onegis.psde.psdm.SObject;
-import services.RequestServices;
-import services.export.ExecuteContainer;
-import services.impl.RequestServicesImpl;
+//import services.RequestServices;
+//import services.export.ExecuteContainer;
+//import services.impl.RequestServicesImpl;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -147,38 +147,38 @@ public class BuildFormAction {
             if (!"".equals(eFormRef.getName()) && !"".equals(eFormRef.getFname())) {
                 eForm.setFormRef(eFormRef);
                 Long modelID = modelBlock.getRefid();
-                ExecuteContainer.addModelId(modelID);
-                ExecuteContainer.addModelName(modelID+"", fname);
+//                ExecuteContainer.addModelId(modelID);
+//                ExecuteContainer.addModelName(modelID+"", fname);
             } else if (modelBlock.getRefid() != null) {
                 Long fid = modelBlock.getRefid();
 
                 try {
                     // 读取模型信息(线上)
-                    RequestServices requestServices = new RequestServicesImpl();
-                    List<ModelBlock> modelBlocks = requestServices.getModel(fid);
-                    if (modelBlocks != null && modelBlocks.size() > 0) {
-                        modelBlock = modelBlocks.get(0);
-                        eFormRef.setName(GeneralUtils.isNotEmpty(modelBlock.getName()) ? modelBlock.getName() : "");
-                        eFormRef.setDesc(GeneralUtils.isNotEmpty(modelBlock.getDes()) ? modelBlock.getDes() : "");
-
-                        fname = modelBlock.getFname();
-                        if (GeneralUtils.isNotEmpty(fname)){
-                            fname = fname.replaceAll("/", "_").replaceAll(":", "");
-                        }
-                        fname = fname + "_" + modelBlock.getRefid();
-                        if (!GeneralUtils.isNotEmpty(fname) || fname.contains("?")){
-                            fname = modelBlock.getName() + "_" + fid + "";
-                        }
-                        eFormRef.setFname(fname);
-
-                        eFormRef.setExtension(GeneralUtils.isNotEmpty(modelBlock.getExtension()) ? modelBlock.getExtension() : "");
-                        eForm.setFormRef(eFormRef);
-                        // 下载
-//                            downLoadModelIDs.add(fid);
-//                            modelIdMaps.put(fid, fname);
-                        ExecuteContainer.addModelId(fid);
-                        ExecuteContainer.addModelName(fid+"", fname);
-                    }
+//                    RequestServices requestServices = new RequestServicesImpl();
+//                    List<ModelBlock> modelBlocks = requestServices.getModel(fid);
+//                    if (modelBlocks != null && modelBlocks.size() > 0) {
+//                        modelBlock = modelBlocks.get(0);
+//                        eFormRef.setName(GeneralUtils.isNotEmpty(modelBlock.getName()) ? modelBlock.getName() : "");
+//                        eFormRef.setDesc(GeneralUtils.isNotEmpty(modelBlock.getDes()) ? modelBlock.getDes() : "");
+//
+//                        fname = modelBlock.getFname();
+//                        if (GeneralUtils.isNotEmpty(fname)){
+//                            fname = fname.replaceAll("/", "_").replaceAll(":", "");
+//                        }
+//                        fname = fname + "_" + modelBlock.getRefid();
+//                        if (!GeneralUtils.isNotEmpty(fname) || fname.contains("?")){
+//                            fname = modelBlock.getName() + "_" + fid + "";
+//                        }
+//                        eFormRef.setFname(fname);
+//
+//                        eFormRef.setExtension(GeneralUtils.isNotEmpty(modelBlock.getExtension()) ? modelBlock.getExtension() : "");
+//                        eForm.setFormRef(eFormRef);
+//                        // 下载
+////                            downLoadModelIDs.add(fid);
+////                            modelIdMaps.put(fid, fname);
+////                        ExecuteContainer.addModelId(fid);
+////                        ExecuteContainer.addModelName(fid+"", fname);
+//                    }
 
                 } catch (Exception e) {
                     e.printStackTrace();

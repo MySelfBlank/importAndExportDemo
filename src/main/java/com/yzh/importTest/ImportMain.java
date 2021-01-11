@@ -20,7 +20,7 @@ public class ImportMain {
         //形态样式导入
         FormImportUtil.formStyleImportHandle();
         //形态导入
-        FormImportUtil.formImportHandle();
+//        FormImportUtil.formImportHandle();
     }
 
 
