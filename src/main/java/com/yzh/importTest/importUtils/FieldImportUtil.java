@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 import static cn.hutool.core.util.ObjectUtil.*;
+import static com.yzh.importTest.importUtils.IdCache.fieldOldIdAndNewIdCache;
 
 /**
  * @author Yzh
@@ -28,8 +29,7 @@ import static cn.hutool.core.util.ObjectUtil.*;
 public class FieldImportUtil {
     //日志工厂
     private static final Logger logger = LoggerFactory.getLogger(FieldImportUtil.class);
-    //缓存全局可用
-    public static Map<Long,Long> fieldOldIdAndNewIdCache = new HashMap<>();
+
     public static void fieldImport() throws IOException {
         logger.debug("字段开始导入===========》读取字段文件");
         String fieldsStr = FileTools.readFile("E:\\test\\中原工_yzh\\test.fields");
@@ -42,7 +42,7 @@ public class FieldImportUtil {
             EField eField = new EField();
             //清空请求参数
             param.clear();
-            eField.setName(field.getName()+" impotr");
+            eField.setName(field.getName());
             eField.setDomain(field.getDomain());
             eField.setCaption(field.getCaption());
             eField.setType(String.valueOf(field.getType().getValue()));
