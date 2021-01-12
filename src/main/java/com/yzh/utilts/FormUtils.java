@@ -163,7 +163,9 @@ public class FormUtils {
      * @param form
      */
     public static void getFormModel(Form form){
-
+        if (!form.getType().getName().equals("Model")){
+            return;
+        }
         EFormRef eFormRef = new EFormRef();
         if (FormEnum.MODEL.equals(form.getType())) {
             ModelBlock modelBlock = (ModelBlock) form.getFormref();

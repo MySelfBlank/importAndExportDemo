@@ -9,12 +9,12 @@ import com.yzh.utilts.action.BuildBaseAction;
 import com.yzh.utilts.action.BuildFormAction;
 import com.yzh.utilts.action.BuildRelationAction;
 import onegis.common.utils.GeneralUtils;
-import onegis.psde.psdm.OType;
 import onegis.psde.psdm.SObject;
-import onegis.psde.reference.SpatialReferenceSystem;
-import onegis.psde.reference.TimeReferenceSystem;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
