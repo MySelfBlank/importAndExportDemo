@@ -17,7 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-;
+;import static com.yzh.importTest.importUtils.IdCache.relationNewIdAndOldId;
 
 /**
  * @ Author        :  yuyazhou
@@ -26,7 +26,7 @@ import java.util.Map;
 public class RelationImportUtil {
     //日志工厂
     private static final Logger logger = LoggerFactory.getLogger(FieldImportUtil.class);
-    public static Map<Long, Long> relationNewIdAndOldId = new HashMap<>();
+
 
     /**
      * 导入关系,将id保存下来

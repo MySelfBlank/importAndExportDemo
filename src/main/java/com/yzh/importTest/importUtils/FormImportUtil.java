@@ -17,6 +17,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static com.yzh.importTest.importUtils.IdCache.formStylesOidAndNewId;
+
 /**
  * @author Yzh
  * @create 2020-12-25 9:23
@@ -25,7 +27,7 @@ import java.util.stream.Collectors;
 public class FormImportUtil {
     //日志工厂
     private static final Logger logger = LoggerFactory.getLogger(FormImportUtil.class);
-    public static Map<Long,Long> formStylesOidAndNewId = new HashMap<>();
+
 
 
     public static void formImportHandle(){
@@ -62,7 +64,7 @@ public class FormImportUtil {
         List<FormStyle> formStylesRemoveDef = formStyles.stream().filter(v -> !v.getName().contains("default_")).collect(Collectors.toList());
         for (FormStyle formStyle : formStylesRemoveDef) {
             FormStyleEntity formStyleEntity = new FormStyleEntity();
-            formStyleEntity.setName(formStyle.getName()+" impotr");
+            formStyleEntity.setName(formStyle.getName());
             formStyleEntity.setDes(formStyle.getDes());
             formStyleEntity.setStyle(formStyle.getStyle().getValue());
             formStyleEntity.setData(formStyle.getData());
