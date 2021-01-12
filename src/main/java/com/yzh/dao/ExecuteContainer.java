@@ -2,8 +2,7 @@ package com.yzh.dao;
 
 import com.yzh.dao.exportModel.EDObject;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author Yzh
@@ -14,6 +13,11 @@ public class ExecuteContainer {
      * 数据对象
      */
     public static List<EDObject> dObjectList = new ArrayList<>();
+    /**
+     * 存储需要下载的模型ID
+     */
+    public static Set<Long> modelIds = new HashSet<>();
+    public static Map<String, String> modelNamesMap = new HashMap<>();
 
     public static void clear(){
         dObjectList.clear();
@@ -23,5 +27,13 @@ public class ExecuteContainer {
         if (edObjects != null && !edObjects.isEmpty()) {
             dObjectList.addAll(edObjects);
         }
+    }
+    public static void addModelId(Long modelId) {
+        modelIds.add(modelId);
+    }
+
+    public static void addModelName(String modelId, String name) {
+
+        modelNamesMap.put(modelId, name);
     }
 }

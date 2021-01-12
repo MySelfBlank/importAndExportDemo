@@ -56,6 +56,15 @@ public enum MyApi {
     //获取Dobject根据Id
     getDObject("getDObject","http://bt1.geosts.ac.cn/api/dae"+dev+"/datastore/rest/v0.1.0/datastore/dobject/queryByFrom"),
 
+    //下载dll文件
+    getDll("getDll","http://bt1.geosts.ac.cn/api/dae"+dev+"/hdfs-service/hdfs/rest/v0.1.0/datastore/slave/hdfs/download"),
+
+    //获取样式模型
+    getModelInfo("getModelInfo","http://bt1.geosts.ac.cn/api/dae"+dev+"/model-service/model/rest/v0.1.0/datastore/slave/model/file/query"),
+
+    //下载模型url
+    downModelUrl("downModelUrl","http://bt1.geosts.ac.cn/api/dae"+dev+"/model-service/model/rest/v0.1.0/datastore/slave/model/file/download/"),
+
     //注销本次登录
     logout("logout", "http://bt1.geosts.ac.cn/api/uc"+dev+"/api/v2/account/logout");
 

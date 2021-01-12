@@ -11,9 +11,9 @@ import com.yzh.userInfo.UserInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -242,6 +242,34 @@ public class FileTools {
             }
         }
         return fileList;
+    }
+
+    public static void utileDownLoad(String srcPath,String downloadPath){
+
+        try {
+            URL url = new URL(MyApi.getDll.getValue() + "?srcPath=" +srcPath);
+            URLConnection con = url.openConnection();
+            InputStream input= con.getInputStream();
+            // 本例是储存到本地文件系统，fileRealName为你想存的文件名称
+            String fileName = srcPath.substring(srcPath.lastIndexOf("/") + 1).replaceAll("\\?", "_");
+            File dest = new File(downloadPath + "/" + fileName);
+            //获取父目录
+            File fileParent=dest.getParentFile();
+            if (!fileParent.exists()){
+                fileParent.mkdirs();
+            }
+            OutputStream output = new FileOutputStream(dest);
+            int len = 0;
+            byte[] ch = new byte[1024];
+            while ((len = input.read(ch)) != -1) {
+                output.write(ch, 0, len);
+                output.flush();
+            }
+            output.close();
+            input.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
 

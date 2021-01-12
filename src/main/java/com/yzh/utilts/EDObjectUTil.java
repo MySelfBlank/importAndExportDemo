@@ -1,6 +1,5 @@
 package com.yzh.utilts;
 
-import cn.hutool.core.io.file.PathUtil;
 import cn.hutool.http.HttpUtil;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
@@ -73,6 +72,7 @@ public class EDObjectUTil {
                 /**下载模型文件*/
                 // 是否需要重写一个方法？？
 //                requestServices.downLoadDll(dObject.getDataRef(), PathUtil.baseDirData);
+                FileTools.utileDownLoad(dObject.getDataRef(),null);
             }
             EDObject edObject = dsDobjectToEDObject(dObject);
             edObjects.add(edObject);

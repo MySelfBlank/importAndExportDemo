@@ -4,10 +4,17 @@ import cn.hutool.core.map.MapUtil;
 import cn.hutool.http.HttpUtil;
 import cn.hutool.json.JSONObject;
 import com.alibaba.fastjson.JSONArray;
+import com.google.protobuf.ByteString;
+import com.yzh.Index;
 import com.yzh.api.MyApi;
 import com.yzh.dao.EForm;
 import com.yzh.dao.EFormRef;
+import com.yzh.dao.ExecuteContainer;
 import com.yzh.userInfo.UserInfo;
+import onegis.common.utils.GeneralUtils;
+import onegis.common.utils.HttpUrlConnectionUtils;
+import onegis.common.utils.StreamUtils;
+import onegis.protobuf.model.PbModelData;
 import onegis.psde.dictionary.FormEnum;
 import onegis.psde.form.AForm;
 import onegis.psde.form.Form;
@@ -15,8 +22,11 @@ import onegis.psde.form.FormStyle;
 import onegis.psde.form.ModelBlock;
 import onegis.psde.psdm.SObject;
 import onegis.psde.util.JsonUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 
+import java.io.InputStream;
 import java.util.*;
 
 import static cn.hutool.core.util.ObjectUtil.*;
@@ -27,6 +37,7 @@ import static cn.hutool.core.util.ObjectUtil.*;
  * @details
  */
 public class FormUtils {
+    private static final Logger logger = LoggerFactory.getLogger(Index.class);
     public static List<Form> objectFromsHandle(List<SObject> sObjects) throws Exception {
         List<Form> fromList = new ArrayList<>();
         if (isNull(sObjects) || isEmpty(sObjects)) {
@@ -142,4 +153,116 @@ public class FormUtils {
         }
         return eFormRef;
     }
+
+    /**
+     * 获取形态中的引用模型
+     * @param form
+     */
+    public static void getFormModel(Form form){
+
+        EFormRef eFormRef = new EFormRef();
+        if (FormEnum.MODEL.equals(form.getType())) {
+            ModelBlock modelBlock = (ModelBlock) form.getFormref();
+            eFormRef.setName(GeneralUtils.isNotEmpty(modelBlock.getName()) ? modelBlock.getName() : "");
+            eFormRef.setDesc(GeneralUtils.isNotEmpty(modelBlock.getDes()) ? modelBlock.getDes() : "");
+
+            String fname = modelBlock.getFname();
+            if (GeneralUtils.isNotEmpty(fname)){
+                fname = fname.replaceAll("/", "_").replaceAll(":", "");
+            }
+            fname = fname + "_" + modelBlock.getRefid();
+            if (!GeneralUtils.isNotEmpty(fname) || fname.contains("?")){
+                fname = modelBlock.getName() + "_" + modelBlock.getRefid() + "";
+            }
+            eFormRef.setFname(fname);
+            eFormRef.setExtension(GeneralUtils.isNotEmpty(modelBlock.getExtension()) ? modelBlock.getExtension() : "");
+
+            if (!"".equals(eFormRef.getName()) && !"".equals(eFormRef.getFname())) {
+                dsForm2EForm(form).setFormRef(eFormRef);
+                Long modelID = modelBlock.getRefid();
+                ExecuteContainer.addModelId(modelID);
+                ExecuteContainer.addModelName(modelID+"", fname);
+            } else if (modelBlock.getRefid() != null) {
+                Long fid = modelBlock.getRefid();
+
+                try {
+                    // 读取模型信息(线上)
+                    List<ModelBlock> modelBlocks = getModel(fid);
+                    if (modelBlocks != null && modelBlocks.size() > 0) {
+                        modelBlock = modelBlocks.get(0);
+                        eFormRef.setName(GeneralUtils.isNotEmpty(modelBlock.getName()) ? modelBlock.getName() : "");
+                        eFormRef.setDesc(GeneralUtils.isNotEmpty(modelBlock.getDes()) ? modelBlock.getDes() : "");
+
+                        fname = modelBlock.getFname();
+                        if (GeneralUtils.isNotEmpty(fname)){
+                            fname = fname.replaceAll("/", "_").replaceAll(":", "");
+                        }
+                        fname = fname + "_" + modelBlock.getRefid();
+                        if (!GeneralUtils.isNotEmpty(fname) || fname.contains("?")){
+                            fname = modelBlock.getName() + "_" + fid + "";
+                        }
+                        eFormRef.setFname(fname);
+
+                        eFormRef.setExtension(GeneralUtils.isNotEmpty(modelBlock.getExtension()) ? modelBlock.getExtension() : "");
+                        dsForm2EForm(form).setFormRef(eFormRef);
+
+                        ExecuteContainer.addModelId(fid);
+                        ExecuteContainer.addModelName(fid+"", fname);
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    /**
+     * 获取模型信息
+     * @param fid
+     * @return
+     */
+    public static List<ModelBlock> getModel(Long fid) throws Exception {
+        Map<String, Object> params =MapUtil.builder(new HashMap<String, Object>())
+                .put("fid",fid).build();
+        String modelInfo = HttpUtil.get(MyApi.getModelInfo.getValue(), params);
+        if (modelInfo!=null){
+            List<ModelBlock> modelBlocks = JsonUtils.jsonToList(JsonUtils.objectToJson(modelInfo), ModelBlock.class);
+            return modelBlocks;
+        }
+        return new ArrayList<>();
+    }
+
+
+    public static void downLoadModel(Set<Long> modelIds,Map<Long,String> modelNamesMap,String savePath){
+        for (Long modelId : modelIds) {
+            if (!GeneralUtils.isNotEmpty(modelId)) {
+                return;
+            }
+            try {
+                System.out.println("----:"+modelId);
+                InputStream inputStream = HttpUrlConnectionUtils.getInputStream(MyApi.downModelUrl.getValue() + modelId, "POST", null);
+                byte[] result = StreamUtils.inputStreamToByte(inputStream);
+                PbModelData.Pb3DModelResponseResult resData = PbModelData.Pb3DModelResponseResult.newBuilder().build().parseFrom(result);
+                if (resData.getStatus() == 200) {
+                    PbModelData.Pb3DModelFile fileMode = resData.getFileModel();
+                    ByteString fileData = fileMode.getFileData();
+                    byte[] data = fileData.toByteArray();
+                    String fileName = fileMode.getFileName().replaceAll("/", "_").replaceAll(":", "");
+                    String fname = modelNamesMap.get(modelId);
+                    if (fname != null && !"".equals(fname)) {
+                        fileName = fname;
+                    }
+                    StreamUtils.buffersWriteFile(data, savePath + "/data", fileName + "." + fileMode.getFileExt());
+                    System.out.println(savePath + "/data/" + fname + "." + fileMode.getFileExt() + "-- 下载成功！");
+                } else {
+                    logger.error("下载模型文件：" + modelId + ",失败");
+                }
+            } catch (Exception e) {
+                logger.error("下载模型文件：" + modelId + ",异常 -- " + e.getMessage());
+            }
+        }
+
+    }
+
 }

@@ -4,6 +4,7 @@ import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import com.yzh.dao.EForm;
 import com.yzh.dao.SDomainOutPutModel;
+import com.yzh.services.export.ExportDllFile;
 import com.yzh.userInfo.UserInfo;
 import com.yzh.utilts.*;
 import onegis.psde.attribute.Attribute;
@@ -152,6 +153,8 @@ public class Index {
         List<Attribute> attributeList = new ArrayList<>();
         //形态集合
         List<Form> formList = new ArrayList<>();
+        //导出所有脚本文件
+        ExportDllFile.writeDllFiles();
         for (SObject sObject : sObjectsList) {
             if (isEmpty(sObject) || isNull(sObject)) {
                 continue;
