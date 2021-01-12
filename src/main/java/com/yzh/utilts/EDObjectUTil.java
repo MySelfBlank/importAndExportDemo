@@ -82,7 +82,6 @@ public class EDObjectUTil {
     }
 
     //将查询到Dobject转换为EDObject
-
     private static EDObject dsDobjectToEDObject(DObject dObject) {
         EDObject edObject = new EDObject();
         edObject.setId(dObject.getId());

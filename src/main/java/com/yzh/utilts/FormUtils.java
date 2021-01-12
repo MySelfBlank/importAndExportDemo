@@ -28,6 +28,7 @@ import org.springframework.util.StringUtils;
 
 import java.io.InputStream;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static cn.hutool.core.util.ObjectUtil.*;
 
@@ -121,10 +122,12 @@ public class FormUtils {
         }
         List<EForm> eForms = new ArrayList<>();
         for (Form form : forms) {
+            getFormModel(form);
             EForm eForm = dsForm2EForm(form);
             eForms.add(eForm);
         }
-        return eForms;
+
+        return eForms.stream().distinct().collect(Collectors.toList());
     }
 
     public static EForm dsForm2EForm(Form form) {
@@ -150,6 +153,7 @@ public class FormUtils {
             eFormRef.setDesc(block.getDes());
             eFormRef.setExtension(block.getExtension());
             eFormRef.setFname(block.getFname());
+            eFormRef.setFid(block.getRefid());
         }
         return eFormRef;
     }
