@@ -47,6 +47,8 @@ public enum MyApi {
     //导入关系Post
     insertRelation("insertRelation","http://bt1.geosts.ac.cn/api/dae"+dev+"/datastore/rest/v0.1.0/datastore/orelation/insert?token=@token"),
 
+    //导入行为类别post
+    insertModelDef("insertModelDef","http://bt1.geosts.ac.cn/api/dae"+dev+"/datastore/rest/v0.1.0/datastore/modeldef/insert\n"),
     //获取行为类别传入id
     getModelDefById("getModelDefById","http://bt1.geosts.ac.cn/api/dae"+dev+"/datastore/rest/v0.1.0/datastore/modeldef/query"),
 
