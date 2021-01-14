@@ -1,7 +1,8 @@
 package com.yzh.importTest.requestEntity;
 
+
+import com.yzh.dao.Mobj;
 import com.yzh.dao.exportModel.AbstractObject;
-import onegis.psde.dictionary.ModelLanguageEnum;
 import onegis.psde.model.ModelDef;
 
 /**
@@ -10,19 +11,9 @@ import onegis.psde.model.ModelDef;
  */
 public class ModelEntity extends AbstractObject {
     private ModelDef mdef;
-    private ModelLanguageEnum pLanguage;
-    private String executor;
+    private int pLanguage;
+    private Mobj mobj;
 
-    public ModelEntity() {
-        this.pLanguage = ModelLanguageEnum.JS;
-        this.executor = "";
-    }
-
-    public ModelEntity(long id) {
-        this.pLanguage = ModelLanguageEnum.JS;
-        this.executor = "";
-        this.setId(id);
-    }
 
     public ModelDef getMdef() {
         return mdef;
@@ -32,19 +23,19 @@ public class ModelEntity extends AbstractObject {
         this.mdef = mdef;
     }
 
-    public ModelLanguageEnum getpLanguage() {
+    public Integer getpLanguage() {
         return pLanguage;
     }
 
-    public void setpLanguage(ModelLanguageEnum pLanguage) {
+    public void setpLanguage(Integer pLanguage) {
         this.pLanguage = pLanguage;
     }
 
-    public String getExecutor() {
-        return executor;
+    public Mobj getMobj() {
+        return mobj;
     }
 
-    public void setExecutor(String executor) {
-        this.executor = executor;
+    public void setMobj(Mobj mobj) {
+        this.mobj = mobj;
     }
 }

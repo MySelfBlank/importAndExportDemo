@@ -244,8 +244,12 @@ public class FileTools {
         return fileList;
     }
 
+    /**
+     * dll文件的下载
+     * @param srcPath
+     * @param downloadPath
+     */
     public static void utileDownLoad(String srcPath,String downloadPath){
-
         try {
             URL url = new URL(MyApi.getDll.getValue() + "?srcPath=" +srcPath);
             URLConnection con = url.openConnection();
@@ -271,6 +275,7 @@ public class FileTools {
             e.printStackTrace();
         }
     }
+
 }
 
 
