@@ -5,22 +5,31 @@ import cn.hutool.http.HttpUtil;
 import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
+import com.alibaba.fastjson.JSON;
 import com.yzh.api.MyApi;
 import com.yzh.dao.EField;
 import com.yzh.dao.EModel;
+import com.yzh.importTest.requestEntity.Model;
 import com.yzh.importTest.requestEntity.ModelDefEntity;
 import com.yzh.importTest.requestEntity.ModelEntity;
 import com.yzh.userInfo.UserInfo;
 import com.yzh.utilts.FileTools;
+import com.yzh.utilts.HttpClientUtils;
+import onegis.common.utils.JsonUtils;
 import onegis.psde.model.ModelDef;
+import onegis.result.response.ResponseResult;
+import org.apache.http.entity.ContentType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.io.File;
+import java.io.FileInputStream;
+import java.util.*;
 
-import static com.yzh.importTest.importUtils.IdCache.fieldOldIdAndNewIdCache;
-import static com.yzh.importTest.importUtils.IdCache.modelDefNewIdAndOldId;
+import static com.yzh.importTest.importUtils.IdCache.*;
+import static com.yzh.utilts.FileTools.login;
 
 /**
  * @ Author        :  yuyazhou
@@ -34,26 +43,106 @@ public class ModelImportUtil {
      * 对行为的导入
      * @param url
      */
-    public static void modelImportHandle(String url){
+    public static void modelImportHandle(String url,String modelUrl) throws Exception{
         String modelStr = FileTools.readFile(url);
-        List<EModel> models = FileTools.jsonArray2List(modelStr, EModel.class);
+        List<EModel> models = JsonUtils.jsonToList(modelStr, EModel.class);
 
         List<ModelEntity> modelEntities = new ArrayList<>();
-        for (EModel eModel : models) {
+        for (EModel model : models) {
             ModelEntity modelEntity = new ModelEntity();
-            modelEntity.setName(eModel.getName());
-            JSONObject jsonObject = JSONUtil.parseObj(eModel.getMdef());
+            modelEntity.setName(model.getName());
+            JSONObject jsonObject = JSONUtil.parseObj(model.getMdef());
             ModelDefEntity modelDefEntity = jsonObject.toBean(ModelDefEntity.class);
             modelDefEntity.setId(modelDefNewIdAndOldId.get(modelDefEntity.getId()));
             ModelDef newModelDef = JSONUtil.parse(modelDefEntity).toBean(ModelDef.class);
             modelEntity.setMdef(newModelDef);
-            if (!eModel.getMobj().getScript().equals("")||!eModel.getMobj().getScript().isEmpty()){
-
+            modelEntity.setpLanguage(Integer.valueOf(model.getpLanguage()));
+            if (model.getpLanguage().equals("1")||model.getpLanguage().equals("2")){
+                if (!model.getMobj().getScript().isEmpty()){
+                    uploadModles(modelUrl);
+                    modelEntity.setMobj(model.getMobj());
+                }
+            }else {
+                String[] mobj = new String[]{};
+                modelEntity.setMobj(null);
             }
+            modelEntities.add(modelEntity);
+
+            //处理响应的数据
+            String paramStr = JSONUtil.parseArray(modelEntities).toString();
+            paramStr=paramStr.replaceAll("\\\\","");
+            String response = HttpUtil.post(MyApi.insertModel.getValue()+"?token="+ UserInfo.token, paramStr);
+            if (FileTools.judgeImportState(response)) {
+                logger.error("name为" + model.getName() + "的关系导入失败");
+                modelEntities.clear();
+                continue;
+            }
+            //对新老的id进行处理
+            JSONArray arrays = FileTools.formatData2JSONArray(response);
+
+            modelNewIdAndOldId.put(model.getId(), arrays.get(0, JSONObject.class).getLong("id"));
+            logger.debug("id" + model.getId() + "新id为" + arrays.get(0, JSONObject.class).getLong("id"));
         }
 
     }
 
+    /**
+     * 上传模型
+     * @param directoryPath
+     * @return
+     * @throws Exception
+     */
+    private static Map<String, String> uploadModles(String directoryPath) throws Exception{
+        Map<String, String> resultMap = new HashMap<>();
+        // 读取该路径下所有文件
+        List<File> fileList = new ArrayList<>();
+        fileList=FileTools.getFiles(directoryPath);
+        // 筛选出模型文件，包括后缀名.gltf .glb  .ive  .osgb
+        String suffixArray[] = {"gltf", "glb", "ive", "osgb", "GLTF", "GLB", "IVE", "OSGB", "JSON", "json"};
+        List<String> suffixList = Arrays.asList(suffixArray);
+        // 遍历文件，并上传
+        for(int i=0; i<fileList.size(); i++){
+            File file = fileList.get(i);
+            String fileName = file.getName();
+            String suffix = fileName.substring(fileName.lastIndexOf(".") + 1);
+            // 只上传模型文件
+            if (suffixList.contains(suffix)) {
+                Model model = uploadModel(file);
+                if (model!=null){
+                    resultMap.put(model.getFname(), model.getFid());
+                }
+            }
+
+        }
+        return resultMap;
+    }
+
+    /**
+     * 通过接口上传模型
+     * @param file
+     * @return
+     * @throws Exception
+     */
+    public static Model uploadModel(File file) throws Exception {
+        FileInputStream fileInputStream = new FileInputStream(file);
+        MockMultipartFile multipartFile = new MockMultipartFile(file.getName(), file.getName(),
+                ContentType.APPLICATION_OCTET_STREAM.toString(), fileInputStream);
+        Map<String,String> params = new HashMap<>();
+        params.put("token",UserInfo.token);
+        params.put("name",file.getName().substring(0, file.getName().lastIndexOf(".")));
+        Map<String, MultipartFile> multipartFileMap = new HashMap<>();
+        multipartFileMap.put("file", multipartFile);
+        String result = HttpClientUtils.doPostByte(MyApi.uploadModel.getValue(), params, multipartFileMap);
+        ResponseResult responseResult = JsonUtils.jsonToPojo(result, ResponseResult.class);
+        if (responseResult.getStatus() == 200) {
+            Model model = JSON.parseObject(JSON.toJSONString(responseResult.getData()), Model.class);
+            System.out.println("模型" +  model.getFname() +"保存成功，fid：" + model.getFid());
+            return model;
+        }else {
+            System.out.println("模型" +  file.getName() +"保存失败" );
+        }
+        return null;
+    }
     /**
      * 对行为类别进行导入
      * @param url
@@ -117,12 +206,12 @@ public class ModelImportUtil {
 
             modelDefNewIdAndOldId.put(modelDef.getId(), arrays.get(0, JSONObject.class).getLong("id"));
             logger.debug("id" + modelDef.getId() + "新id为" + arrays.get(0, JSONObject.class).getLong("id"));
+            entities.clear();
         }
 
     }
 
-    public static void main(String[] args) {
-        modelDefImportHandle("E:\\test\\测试八个方面1223\\test.modelDef");
-        modelImportHandle("E:\\test\\测试八个方面1223\\test.models");
+    public static void main(String[] args) throws Exception {
+        login("asiayu01@163.com", "yu1306730458");
     }
 }
