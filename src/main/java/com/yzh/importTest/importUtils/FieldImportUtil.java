@@ -1,6 +1,7 @@
 package com.yzh.importTest.importUtils;
 
 import cn.hutool.http.HttpUtil;
+import cn.hutool.json.JSON;
 import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
@@ -12,13 +13,11 @@ import onegis.psde.attribute.Field;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import static cn.hutool.core.util.ObjectUtil.*;
+import static cn.hutool.core.util.ObjectUtil.isNotEmpty;
+import static cn.hutool.core.util.ObjectUtil.isNotNull;
 import static com.yzh.importTest.importUtils.IdCache.fieldOldIdAndNewIdCache;
 import static com.yzh.utilts.FileTools.login;
 
@@ -64,7 +63,7 @@ public class FieldImportUtil {
             JSONArray array = FileTools.formatData2JSONArray(response);
             //上传完成将新老Id记录到Map当中
             fieldOldIdAndNewIdCache.put(field.getId(), array.get(0,JSONObject.class).getLong("id"));
-            logger.debug("id" +field.getId() + "导入完毕新Id为："+array.get(0,JSONObject.class).getLong("id"));
+            logger.info("id" +field.getId() + "导入完毕新Id为："+array.get(0,JSONObject.class).getLong("id"));
         }
 
         System.out.println(fieldsStr);
@@ -73,5 +72,7 @@ public class FieldImportUtil {
     public static void main(String[] args)  {
         login("asiayu01@163.com", "yu1306730458");
         fieldImport();
+        JSON parse = JSONUtil.parse(fieldOldIdAndNewIdCache);
+        FileTools.exportFile(parse,"E:\\test\\中原工_yzh","fieldId.text");
     }
 }

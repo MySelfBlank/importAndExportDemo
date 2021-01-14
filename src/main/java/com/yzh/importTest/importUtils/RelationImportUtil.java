@@ -1,6 +1,7 @@
 package com.yzh.importTest.importUtils;
 
 import cn.hutool.http.HttpUtil;
+import cn.hutool.json.JSON;
 import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
@@ -13,11 +14,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-;import static com.yzh.importTest.importUtils.IdCache.relationNewIdAndOldId;
+import static com.yzh.importTest.importUtils.IdCache.relationNewIdAndOldId;
+
+;
 
 /**
  * @ Author        :  yuyazhou
@@ -61,11 +62,14 @@ public class RelationImportUtil {
             JSONArray arrays = FileTools.formatData2JSONArray(response);
 
             relationNewIdAndOldId.put(relation.getId(), arrays.get(0, JSONObject.class).getLong("id"));
-            logger.debug("id" + relation.getId() + "新id为" + arrays.get(0, JSONObject.class).getLong("id"));
+            logger.info("id" + relation.getId() + "新id为" + arrays.get(0, JSONObject.class).getLong("id"));
         }
     }
 
     public static void main(String[] args) {
+
         upLoadRelation("E:\\test\\测试八个方面1223\\test.relation");
+        JSON parse = JSONUtil.parse(relationNewIdAndOldId);
+        FileTools.exportFile(parse,"E:\\test\\中原工_yzh","relationId.text");
     }
 }

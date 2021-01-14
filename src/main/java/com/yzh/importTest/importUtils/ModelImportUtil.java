@@ -205,7 +205,7 @@ public class ModelImportUtil {
             JSONArray arrays = FileTools.formatData2JSONArray(response);
 
             modelDefNewIdAndOldId.put(modelDef.getId(), arrays.get(0, JSONObject.class).getLong("id"));
-            logger.debug("id" + modelDef.getId() + "新id为" + arrays.get(0, JSONObject.class).getLong("id"));
+            logger.info("id" + modelDef.getId() + "新id为" + arrays.get(0, JSONObject.class).getLong("id"));
             entities.clear();
         }
 
@@ -214,5 +214,9 @@ public class ModelImportUtil {
     public static void main(String[] args) throws Exception {
         login("asiayu01@163.com", "yu1306730458");
         modelImportHandle("E:\\test\\测试八个方面1223\\test.models","E:\\test\\测试八个方面1223\\ModelFile");
+        cn.hutool.json.JSON parse = JSONUtil.parse(modelNewIdAndOldId);
+        cn.hutool.json.JSON parseDef = JSONUtil.parse(modelDefNewIdAndOldId);
+        FileTools.exportFile(parse,"E:\\test\\中原工_yzh","modelId.text");
+        FileTools.exportFile(parseDef,"E:\\test\\中原工_yzh","modelDefId.text");
     }
 }

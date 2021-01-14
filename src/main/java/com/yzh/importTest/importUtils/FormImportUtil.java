@@ -1,6 +1,7 @@
 package com.yzh.importTest.importUtils;
 
 import cn.hutool.http.HttpUtil;
+import cn.hutool.json.JSON;
 import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
@@ -12,9 +13,8 @@ import onegis.psde.form.Form;
 import onegis.psde.form.FormStyle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import java.util.HashMap;
+
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 import static com.yzh.importTest.importUtils.IdCache.formStylesOidAndNewId;
@@ -79,7 +79,12 @@ public class FormImportUtil {
             //处理 response
             JSONObject array = FileTools.formatData(response);
             formStylesOidAndNewId.put(formStyle.getId(),array.getLong("id"));
-            logger.debug("id" +formStyle.getId() + "导入完毕新Id为："+array.getLong("id"));
+            logger.info("id" +formStyle.getId() + "导入完毕新Id为："+array.getLong("id"));
         }
+    }
+
+    public static void main(String[] args) {
+        JSON parse = JSONUtil.parse(formStylesOidAndNewId);
+        FileTools.exportFile(parse,"E:\\test\\中原工_yzh","formId.text");
     }
 }
