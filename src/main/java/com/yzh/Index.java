@@ -3,6 +3,7 @@ package com.yzh;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import com.yzh.dao.EForm;
+import com.yzh.dao.ExecuteContainer;
 import com.yzh.dao.SDomainOutPutModel;
 import com.yzh.services.export.ExportDllFile;
 import com.yzh.userInfo.UserInfo;
@@ -179,6 +180,8 @@ public class Index {
         //导出时空域下所有使用的样式
         List<EForm> eFormList = FormUtils.dsForms2EForm(formList);
         List<FormStyle> formStyles = FormUtils.objectFromsHandle2(formList);
+        //导出所有模型
+        FormUtils.downLoadModel(ExecuteContainer.modelIds,"E:\\test\\测试八个方面1223\\ModelFile");
         FileTools.exportFile(JSONUtil.parse(eFormList), "E:/test/" + sDomain.getName() + "/test.forms","form");
         FileTools.exportFile(JSONUtil.parse(formStyles), "E:/test/" + sDomain.getName() + "/test.formStyles","formStyle");
         //导出时空域下所有使用的形态

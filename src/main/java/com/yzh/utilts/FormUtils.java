@@ -163,7 +163,9 @@ public class FormUtils {
      * @param form
      */
     public static void getFormModel(Form form){
-
+        if (!form.getType().getName().equals("Model")){
+            return;
+        }
         EFormRef eFormRef = new EFormRef();
         if (FormEnum.MODEL.equals(form.getType())) {
             ModelBlock modelBlock = (ModelBlock) form.getFormref();
@@ -238,7 +240,7 @@ public class FormUtils {
     }
 
 
-    public static void downLoadModel(Set<Long> modelIds,Map<Long,String> modelNamesMap,String savePath){
+    public static void downLoadModel(Set<Long> modelIds,String savePath){
         for (Long modelId : modelIds) {
             if (!GeneralUtils.isNotEmpty(modelId)) {
                 return;
@@ -253,12 +255,12 @@ public class FormUtils {
                     ByteString fileData = fileMode.getFileData();
                     byte[] data = fileData.toByteArray();
                     String fileName = fileMode.getFileName().replaceAll("/", "_").replaceAll(":", "");
-                    String fname = modelNamesMap.get(modelId);
+                    String fname = ExecuteContainer.modelNamesMap.get(modelId+"");
                     if (fname != null && !"".equals(fname)) {
                         fileName = fname;
                     }
-                    StreamUtils.buffersWriteFile(data, savePath + "/data", fileName + "." + fileMode.getFileExt());
-                    System.out.println(savePath + "/data/" + fname + "." + fileMode.getFileExt() + "-- 下载成功！");
+                    StreamUtils.buffersWriteFile(data, savePath, fileName + "." + fileMode.getFileExt());
+                    System.out.println(savePath + fname + "." + fileMode.getFileExt() + "-- 下载成功！");
                 } else {
                     logger.error("下载模型文件：" + modelId + ",失败");
                 }
