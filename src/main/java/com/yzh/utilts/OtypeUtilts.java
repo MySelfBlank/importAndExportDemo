@@ -75,7 +75,7 @@ public class OtypeUtilts {
             classIDs.add(otype.getLong("id"));
         }
         logger.debug("当前时空域下所有的类模板Id=" + classIDs);
-
+        EConnectorUtils.EConnectorHandel(classIDs);
         params.clear();
         params.put("token", UserInfo.token);
         params.put("ids", classIDs.toArray());
