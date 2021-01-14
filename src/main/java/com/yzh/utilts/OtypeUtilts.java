@@ -10,9 +10,18 @@ import com.alibaba.fastjson.JSONArray;
 import com.google.common.collect.Lists;
 import com.yzh.api.MyApi;
 import com.yzh.dao.EClassesOutPutModel;
-import com.yzh.dao.exportModel.EDObject;
-import com.yzh.dao.exportModel.ESObject;
+import com.yzh.dao.EField;
+import com.yzh.dao.EModel;
+import com.yzh.dao.EModelDef;
+import com.yzh.dao.exportModel.*;
 import com.yzh.userInfo.UserInfo;
+import onegis.psde.attribute.Field;
+import onegis.psde.attribute.Fields;
+import onegis.psde.form.FormStyle;
+import onegis.psde.form.FormStyles;
+import onegis.psde.model.Model;
+import onegis.psde.model.ModelDef;
+import onegis.psde.model.Models;
 import onegis.psde.psdm.DObject;
 import onegis.psde.psdm.OType;
 import onegis.psde.psdm.SObject;
@@ -87,9 +96,10 @@ public class OtypeUtilts {
 
         oTypeList.addAll(JsonUtils.jsonToList(otypeInfoJson.getStr("list"),OType.class));
         //处理类模板(暂不处理，直接导出)
+        List<EOType> eoTypes = handleOType2EOType(oTypeList);
 
         //打印类模板
-        JSON parse = JSONUtil.parse(oTypeList);
+        JSON parse = JSONUtil.parse(eoTypes);
         exportFile(parse, "E:\\test\\" + sDomain.getName() + "\\test.otype","Otype");
     }
 
@@ -125,7 +135,99 @@ public class OtypeUtilts {
         }
         return esobject;
     }
-    public static List handleOType2EOType () {
-        return new ArrayList();
+    public static List<EOType> handleOType2EOType (List<OType> oTypes) {
+        List<EOType> eoTypes= new ArrayList<>();
+        for (OType oType : oTypes) {
+            EOType eoType = new EOType();
+            eoType.setName(oType.getName());
+            eoType.setDes(oType.getDes());
+            eoType.setCode(oType.getCode());
+            eoType.setTags(oType.getTags());
+            eoType.setIcon(oType.getIcon());
+            //处理字段
+            eoType.setFields(handleFields(oType.getFields()));
+            eoType.setSrs(oType.getSrs());
+            eoType.setTrs(oType.getTrs());
+            //处理形态样式
+            List<EFormStyles> eFormStyles = handleEFormStyle(oType.getFormStyles());
+            EFormStyless eFormStyless = new EFormStyless();
+            eFormStyless.setStyles(eFormStyles);
+            eoType.setFormStyles(eFormStyless);
+            //处理行为
+            List<EModel> eModels = handleEModel(oType.getModels());
+            EModels models = new EModels();
+            models.setModels(eModels);
+            eoType.setModels(models);
+            eoTypes.add(eoType);
+        }
+        return eoTypes;
+    }
+    private static List<EFormStyles> handleEFormStyle(FormStyles formStyles){
+        List<EFormStyles> eFormStyles = new ArrayList<>();
+        if(isNull(formStyles)||isEmpty(formStyles)){
+            return eFormStyles;
+        }
+        List<FormStyle> styles = formStyles.getStyles();
+        for (FormStyle style : styles) {
+            EFormStyles eFormStyle = new EFormStyles();
+            eFormStyle.setId(style.getId());
+            eFormStyle.setName(style.getName());
+            eFormStyle.setData(style.getData());
+            eFormStyle.setDes(style.getDes());
+            eFormStyle.setDim(style.getDim());
+            eFormStyle.setMaxGrain(style.getMaxGrain());
+            eFormStyle.setMinGrain(style.getMinGrain());
+            eFormStyle.setStyle(Long.parseLong(String.valueOf(style.getStyle().getValue())));
+            eFormStyle.setType(Long.parseLong(String.valueOf(style.getType().getValue())));
+            eFormStyles.add(eFormStyle);
+        }
+        return eFormStyles;
+    }
+    private static List<EModel> handleEModel (Models models){
+        List<EModel> eModels = new ArrayList<>();
+        if(isEmpty(models)||isNull(models)){
+            return eModels;
+        }
+        List<Model> modelS = models.getModels();
+        for (Model model : modelS) {
+            EModel eModel = new EModel();
+            eModel.setId(model.getId());
+            eModel.setName(model.getName());
+            //处理mdef
+            eModel.setMdef(handleModel(model.getMdef()));
+//            eModel.setpLanguage(model.getpLanguage().getName());
+            eModel.setExecutor(model.getExecutor());
+            eModels.add(eModel);
+        }
+        return eModels;
+    }
+    public static EModelDef handleModel(ModelDef modelDef){
+        EModelDef eModelDef = new EModelDef();
+        eModelDef.setId(modelDef.getId());
+        eModelDef.setName(modelDef.getName());
+        eModelDef.setActions(modelDef.getActions());
+        eModelDef.setMtime(modelDef.getMtime());
+        eModelDef.setInTypes(modelDef.getInTypes());
+        eModelDef.setOutTypes(modelDef.getOutTypes());
+        eModelDef.setIcon(modelDef.getIcon());
+        eModelDef.setDes(modelDef.getDes());
+        eModelDef.setType(modelDef.getType().getValue());
+        return eModelDef;
+    }
+    public static EFields handleFields(Fields fields) {
+        EFields efields = new EFields();
+        if (isNull(fields)||isEmpty(fields)){
+            return efields;
+        }
+        List<EField> efieldList = new ArrayList<>();
+        List<Field> fieldList = fields.getFields();
+        for (Field field : fieldList) {
+            EField efield = new EField();
+            efield.setId(field.getId());
+            efield.setName(field.getName());
+            efieldList.add(efield);
+        }
+        efields.setFields(efieldList);
+        return efields;
     }
 }
