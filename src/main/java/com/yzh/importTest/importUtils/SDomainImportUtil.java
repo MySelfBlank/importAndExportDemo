@@ -1,6 +1,5 @@
 package com.yzh.importTest.importUtils;
 
-<<<<<<< HEAD
 import cn.hutool.http.HttpUtil;
 import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONObject;
@@ -26,12 +25,6 @@ import java.util.Map;
 
 import static com.yzh.utilts.FileTools.login;
 
-=======
-import com.yzh.utilts.FileTools;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
->>>>>>> d9a8d606b2c026f0fe637f8ca218d668217e00bb
 /**
  * @author Yzh
  * @create 2021-01-12 11:25
@@ -44,7 +37,6 @@ public class SDomainImportUtil {
     public static void importSDomain()throws Exception{
         //读取文件
         logger.debug("时空域开始导入===========》读取字段文件");
-<<<<<<< HEAD
         String SDomainStr = FileTools.readFile("E:\\test\\中原工_yzh\\test.sdomain");
         //构建SDomain
         SDomain sDomain = JSONUtil.toBean(SDomainStr, SDomain.class);
@@ -80,10 +72,6 @@ public class SDomainImportUtil {
             logger.error("导入失败="+responseJSONObj.getStr("message"));
             return;
         }
-=======
-        String fieldsStr = FileTools.readFile("E:\\test\\中原工_yzh\\test.sdomain");
-//        SObject sObject = JsonUtils.parserBean(fieldsStr, SObject.class);
->>>>>>> d9a8d606b2c026f0fe637f8ca218d668217e00bb
 
     }
 
