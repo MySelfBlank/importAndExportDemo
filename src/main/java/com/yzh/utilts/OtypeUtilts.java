@@ -123,8 +123,9 @@ public class OtypeUtilts {
         if(isEmpty(sObjectList)||isNull(sObjectList)){
             return esobject;
         }
-
-
         return esobject;
+    }
+    public static List handleOType2EOType () {
+        return new ArrayList();
     }
 }

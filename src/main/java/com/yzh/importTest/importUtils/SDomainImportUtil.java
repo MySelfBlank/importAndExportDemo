@@ -36,7 +36,7 @@ public class SDomainImportUtil {
 
     public static void importSDomain()throws Exception{
         //读取文件
-        logger.debug("时空域开始导入===========》读取字段文件");
+        logger.debug("时空域开始导入===========》读取文件");
         String SDomainStr = FileTools.readFile("E:\\test\\中原工_yzh\\test.sdomain");
         //构建SDomain
         SDomain sDomain = JSONUtil.toBean(SDomainStr, SDomain.class);

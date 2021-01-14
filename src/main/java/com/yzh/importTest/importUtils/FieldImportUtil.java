@@ -20,6 +20,7 @@ import java.util.Map;
 
 import static cn.hutool.core.util.ObjectUtil.*;
 import static com.yzh.importTest.importUtils.IdCache.fieldOldIdAndNewIdCache;
+import static com.yzh.utilts.FileTools.login;
 
 /**
  * @author Yzh
@@ -30,7 +31,7 @@ public class FieldImportUtil {
     //日志工厂
     private static final Logger logger = LoggerFactory.getLogger(FieldImportUtil.class);
 
-    public static void fieldImport() throws IOException {
+    public static void fieldImport() {
         logger.debug("字段开始导入===========》读取字段文件");
         String fieldsStr = FileTools.readFile("E:\\test\\中原工_yzh\\test.fields");
         List<Field> fieldList = FileTools.jsonArray2List(fieldsStr,Field.class);
@@ -67,5 +68,10 @@ public class FieldImportUtil {
         }
 
         System.out.println(fieldsStr);
+    }
+
+    public static void main(String[] args)  {
+        login("asiayu01@163.com", "yu1306730458");
+        fieldImport();
     }
 }
