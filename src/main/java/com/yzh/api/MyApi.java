@@ -70,6 +70,15 @@ public enum MyApi {
     //下载模型url
     downModelUrl("downModelUrl","http://bt1.geosts.ac.cn/api/dae"+dev+"/model-service/model/rest/v0.1.0/datastore/slave/model/file/download/"),
 
+    //导入时空域
+    insertSDomain("oconnector","http://bt1.geosts.ac.cn/api/dae"+dev+"/datastore/rest/v0.1.0/datastore/sdomain/edit"),
+
+    //获取连接器
+    getConnector("getConnector","http://bt1.geosts.ac.cn/api/dae"+dev+"/datastore/rest/v0.1.0/datastore/oconnector/query"),
+
+    //创建连接器
+    insertConnector("insertConnector","http://bt1.geosts.ac.cn/api/dae"+dev+"/datastore/rest/v0.1.0/datastore/oconnector/insert"),
+
     //注销本次登录
     logout("logout", "http://bt1.geosts.ac.cn/api/uc"+dev+"/api/v2/account/logout");
 
