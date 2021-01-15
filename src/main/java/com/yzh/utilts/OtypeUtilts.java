@@ -139,6 +139,7 @@ public class OtypeUtilts {
         List<EOType> eoTypes= new ArrayList<>();
         for (OType oType : oTypes) {
             EOType eoType = new EOType();
+            eoType.setId(oType.getId());
             eoType.setName(oType.getName());
             eoType.setDes(oType.getDes());
             eoType.setCode(oType.getCode());

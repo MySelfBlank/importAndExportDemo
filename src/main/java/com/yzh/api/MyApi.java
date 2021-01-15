@@ -72,7 +72,7 @@ public enum MyApi {
     //下载模型url
     downModelUrl("downModelUrl",modelLocalUrl+"/rest/v0.1.0/datastore/slave/model/file/download/"),
 
-    insertOtype("insertOtype","http://bt1.geosts.ac.cn/api/dae"+dev+"/datastore/rest/v0.1.0/datastore/otype/insert"),
+    insertOtype("insertOtype",finalUrl+"/rest/v0.1.0/datastore/otype/insert"),
     //导入时空域
     insertSDomain("oconnector",finalUrl+"/rest/v0.1.0/datastore/sdomain/edit"),
 

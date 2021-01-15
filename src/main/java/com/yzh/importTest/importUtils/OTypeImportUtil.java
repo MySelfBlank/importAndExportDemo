@@ -1,17 +1,30 @@
 package com.yzh.importTest.importUtils;
 
 import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.http.HttpUtil;
+import cn.hutool.json.JSON;
+import cn.hutool.json.JSONArray;
+import cn.hutool.json.JSONObject;
+import cn.hutool.json.JSONUtil;
+import com.yzh.api.MyApi;
 import com.yzh.dao.EField;
 import com.yzh.dao.EModel;
 import com.yzh.dao.EModelDef;
 import com.yzh.dao.exportModel.*;
+import com.yzh.userInfo.UserInfo;
 import com.yzh.utilts.FileTools;
 import onegis.psde.util.JsonUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import com.yzh.importTest.importUtils.IdCache.*;
+
+import static com.yzh.importTest.importUtils.IdCache.fieldOldIdAndNewIdCache;
+import static com.yzh.importTest.importUtils.IdCache.otypeNewIdAndOldId;
+import static com.yzh.utilts.FileTools.login;
 
 /**
  * @author Yzh
@@ -22,7 +35,12 @@ public class OTypeImportUtil {
     //日志工厂
     private static final Logger logger = LoggerFactory.getLogger(OTypeImportUtil.class);
 
+
     public static void importOTpye () throws Exception{
+        IdCache.fieldOldIdAndNewIdCache.putAll(JsonUtils.parserBean(FileTools.readFile("E:\\test\\测试八个方面1223\\fieldId.text"), HashMap.class));
+        IdCache.formStylesOidAndNewId.putAll(JsonUtils.parserBean(FileTools.readFile("E:\\test\\测试八个方面1223\\formId.text"),HashMap.class));
+        IdCache.modelNewIdAndOldId.putAll(JsonUtils.parserBean(FileTools.readFile("E:\\test\\测试八个方面1223\\modelId.text"),HashMap.class));
+
         logger.debug("类模板开始导入===========》读取文件");
         String oTypesStr = FileTools.readFile("E:\\test\\测试八个方面1223\\test.otype");
         List<EOType> eClasses = JsonUtils.jsonToList(oTypesStr, EOType.class);
@@ -49,7 +67,19 @@ public class OTypeImportUtil {
                 models.setModels(newModels);
                 eClass.setModels(models);
             }
-
+            List<EOType> params = new ArrayList<>();
+            params.add(eClass);
+            String response = HttpUtil.post(MyApi.insertOtype.getValue()+"?token="+ UserInfo.token, JSONUtil.parseArray(params).toString());
+            //错误判断
+            if (FileTools.judgeImportState(response)){
+                logger.error("id: "+eClass.getId()+"的类模板导入失败");
+                continue;
+            }
+            //处理 response
+            JSONArray array = FileTools.formatData2JSONArray(response);
+            //上传完成将新老Id记录到Map当中
+            otypeNewIdAndOldId.put(eClass.getId(), array.get(0, JSONObject.class).getLong("id"));
+            logger.info("id：" +eClass.getId() + "导入完毕新Id为："+array.get(0,JSONObject.class).getLong("id"));
         }
     }
 
@@ -61,7 +91,7 @@ public class OTypeImportUtil {
     public static List<EField> handleFieldId(List<EField> fieldList){
         List<EField> newFieldList=new ArrayList<>();
         for (EField field : fieldList) {
-            Long newFiledId = IdCache.fieldOldIdAndNewIdCache.get(field.getId());
+            Long newFiledId = Long.parseLong(String.valueOf(IdCache.fieldOldIdAndNewIdCache.get(String.valueOf(field.getId()))));
             field.setId(newFiledId);
             newFieldList.add(field);
         }
@@ -76,7 +106,10 @@ public class OTypeImportUtil {
     public static List<EFormStyles> handleFormStylesId(List<EFormStyles> styles){
         List<EFormStyles> newFormStyles = new ArrayList<>();
         for (EFormStyles style : styles) {
-            Long newStyleId = IdCache.formStylesOidAndNewId.get(style.getId());
+            long newStyleId = 0L;
+            if(style.getId()!=0){//ID为0的是模型，不处理
+                newStyleId =  Long.parseLong(String.valueOf(IdCache.formStylesOidAndNewId.get(String.valueOf(style.getId()))));
+            }
             style.setId(newStyleId);
             newFormStyles.add(style);
         }
@@ -91,19 +124,22 @@ public class OTypeImportUtil {
     public static List<EModel> handleModelId(List<EModel> models){
         List<EModel> newModels = new ArrayList<>();
         for (EModel model : models) {
-            EModelDef newModelDef = ObjectUtil.clone(model.getMdef());
-            if (model.getMdef()!=null&&!model.getMdef().equals("")){
-                Long newModelDefId = IdCache.modelDefNewIdAndOldId.get(model.getMdef().getId());
-                newModelDef.setId(newModelDefId);
-            }
-            model.setMdef(newModelDef);
-            Long newModelId = IdCache.modelNewIdAndOldId.get(model.getId());
+//            EModelDef newModelDef = ObjectUtil.clone(model.getMdef());
+//            if (model.getMdef()!=null&&!model.getMdef().equals("")){
+//                Long newModelDefId = IdCache.modelDefNewIdAndOldId.get(String.valueOf(model.getMdef().getId()));
+//                newModelDef.setId(newModelDefId);
+//            }
+//            model.setMdef(newModelDef);
+            Long newModelId =  Long.parseLong(String.valueOf(IdCache.modelNewIdAndOldId.get(String.valueOf(model.getId()))));
             model.setId(newModelId);
             newModels.add(model);
         }
         return newModels;
     }
     public static void main(String[] args) throws Exception {
+        login("ceshi@yzh.com", "123456");
         importOTpye();
+        JSON parse = JSONUtil.parse(otypeNewIdAndOldId);
+        FileTools.exportFile(parse,"E:\\test\\测试八个方面1223\\otpyeId.text","otpyeId.text");
     }
 }
