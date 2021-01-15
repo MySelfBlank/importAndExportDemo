@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 import static com.yzh.importTest.importUtils.IdCache.relationNewIdAndOldId;
+import static com.yzh.importTest.importUtils.ModelImportUtil.modelImportHandle;
 import static com.yzh.utilts.FileTools.login;
 
 ;
@@ -39,7 +40,7 @@ public class RelationImportUtil {
      *
      * @param url
      */
-    public static void upLoadRelation(String url,String fieldIdPath,String modelIdPath) {
+    public static void upLoadRelation(String url,String fieldIdPath,String modelIdPath) throws Exception {
         String relationStr = FileTools.readFile(url);
         String fieldIdCache = FileTools.readFile(fieldIdPath);
         String modelIdCache = FileTools.readFile(modelIdPath);
@@ -73,7 +74,7 @@ public class RelationImportUtil {
         }
     }
 
-    public static ModelEntity exchangeModel(Model model){
+    public static ModelEntity exchangeModel(Model model) throws Exception {
 
         ModelEntity modelEntity = new ModelEntity();
         modelEntity.setpLanguage(model.getpLanguage().getValue());
@@ -81,15 +82,16 @@ public class RelationImportUtil {
 
         }
         modelEntity.setId(Long.parseLong(String.valueOf(IdCache.modelNewIdAndOldId.get(model.getId().toString()))));
+        EModel eModel = modelToEModel(model);
+        modelImportHandle(modelEntity,eModel);
         return modelEntity;
     }
-    public static EModel ModelToEModel(Model model){
-        EModel eModel =new EModel();
-        eModel.setId(model.getId());
-        eModel.setMdef(model.getMdef());
+     public static EModel modelToEModel(Model model){
+        EModel eModel = new EModel();
+        eModel.setName(model.getName());
         return eModel;
     }
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
 
         login("ceshi@yzh.com", "123456");
 

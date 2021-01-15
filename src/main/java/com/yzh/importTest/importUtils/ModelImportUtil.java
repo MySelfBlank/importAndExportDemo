@@ -53,29 +53,28 @@ public class ModelImportUtil {
         List<EModel> models = JsonUtils.jsonToList(modelStr, EModel.class);
 
         for (EModel model : models) {
-            modelImportHandle(model,modelUrl);
+            ModelEntity modelEntity = new ModelEntity();
+            modelEntity.setName(model.getName());
+            ModelDef mdef = model.getMdef();
+            ModelDefEntity modelDefEntity = new ModelDefEntity();
+            modelDefEntity.setId(Long.parseLong(String.valueOf(modelDefNewIdAndOldId.get(mdef.getId().toString()))));
+//            EModelDef newModelDef = JSONUtil.parse(modelDefEntity).toBean(EModelDef.class);
+            modelEntity.setMdef(modelDefEntity);
+            modelEntity.setpLanguage(Integer.valueOf(model.getpLanguage()));
+            if (model.getpLanguage().equals("1")||model.getpLanguage().equals("2")){
+                if (!model.getMobj().getScript().isEmpty()){
+                    uploadModles(modelUrl);
+                    modelEntity.setMobj(model.getMobj());
+                }
+            }else {
+                String[] mobj = new String[]{};
+                modelEntity.setMobj(null);
+            }
+            modelImportHandle(modelEntity,model);
         }
 
     }
-    public static void modelImportHandle(EModel model,String modelUrl) throws Exception {
-        ModelEntity modelEntity = new ModelEntity();
-        modelEntity.setName(model.getName());
-        ModelDef mdef = model.getMdef();
-        ModelDefEntity modelDefEntity = new ModelDefEntity();
-        modelDefEntity.setId(Long.parseLong(String.valueOf(modelDefNewIdAndOldId.get(mdef.getId().toString()))));
-//            EModelDef newModelDef = JSONUtil.parse(modelDefEntity).toBean(EModelDef.class);
-        modelEntity.setMdef(modelDefEntity);
-        modelEntity.setpLanguage(Integer.valueOf(model.getpLanguage()));
-        if (model.getpLanguage().equals("1")||model.getpLanguage().equals("2")){
-            if (!model.getMobj().getScript().isEmpty()){
-                uploadModles(modelUrl);
-                modelEntity.setMobj(model.getMobj());
-            }
-        }else {
-            String[] mobj = new String[]{};
-            modelEntity.setMobj(null);
-        }
-
+    public static void modelImportHandle(ModelEntity modelEntity,EModel model) throws Exception {
         //处理响应的数据
         JSONObject paramStr = JSONUtil.parseObj(modelEntity);
         String response = HttpUtil.post(MyApi.insertModel.getValue()+"?token="+ UserInfo.token, paramStr.toString());
