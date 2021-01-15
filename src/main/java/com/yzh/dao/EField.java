@@ -25,6 +25,11 @@ public class EField extends AbstractObject {
     private String type;
 
     /**
+     * 控件类型
+     */
+    private String uitype;
+
+    /**
      * 字段值域
      */
     private Map<String, Object> domainMap;
@@ -63,6 +68,14 @@ public class EField extends AbstractObject {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getUitype() {
+        return uitype;
+    }
+
+    public void setUitype(String uitype) {
+        this.uitype = uitype;
     }
 
     public Map<String, Object> getDomainMap() {
