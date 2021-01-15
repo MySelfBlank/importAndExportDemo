@@ -1,8 +1,8 @@
 package com.yzh.dao;
 
 import com.yzh.dao.exportModel.AbstractObject;
-
-import java.util.List;
+import onegis.psde.attribute.Fields;
+import onegis.psde.model.Model;
 
 /**
  * @ Author        :  yuyazhou
@@ -12,38 +12,38 @@ public class ERelation extends AbstractObject {
     /**
      * 描述关系的字段
      */
-    private List<EField> fields;
+    private Fields fields;
     /**
      * 关系映射类型
      */
-    private String mappingType;
+    private int mappingType;
 
     /**
      * 规则
      */
-    private List rules;
+    public Model model;
 
-    public List<EField> getFields() {
+    public Fields getFields() {
         return fields;
     }
 
-    public void setFields(List<EField> fields) {
+    public void setFields(Fields fields) {
         this.fields = fields;
     }
 
-    public String getMappingType() {
+    public Integer getMappingType() {
         return mappingType;
     }
 
-    public void setMappingType(String mappingType) {
+    public void setMappingType(Integer mappingType) {
         this.mappingType = mappingType;
     }
 
-    public List getRules() {
-        return rules;
+    public Model getModel() {
+        return model;
     }
 
-    public void setRules(List rules) {
-        this.rules = rules;
+    public void setModel(Model model) {
+        this.model = model;
     }
 }

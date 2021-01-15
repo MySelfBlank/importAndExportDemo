@@ -20,7 +20,7 @@ public enum MyApi {
     getDomain1("getDomain", finalUrl+"/rest/v0.1.0/datastore/sdomain/query"),
 
     //获取类模板信息根据ID
-    getOtypesByIds("getOtypesByIds", finalUrl+"/datastore/rest/v0.1.0/datastore/otype/query"),
+    getOtypesByIds("getOtypesByIds", finalUrl+"/rest/v0.1.0/datastore/otype/query"),
 
     //获取时空域下的所有的空间对象
     getObject("getObject", finalUrl+"/rest/v0.1.0/datastore/object/query"),

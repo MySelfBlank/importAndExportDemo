@@ -6,17 +6,20 @@ import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import com.yzh.api.MyApi;
+import com.yzh.dao.ERelation;
+import com.yzh.importTest.requestEntity.ModelEntity;
 import com.yzh.importTest.requestEntity.RelationEntity;
 import com.yzh.userInfo.UserInfo;
 import com.yzh.utilts.FileTools;
-import onegis.psde.relation.Relation;
+import onegis.common.utils.JsonUtils;
+import onegis.psde.model.Model;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static com.yzh.importTest.importUtils.IdCache.relationNewIdAndOldId;
+import static com.yzh.utilts.FileTools.login;
 
 ;
 
@@ -36,24 +39,21 @@ public class RelationImportUtil {
      */
     public static void upLoadRelation(String url) {
         String relationStr = FileTools.readFile(url);
-        List<Relation> relations = FileTools.jsonArray2List(relationStr, Relation.class);
-
-        List<RelationEntity> params = new ArrayList<>();
-        for (Relation relation : relations) {
+        //改转换方法
+        List<ERelation> relations = JsonUtils.jsonToList(relationStr, ERelation.class);
+        for (ERelation relation : relations) {
             logger.debug("关系开始导入==========》读取文件");
             RelationEntity relationEntity = new RelationEntity();
             //将获取到的关系文本内容转换为对象
-            params.clear();
+            relationEntity.setId(relation.getId());
             relationEntity.setName(relation.getName());
             relationEntity.setMappingType(relation.getMappingType());
-            relationEntity.setCode(relation.getCode());
-            relationEntity.setModel(relation.getModel());
+            relationEntity.setModel(exchangeModel(relation.getModel()));
             relationEntity.setFields(relation.getFields());
 
-            params.add(relationEntity);
             //处理响应的数据
-            String paramStr = JSONUtil.parseArray(params).toString();
-            String response = HttpUtil.post(MyApi.insertRelation.getValue().replace("@token", UserInfo.token), paramStr);
+            String paramStr = JSONUtil.parseObj(relationEntity).toString();
+            String response = HttpUtil.post(MyApi.insertRelation.getValue()+"?token="+ UserInfo.token,paramStr );
             if (FileTools.judgeImportState(response)) {
                 logger.error("name为" + relation.getName() + "的关系导入失败");
                 continue;
@@ -66,8 +66,14 @@ public class RelationImportUtil {
         }
     }
 
+    public static ModelEntity exchangeModel(Model model){
+        ModelEntity modelEntity = new ModelEntity();
+        modelEntity.setId(model.getId());
+        return modelEntity;
+    }
     public static void main(String[] args) {
 
+        login("ceshi@yzh.com", "123456");
         upLoadRelation("E:\\test\\测试八个方面1223\\test.relation");
         JSON parse = JSONUtil.parse(relationNewIdAndOldId);
         FileTools.exportFile(parse,"E:\\test\\中原工_yzh","relationId.text");

@@ -21,23 +21,23 @@ public class EnvironmentSelectTool {
     public static String localHostUcUrl = "http://172.16.4.129:8085/btuc";
 
 
-    public static String finalUrl = devurl;
-    public static String finalUcUrl=devUcUrl;
-    public static String finalModelUrl=modelDevUrl;
+    public static String finalUrl = produrl;
+    public static String finalUcUrl=prodUcUrl;
+    public static String finalModelUrl=modelProdUrl;
 
     public static void selectEnv(){
         Scanner scanner = new Scanner(System.in);
         int select = scanner.nextInt();
             switch (select) {
                 case 1:
-                    finalUrl = devurl;
-                    finalUcUrl = devUcUrl;
-                    finalModelUrl=modelDevUrl;
-                    break;
-                case 2:
                     finalUrl = produrl;
                     finalUcUrl = prodUcUrl;
                     finalModelUrl=modelProdUrl;
+                    break;
+                case 2:
+                    finalUrl = devurl;
+                    finalUcUrl = devUcUrl;
+                    finalModelUrl=modelDevUrl;
                     break;
                 case 3:
                     finalUrl = localHostUrl;
