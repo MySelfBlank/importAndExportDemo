@@ -1,14 +1,14 @@
 package com.yzh.importTest.requestEntity;
 
-import com.yzh.dao.exportModel.AbstractObject;
+import onegis.psde.psdm.AObject;
 
 /**
  * @ Author        :  yuyazhou
  * @ CreateDate    :  2021/1/12 15:47
  */
-public class ModelDefEntity extends AbstractObject {
+public class ModelDefEntity extends AObject {
     private String tags;
-    private int type;
+    private Integer type;
     private String des;
     private String icon;
     private String inTypes;

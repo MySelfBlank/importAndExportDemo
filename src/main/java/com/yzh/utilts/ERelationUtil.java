@@ -5,7 +5,6 @@ import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import com.yzh.api.MyApi;
 import com.yzh.dao.ERelation;
-import com.yzh.dao.ERelationEnum;
 import com.yzh.userInfo.UserInfo;
 import onegis.psde.psdm.SObject;
 import onegis.psde.relation.Network;
@@ -89,27 +88,32 @@ public class ERelationUtil {
 
         List<Relation> list = JsonUtils.jsonToList(jsonObject.getStr("list"), Relation.class);
 
+        List<ERelation> eRelations = dsRelations2ERelation(list);
         String path = "E:\\test\\" + sDomain.getName() + "\\test.relation";
-        exportFile(JSONUtil.parse(list), path,"relation");
+        exportFile(JSONUtil.parse(eRelations), path,"relation");
     }
 
     /**
      * 对连接关系进行处理
-     * @param relation
+     * @param relations
      * @return
      * @throws Exception
      */
-    public static ERelation dsRelations2ERelation(Relation relation) throws Exception {
-        if (relation == null){
-            return null;
+    public static List<ERelation> dsRelations2ERelation(List<Relation> relations) throws Exception {
+        if (relations == null){
+            return new ArrayList<>();
         }
-        ERelation eRelation = new ERelation();
-        eRelation.setId(relation.getId());
-        eRelation.setName(relation.getName());
-        eRelation.setFields(FieldUtils.dsField2Field(relation.getFields()));
-        eRelation.setMappingType(ERelationEnum.getEnum(relation.getMappingType().getValue()).getName());
-        eRelation.setRules(new ArrayList());
-        return eRelation;
+        List<ERelation> eRelations =new ArrayList<>();
+        for (Relation relation : relations) {
+            ERelation eRelation = new ERelation();
+            eRelation.setId(relation.getId());
+            eRelation.setName(relation.getName());
+            eRelation.setFields(relation.getFields());
+            eRelation.setMappingType(relation.getMappingType().getValue());
+            eRelation.setModel(relation.getModel());
+            eRelations.add(eRelation);
+        }
+        return eRelations;
     }
 
 

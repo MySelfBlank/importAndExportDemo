@@ -30,14 +30,14 @@ public class EnvironmentSelectTool {
         int select = scanner.nextInt();
             switch (select) {
                 case 1:
-                    finalUrl = devurl;
-                    finalUcUrl = devUcUrl;
-                    finalModelUrl=modelDevUrl;
-                    break;
-                case 2:
                     finalUrl = produrl;
                     finalUcUrl = prodUcUrl;
                     finalModelUrl=modelProdUrl;
+                    break;
+                case 2:
+                    finalUrl = devurl;
+                    finalUcUrl = devUcUrl;
+                    finalModelUrl=modelDevUrl;
                     break;
                 case 3:
                     finalUrl = localHostUrl;

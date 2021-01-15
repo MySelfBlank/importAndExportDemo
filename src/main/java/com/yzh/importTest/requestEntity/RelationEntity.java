@@ -1,8 +1,6 @@
 package com.yzh.importTest.requestEntity;
 
 import onegis.psde.attribute.Fields;
-import onegis.psde.dictionary.RelationEnum;
-import onegis.psde.model.Model;
 import onegis.psde.psdm.AObject;
 
 /**
@@ -10,20 +8,16 @@ import onegis.psde.psdm.AObject;
  * @ CreateDate    :  2020/12/25 14:50
  */
 public class RelationEntity extends AObject {
-    private RelationEnum mappingType;
+    private int mappingType;
     private Fields fields;
-    public Model model;
+    public ModelEntity model;
     private String code;
-    public RelationEntity() {
-        this.mappingType = RelationEnum.ONETOONE;
-        this.fields = new Fields();
-    }
 
-    public RelationEnum getMappingType() {
+    public Integer getMappingType() {
         return mappingType;
     }
 
-    public void setMappingType(RelationEnum mappingType) {
+    public void setMappingType(Integer mappingType) {
         this.mappingType = mappingType;
     }
 
@@ -35,11 +29,11 @@ public class RelationEntity extends AObject {
         this.fields = fields;
     }
 
-    public Model getModel() {
+    public ModelEntity getModel() {
         return model;
     }
 
-    public void setModel(Model model) {
+    public void setModel(ModelEntity model) {
         this.model = model;
     }
 

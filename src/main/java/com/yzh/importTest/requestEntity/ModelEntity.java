@@ -1,25 +1,24 @@
 package com.yzh.importTest.requestEntity;
 
 
-import com.yzh.dao.Mobj;
 import com.yzh.dao.exportModel.AbstractObject;
-import onegis.psde.model.ModelDef;
+import onegis.psde.model.IModel;
 
 /**
  * @ Author        :  yuyazhou
  * @ CreateDate    :  2021/1/12 15:00
  */
 public class ModelEntity extends AbstractObject {
-    private ModelDef mdef;
+    private ModelDefEntity mdef;
     private int pLanguage;
-    private Mobj mobj;
+    private IModel mobj;
 
 
-    public ModelDef getMdef() {
+    public ModelDefEntity getMdef() {
         return mdef;
     }
 
-    public void setMdef(ModelDef mdef) {
+    public void setMdef(ModelDefEntity mdef) {
         this.mdef = mdef;
     }
 
@@ -31,11 +30,11 @@ public class ModelEntity extends AbstractObject {
         this.pLanguage = pLanguage;
     }
 
-    public Mobj getMobj() {
+    public IModel getMobj() {
         return mobj;
     }
 
-    public void setMobj(Mobj mobj) {
+    public void setMobj(IModel mobj) {
         this.mobj = mobj;
     }
 }
