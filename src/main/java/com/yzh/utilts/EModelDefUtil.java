@@ -1,9 +1,9 @@
 package com.yzh.utilts;
 
 import cn.hutool.http.HttpUtil;
-import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import com.yzh.api.MyApi;
+import com.yzh.dao.EModelDef;
 import com.yzh.userInfo.UserInfo;
 import onegis.psde.model.Model;
 import onegis.psde.model.ModelDef;
@@ -15,7 +15,8 @@ import java.util.*;
 import static cn.hutool.core.util.ObjectUtil.isEmpty;
 import static cn.hutool.core.util.ObjectUtil.isNull;
 import static com.yzh.Index.sDomain;
-import static com.yzh.utilts.FileTools.*;
+import static com.yzh.utilts.FileTools.exportFile;
+import static com.yzh.utilts.FileTools.forJsonList;
 
 /**
  * 行为类的导出
@@ -83,10 +84,17 @@ public class EModelDefUtil {
         param.put("DESCOrAsc","true");
         String relationStr = HttpUtil.get(MyApi.getModelDefById.getValue(), param);
 
-        List<JSONObject> list = forJsonList(relationStr,ModelDef.class);
-
+        List<ModelDef> list = forJsonList(relationStr,ModelDef.class);
+        List<EModelDef> eModelDefs =new ArrayList<>();
+        for (ModelDef modelDef : list) {
+            if (modelDef!=null){
+                EModelDef eModelDef = OtypeUtilts.handleModel(modelDef);
+                eModelDefs.add(eModelDef);
+            }
+        }
         String path = "E:\\test\\" + sDomain.getName() + "\\test.modelDef";
-        exportFile(JSONUtil.parse(list), path,"modelDef");
+        exportFile(JSONUtil.parse(eModelDefs), path,"modelDef");
+    }
+        
     }
 
-}

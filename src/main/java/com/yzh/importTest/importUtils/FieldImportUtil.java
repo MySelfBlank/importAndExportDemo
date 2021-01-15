@@ -35,7 +35,10 @@ public class FieldImportUtil {
         String fieldsStr = FileTools.readFile("E:\\test\\测试八个方面1223\\test.fields");
         List<Field> fieldList = FileTools.jsonArray2List(fieldsStr,Field.class);
         //map用于记录新老Id关系
+        fieldImport(fieldList);
+    }
 
+    public static void fieldImport(List<Field> fieldList){
         List<EField> param = new ArrayList<>();
         //遍历字段，一个一个完成导入上传操作上传
         for (Field field : fieldList) {
@@ -62,11 +65,10 @@ public class FieldImportUtil {
             //处理 response
             JSONArray array = FileTools.formatData2JSONArray(response);
             //上传完成将新老Id记录到Map当中
-            fieldOldIdAndNewIdCache.put(field.getId(), array.get(0,JSONObject.class).getLong("id"));
+            fieldOldIdAndNewIdCache.put(field.getId(), array.get(0, JSONObject.class).getLong("id"));
             logger.info("id" +field.getId() + "导入完毕新Id为："+array.get(0,JSONObject.class).getLong("id"));
         }
-
-        System.out.println(fieldsStr);
+//        System.out.println(fieldsStr);
     }
 
     public static void main(String[] args)  {
