@@ -50,6 +50,7 @@ public class ModelImportUtil {
         List<ModelEntity> modelEntities = new ArrayList<>();
         for (EModel model : models) {
             ModelEntity modelEntity = new ModelEntity();
+            modelEntities.clear();
             modelEntity.setName(model.getName());
             JSONObject jsonObject = JSONUtil.parseObj(model.getMdef());
             ModelDefEntity modelDefEntity = jsonObject.toBean(ModelDefEntity.class);
@@ -155,6 +156,7 @@ public class ModelImportUtil {
         for (ModelDef modelDef : modelDefs) {
             logger.debug("行为类别开始导入======》文件对象转换");
             ModelDefEntity modelDefEntity = new ModelDefEntity();
+            entities.clear();
             if (modelDef.getIcon().equals("")){
                 modelDefEntity.setIcon(modelDef.getIcon());
             }
@@ -206,7 +208,6 @@ public class ModelImportUtil {
 
             modelDefNewIdAndOldId.put(modelDef.getId(), arrays.get(0, JSONObject.class).getLong("id"));
             logger.info("id" + modelDef.getId() + "新id为" + arrays.get(0, JSONObject.class).getLong("id"));
-            entities.clear();
         }
 
     }
