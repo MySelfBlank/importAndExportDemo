@@ -17,7 +17,6 @@ import com.yzh.utilts.FileTools;
 import com.yzh.utilts.HttpClientUtils;
 import onegis.common.utils.JsonUtils;
 import onegis.psde.model.ModelDef;
-import onegis.result.response.ResponseResult;
 import org.apache.http.entity.ContentType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,6 +43,7 @@ public class ModelImportUtil {
      * @param url
      */
     public static void modelImportHandle(String url,String modelUrl) throws Exception{
+        logger.debug("模型开始导入=====》读取文件");
         String modelStr = FileTools.readFile(url);
         List<EModel> models = JsonUtils.jsonToList(modelStr, EModel.class);
 
@@ -133,7 +133,7 @@ public class ModelImportUtil {
         Map<String, MultipartFile> multipartFileMap = new HashMap<>();
         multipartFileMap.put("file", multipartFile);
         String result = HttpClientUtils.doPostByte(MyApi.uploadModel.getValue(), params, multipartFileMap);
-        ResponseResult responseResult = JsonUtils.jsonToPojo(result, ResponseResult.class);
+        onegis.result.response.ResponseResult responseResult = JsonUtils.jsonToPojo(result, onegis.result.response.ResponseResult.class);
         if (responseResult.getStatus() == 200) {
             Model model = JSON.parseObject(JSON.toJSONString(responseResult.getData()), Model.class);
             System.out.println("模型" +  model.getFname() +"保存成功，fid：" + model.getFid());
@@ -213,5 +213,6 @@ public class ModelImportUtil {
 
     public static void main(String[] args) throws Exception {
         login("asiayu01@163.com", "yu1306730458");
+        modelImportHandle("E:\\test\\测试八个方面1223\\test.models","E:\\test\\测试八个方面1223\\ModelFile");
     }
 }
