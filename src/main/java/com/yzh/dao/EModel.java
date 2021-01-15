@@ -2,6 +2,7 @@ package com.yzh.dao;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.yzh.dao.exportModel.AbstractObject;
+import onegis.psde.model.ModelDef;
 import onegis.psde.psdm.User;
 
 import java.util.Date;
@@ -19,7 +20,7 @@ public class EModel extends AbstractObject {
     /**
      * 行为类
      */
-    private EModelDef mdef;
+    private ModelDef mdef;
 
     private User user;
     /**
@@ -50,11 +51,11 @@ public class EModel extends AbstractObject {
         this.initData = initData;
     }
 
-    public EModelDef getMdef() {
+    public ModelDef getMdef() {
         return mdef;
     }
 
-    public void setMdef(EModelDef mdef) {
+    public void setMdef(ModelDef mdef) {
         this.mdef = mdef;
     }
 

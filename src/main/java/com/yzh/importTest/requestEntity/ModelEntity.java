@@ -10,7 +10,7 @@ import onegis.psde.model.IModel;
  */
 public class ModelEntity extends AbstractObject {
     private ModelDefEntity mdef;
-    private int pLanguage;
+    private Integer pLanguage;
     private IModel mobj;
 
 
