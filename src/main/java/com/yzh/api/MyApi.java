@@ -67,10 +67,10 @@ public enum MyApi {
     getDll("getDll","http://bt1.geosts.ac.cn/api/dae"+dev+"/hdfs-service/hdfs/rest/v0.1.0/datastore/slave/hdfs/download"),
 
     //获取样式模型
-    getModelInfo("getModelInfo","http://bt1.geosts.ac.cn/api/dae"+dev+"/model-service/model/rest/v0.1.0/datastore/slave/model/file/query"),
+    getModelInfo("getModelInfo",modelLocalUrl+"/rest/v0.1.0/datastore/slave/model/file/query"),
 
     //下载模型url
-    downModelUrl("downModelUrl","http://bt1.geosts.ac.cn/api/dae"+dev+"/model-service/model/rest/v0.1.0/datastore/slave/model/file/download/"),
+    downModelUrl("downModelUrl",modelLocalUrl+"/rest/v0.1.0/datastore/slave/model/file/download/"),
 
     insertOtype("insertOtype","http://bt1.geosts.ac.cn/api/dae"+dev+"/datastore/rest/v0.1.0/datastore/otype/insert"),
     //导入时空域
