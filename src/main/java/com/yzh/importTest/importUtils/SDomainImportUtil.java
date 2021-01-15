@@ -37,7 +37,7 @@ public class SDomainImportUtil {
     public static void importSDomain()throws Exception{
         //读取文件
         logger.debug("时空域开始导入===========》读取文件");
-        String SDomainStr = FileTools.readFile("E:\\test\\中原工_yzh\\test.sdomain");
+        String SDomainStr = FileTools.readFile("E:\\test\\测试八个方面1223\\test.sdomain");
         //构建SDomain
         SDomain sDomain = JSONUtil.toBean(SDomainStr, SDomain.class);
         ArrayList<Action> actions = new ArrayList<>();
@@ -49,12 +49,12 @@ public class SDomainImportUtil {
         JSONArray geoBoxJSONArray = object.getJSONArray("geoBox");
         List<Double> geoBoxlist = geoBoxJSONArray.toList(Double.class);
         GeoBox geoBox = new GeoBox();
-        geoBox.setMaxx(geoBoxlist.get(0));
-        geoBox.setMaxy(geoBoxlist.get(1));
-        geoBox.setMaxz(geoBoxlist.get(2));
-        geoBox.setMinx(geoBoxlist.get(3));
-        geoBox.setMiny(geoBoxlist.get(4));
-        geoBox.setMinz(geoBoxlist.get(5));
+        geoBox.setMinx(geoBoxlist.get(0));
+        geoBox.setMiny(geoBoxlist.get(1));
+        geoBox.setMinz(geoBoxlist.get(2));
+        geoBox.setMaxx(geoBoxlist.get(3));
+        geoBox.setMaxy(geoBoxlist.get(4));
+        geoBox.setMaxz(geoBoxlist.get(5));
         sDomain.setGeoBox(geoBox);
         SpatialReferenceSystem srs = new SpatialReferenceSystem();
         srs.setId("4326");
@@ -76,7 +76,7 @@ public class SDomainImportUtil {
     }
 
     public static void main(String[] args) throws Exception{
-        login("asiayu01@163.com", "yu1306730458");
+        login("ceshi@yzh.com", "123456");
         importSDomain();
     }
 }

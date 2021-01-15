@@ -17,7 +17,9 @@ import org.slf4j.LoggerFactory;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.yzh.importTest.importUtils.IdCache.fieldOldIdAndNewIdCache;
 import static com.yzh.importTest.importUtils.IdCache.formStylesOidAndNewId;
+import static com.yzh.utilts.FileTools.login;
 
 /**
  * @author Yzh
@@ -58,7 +60,7 @@ public class FormImportUtil {
     public static void formStyleImportHandle(){
         //读取文件
         logger.debug("形态样式开始导入===========》读取形态样式文件");
-        String formStylesStr = FileTools.readFile("E:\\test\\中原工_yzh\\test.formStyles");
+        String formStylesStr = FileTools.readFile("E:\\test\\测试八个方面1223\\test.formStyles");
         List<FormStyle> formStyles = FileTools.jsonArray2List(formStylesStr, FormStyle.class);
         //过滤掉使用的默认样式collect
         List<FormStyle> formStylesRemoveDef = formStyles.stream().filter(v -> !v.getName().contains("default_")).collect(Collectors.toList());
@@ -84,7 +86,9 @@ public class FormImportUtil {
     }
 
     public static void main(String[] args) {
+        login("ceshi@yzh.com", "123456");
+        formStyleImportHandle();
         JSON parse = JSONUtil.parse(formStylesOidAndNewId);
-        FileTools.exportFile(parse,"E:\\test\\中原工_yzh","formId.text");
+        FileTools.exportFile(parse,"E:\\test\\测试八个方面1223\\formId.text","formId.text");
     }
 }
