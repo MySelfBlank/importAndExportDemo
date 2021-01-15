@@ -50,7 +50,7 @@ public class FieldImportUtil {
                 eField.setDefaultValue(field.getDefaultValue().toString());
             }
             eField.setDesc(field.getDes());
-
+            eField.setUitype(field.getUitype().getValue());
             param.add(eField);
             //重置请求参数
             String response = HttpUtil.post(MyApi.insertField.getValue().replace("@token", UserInfo.token),JSONUtil.parseArray(param).toString());
