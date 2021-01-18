@@ -16,6 +16,7 @@ import com.yzh.utilts.FileTools;
 import com.yzh.utilts.HttpClientUtils;
 import onegis.common.utils.JsonUtils;
 import onegis.psde.attribute.Field;
+import onegis.psde.model.ModelDef;
 import org.apache.http.entity.ContentType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -54,7 +55,7 @@ public class ModelImportUtil {
         for (EModel model : models) {
             ModelEntity modelEntity = new ModelEntity();
             modelEntity.setName(model.getName());
-            EModelDef mdef = model.getMdef();
+            ModelDef mdef = model.getMdef();
             ModelDefEntity modelDefEntity = new ModelDefEntity();
             modelDefEntity.setId(Long.parseLong(String.valueOf(modelDefNewIdAndOldId.get(mdef.getId().toString()))));
 //            EModelDef newModelDef = JSONUtil.parse(modelDefEntity).toBean(EModelDef.class);
@@ -63,28 +64,31 @@ public class ModelImportUtil {
             if (model.getpLanguage().equals("1")||model.getpLanguage().equals("2")){
                 if (!model.getMobj().getScript().isEmpty()){
                     uploadModles(modelUrl);
-                   modelEntity.setMobj(model.getMobj());
+                    modelEntity.setMobj(model.getMobj());
                 }
             }else {
                 String[] mobj = new String[]{};
                 modelEntity.setMobj(null);
             }
-
-            //处理响应的数据
-            JSONObject paramStr = JSONUtil.parseObj(modelEntity);
-            String response = HttpUtil.post(MyApi.insertModel.getValue()+"?token="+ UserInfo.token, paramStr.toString());
-            if (FileTools.judgeImportState(response)) {
-                logger.error("name为" + model.getName() + "的关系导入失败");
-                continue;
-            }
-            //对新老的id进行处理
-            JSONObject jsonObject1 = FileTools.formatData(response);
-
-            modelNewIdAndOldId.put(model.getId(), jsonObject1.getLong("id"));
-            logger.debug("id" + model.getId() + "新id为" + jsonObject1.getLong("id"));
+            modelImportHandle(modelEntity,model);
         }
 
     }
+    public static void modelImportHandle(ModelEntity modelEntity,EModel model) throws Exception {
+        //处理响应的数据
+        JSONObject paramStr = JSONUtil.parseObj(modelEntity);
+        String response = HttpUtil.post(MyApi.insertModel.getValue()+"?token="+ UserInfo.token, paramStr.toString());
+        if (FileTools.judgeImportState(response)) {
+            logger.error("name为" + model.getName() + "的关系导入失败");
+        }
+        //对新老的id进行处理
+        JSONObject jsonObject1 = FileTools.formatData(response);
+
+        modelNewIdAndOldId.put(model.getId(), jsonObject1.getLong("id"));
+        logger.debug("id" + model.getId() + "新id为" + jsonObject1.getLong("id"));
+    }
+
+
 
     /**
      * 上传模型

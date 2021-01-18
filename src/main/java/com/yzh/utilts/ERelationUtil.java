@@ -82,6 +82,9 @@ public class ERelationUtil {
         Map<String, Object> param = new HashMap<>();
         param.put("token", UserInfo.token);
         param.put("ids", ids.toArray());
+        param.put("loadField",true);
+        param.put("loadModel",true);
+        param.put("loadField",true);
 
         String relationStr = HttpUtil.get(MyApi.getRelationById.getValue(), param);
         JSONObject jsonObject = FileTools.formatData(relationStr);
