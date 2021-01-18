@@ -49,9 +49,4 @@ public class EnvironmentSelectTool {
             }
     }
 
-    public static void main(String[] args) {
-        System.out.println(finalUrl);
-        selectEnv();
-        System.out.println(finalUrl);
-    }
 }
