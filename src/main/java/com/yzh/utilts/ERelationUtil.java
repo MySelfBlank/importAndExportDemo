@@ -4,8 +4,10 @@ import cn.hutool.http.HttpUtil;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import com.yzh.api.MyApi;
+import com.yzh.dao.EModel;
 import com.yzh.dao.ERelation;
 import com.yzh.userInfo.UserInfo;
+import onegis.psde.model.Model;
 import onegis.psde.psdm.SObject;
 import onegis.psde.relation.Network;
 import onegis.psde.relation.REdge;
@@ -113,11 +115,19 @@ public class ERelationUtil {
             eRelation.setName(relation.getName());
             eRelation.setFields(relation.getFields());
             eRelation.setMappingType(relation.getMappingType().getValue());
-            eRelation.setModel(relation.getModel());
+            eRelation.setModel(handOldModelToNewModel(relation.getModel()));
             eRelations.add(eRelation);
         }
         return eRelations;
     }
 
+    public static EModel handOldModelToNewModel(Model model){
+        EModel newModel = new EModel();
+        newModel.setId(model.getId());
+        newModel.setName(model.getName());
+        newModel.setpLanguage(String.valueOf(model.getpLanguage().getValue()));
+
+        return newModel;
+    }
 
 }

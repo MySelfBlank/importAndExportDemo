@@ -2,7 +2,6 @@ package com.yzh.dao;
 
 import com.yzh.dao.exportModel.AbstractObject;
 import onegis.psde.attribute.Fields;
-import onegis.psde.model.Model;
 
 /**
  * @ Author        :  yuyazhou
@@ -21,7 +20,7 @@ public class ERelation extends AbstractObject {
     /**
      * 规则
      */
-    public Model model;
+    public EModel model;
 
     public Fields getFields() {
         return fields;
@@ -39,11 +38,11 @@ public class ERelation extends AbstractObject {
         this.mappingType = mappingType;
     }
 
-    public Model getModel() {
+    public EModel getModel() {
         return model;
     }
 
-    public void setModel(Model model) {
+    public void setModel(EModel model) {
         this.model = model;
     }
 }

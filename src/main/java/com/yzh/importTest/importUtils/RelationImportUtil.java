@@ -2,7 +2,6 @@ package com.yzh.importTest.importUtils;
 
 import cn.hutool.http.HttpUtil;
 import cn.hutool.json.JSON;
-import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import com.yzh.api.MyApi;
@@ -21,7 +20,6 @@ import java.util.List;
 import java.util.Map;
 
 import static com.yzh.importTest.importUtils.IdCache.relationNewIdAndOldId;
-import static com.yzh.importTest.importUtils.ModelImportUtil.modelImportHandle;
 import static com.yzh.utilts.FileTools.login;
 
 ;
@@ -46,6 +44,8 @@ public class RelationImportUtil {
         String modelIdCache = FileTools.readFile(modelIdPath);
         IdCache.fieldOldIdAndNewIdCache=JSONUtil.toBean(fieldIdCache, Map.class);
         IdCache.modelNewIdAndOldId=JSONUtil.toBean(modelIdCache,Map.class);
+
+
         //改转换方法
         List<ERelation> relations = JsonUtils.jsonToList(relationStr, ERelation.class);
         for (ERelation relation : relations) {
@@ -67,23 +67,18 @@ public class RelationImportUtil {
                 continue;
             }
             //对新老的id进行处理
-            JSONArray arrays = FileTools.formatData2JSONArray(response);
+            JSONObject jsonObject = FileTools.formatData(response);
 
-            relationNewIdAndOldId.put(relation.getId(), arrays.get(0, JSONObject.class).getLong("id"));
-            logger.info("id" + relation.getId() + "新id为" + arrays.get(0, JSONObject.class).getLong("id"));
+            relationNewIdAndOldId.put(relation.getId(), jsonObject.getLong("id"));
+            logger.info("id" + relation.getId() + "新id为" +  jsonObject.getLong("id"));
         }
     }
 
-    public static ModelEntity exchangeModel(Model model) throws Exception {
+    public static ModelEntity exchangeModel(EModel model) throws Exception {
 
         ModelEntity modelEntity = new ModelEntity();
-        modelEntity.setpLanguage(model.getpLanguage().getValue());
-        if (IdCache.modelNewIdAndOldId.get(model.getId().toString())==null){
-
-        }
+        modelEntity.setpLanguage(Integer.valueOf(model.getpLanguage()));
         modelEntity.setId(Long.parseLong(String.valueOf(IdCache.modelNewIdAndOldId.get(model.getId().toString()))));
-        EModel eModel = modelToEModel(model);
-        modelImportHandle(modelEntity,eModel);
         return modelEntity;
     }
      public static EModel modelToEModel(Model model){
@@ -97,6 +92,6 @@ public class RelationImportUtil {
 
         upLoadRelation("E:\\test\\测试八个方面1223\\test.relation","E:\\test\\测试八个方面1223\\fieldId.text","E:\\test\\测试八个方面1223\\modelId.text");
         JSON parse = JSONUtil.parse(relationNewIdAndOldId);
-        FileTools.exportFile(parse,"E:\\test\\中原工_yzh","relationId.text");
+        FileTools.exportFile(parse,"E:\\test\\测试八个方面1223\\relationId.text","relationId.text");
     }
 }

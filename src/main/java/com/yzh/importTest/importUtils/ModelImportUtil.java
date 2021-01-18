@@ -16,7 +16,6 @@ import com.yzh.utilts.FileTools;
 import com.yzh.utilts.HttpClientUtils;
 import onegis.common.utils.JsonUtils;
 import onegis.psde.attribute.Field;
-import onegis.psde.model.ModelDef;
 import org.apache.http.entity.ContentType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,15 +54,16 @@ public class ModelImportUtil {
         for (EModel model : models) {
             ModelEntity modelEntity = new ModelEntity();
             modelEntity.setName(model.getName());
-            ModelDef mdef = model.getMdef();
+            EModelDef mdef = model.getMdef();
             ModelDefEntity modelDefEntity = new ModelDefEntity();
             modelDefEntity.setId(Long.parseLong(String.valueOf(modelDefNewIdAndOldId.get(mdef.getId().toString()))));
 //            EModelDef newModelDef = JSONUtil.parse(modelDefEntity).toBean(EModelDef.class);
             modelEntity.setMdef(modelDefEntity);
+
             modelEntity.setpLanguage(Integer.valueOf(model.getpLanguage()));
             if (model.getpLanguage().equals("1")||model.getpLanguage().equals("2")){
                 if (!model.getMobj().getScript().isEmpty()){
-                    uploadModles(modelUrl);
+//                    uploadModles(modelUrl);
                     modelEntity.setMobj(model.getMobj());
                 }
             }else {
@@ -153,7 +153,8 @@ public class ModelImportUtil {
      */
     public static void modelDefImportHandle(String url,String idPath) throws IOException {
         String modelDefStr = FileTools.readFile(url);
-
+        String idCache = FileTools.readFile(idPath);
+        fieldOldIdAndNewIdCache=JSONUtil.toBean(idCache,Map.class);
         List<EModelDef> modelDefs = FileTools.jsonArray2List(modelDefStr, EModelDef.class);
 
         for (EModelDef modelDef : modelDefs) {
@@ -221,6 +222,7 @@ public class ModelImportUtil {
     public static void main(String[] args) throws Exception {
         login("ceshi@yzh.com", "123456");
 
+//        modelDefImportHandle("E:\\test\\测试八个方面1223\\test.modelDef","E:\\test\\测试八个方面1223\\fieldId.text");
         modelImportHandle("E:\\test\\测试八个方面1223\\test.models","E:\\test\\测试八个方面1223\\ModelFile","E:\\test\\测试八个方面1223\\modelDefId.text");
         cn.hutool.json.JSON parseDef = JSONUtil.parse(modelNewIdAndOldId);
         FileTools.exportFile(parseDef,"E:\\test\\测试八个方面1223\\modelId.text","modelId.text");

@@ -12,7 +12,7 @@ import java.util.Date;
  */
 public class EModelDef extends AObject {
     private String tags;
-    private int type;
+    private Integer type;
     private String des;
     private String icon;
     private String inTypes;
